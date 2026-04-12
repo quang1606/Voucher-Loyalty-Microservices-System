@@ -1,0 +1,57 @@
+_format_version: "3.0"
+
+# ==================== GLOBAL PLUGINS ====================
+plugins:
+
+  - name: cors
+    config:
+      origins:
+        - "*"
+      methods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      headers:
+        - Content-Type
+        - Authorization
+        - Accept
+      exposed_headers:
+        - X-Auth-Token
+      credentials: true
+      max_age: 3600
+      preflight_continue: false
+
+  - name: tcp-log
+    config:
+      host: logstash
+      port: 5044
+      tls: false
+      custom_fields_by_lua:
+        service_name: "return kong.router.get_service() and kong.router.get_service().name or 'unknown'"
+
+  - name: prometheus
+    config:
+      per_consumer: true
+      status_code_metrics: true
+      latency_metrics: true
+      bandwidth_metrics: true
+      upstream_health_metrics: true
+
+# ==================== SERVICES (only main API-facing) ====================
+services:
+  - name: identity-service
+    url: http://identity-service:8081
+    routes:
+      - name: identity-route
+        paths:
+          - /api/identity
+
+  - name: voucher-service
+    url: http://voucher-service:8082
+    routes:
+      - name: voucher-route
+        paths:
+          - /api/vouchers

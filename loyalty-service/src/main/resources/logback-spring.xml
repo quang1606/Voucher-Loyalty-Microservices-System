@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="CONSOLE_COLOR" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} --- [%15.15t] %clr(%-40.40logger{39}){cyan} : %clr([%X{traceId}]){yellow} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_HOST:-logstash}:${LOGSTASH_PORT:-5044}</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdc>true</includeMdc>
+            <customFields>{"app_name":"${spring.application.name:-unknown-service}"}</customFields>
+
+            <fieldNames>
+                <timestamp>@timestamp</timestamp>
+                <level>level</level>
+                <message>message</message>
+                <logger>logger</logger>
+                <thread>thread</thread>
+            </fieldNames>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev | default">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE_COLOR" />
+        </root>
+        <logger name="org.hibernate.SQL" level="DEBUG" />
+    </springProfile>
+
+    <springProfile name="prod | json">
+        <root level="INFO">
+            <appender-ref ref="LOGSTASH" />
+        </root>
+    </springProfile>
+
+</configuration>
