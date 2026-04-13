@@ -3,6 +3,8 @@ package com.example.identityservice.entity;
 import com.example.identityservice.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,7 +13,7 @@ import java.util.UUID;
 @Data
 public class User {
     @Id
-    private UUID id;
+    private UUID userId;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -27,10 +29,6 @@ public class User {
     private Role role;
 
     @Column(name = "created_at", updatable = false)
+    @UpdateTimestamp
     private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
 }

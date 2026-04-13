@@ -30,11 +30,24 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8180/realms/voucher-loyalty}
+
+keycloak:
+  server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8180}
+  realm: ${KEYCLOAK_REALM:voucher-loyalty}
+  client-id: ${KEYCLOAK_CLIENT_ID:voucher-admin}
+  client-secret: ${KEYCLOAK_CLIENT_SECRET:wHF8cr1Yx3i2IZNIsbfYPaxzf0b24kFG}
+
 
 management:
   endpoints:
