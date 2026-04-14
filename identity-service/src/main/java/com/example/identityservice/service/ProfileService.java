@@ -5,7 +5,8 @@ import com.example.identityservice.dto.request.ChangePasswordRequest;
 import com.example.identityservice.dto.request.UpdateProfileRequest;
 import com.example.identityservice.dto.response.ProfileResponse;
 import com.example.identityservice.entity.User;
-import com.example.identityservice.entity.enums.Role;
+import com.example.identityservice.constant.Role;
+import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;
 import org.springframework.http.HttpStatus;
 import com.example.identityservice.repository.CustomerRepository;
@@ -47,6 +48,7 @@ public class ProfileService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> BaseException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
+                        .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
                         .description("User không tồn tại")
                         .build());
         UserRepresentation kcUser = keycloakUser(userId).toRepresentation();
@@ -78,6 +80,7 @@ public class ProfileService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> BaseException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
+                        .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
                         .description("User không tồn tại")
                         .build());
 

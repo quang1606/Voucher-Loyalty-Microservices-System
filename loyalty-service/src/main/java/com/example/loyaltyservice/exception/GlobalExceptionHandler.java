@@ -1,4 +1,4 @@
-package com.example.identityservice.exception;
+package com.example.loyaltyservice.exception;
 
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;

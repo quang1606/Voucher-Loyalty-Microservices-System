@@ -9,7 +9,8 @@ import com.example.identityservice.dto.response.SystemUserResponse;
 import com.example.identityservice.entity.Customer;
 import com.example.identityservice.entity.Merchant;
 import com.example.identityservice.entity.User;
-import com.example.identityservice.entity.enums.Role;
+import com.example.identityservice.constant.Role;
+import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;
 import org.springframework.http.HttpStatus;
 import com.example.identityservice.repository.CustomerRepository;
@@ -89,6 +90,20 @@ public class SystemUserService {
 
     @Transactional
     public CreateUserResponse createUser(CreateUserRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw BaseException.builder()
+                    .httpStatus(HttpStatus.CONFLICT)
+                    .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
+                    .description("Email đã tồn tại: " + request.getEmail())
+                    .build();
+        }
+        if (request.getPhone() != null && merchantRepository.existsByPhone(request.getPhone())) {
+            throw BaseException.builder()
+                    .httpStatus(HttpStatus.CONFLICT)
+                    .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
+                    .description("Số điện thoại đã tồn tại: " + request.getPhone())
+                    .build();
+        }
         // 1. Tạo trên Keycloak
         UserRepresentation kcUser = new UserRepresentation();
         kcUser.setUsername(request.getUsername());
@@ -107,17 +122,16 @@ public class SystemUserService {
         if (response.getStatus() != 201) {
             throw BaseException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
+                    .errorCode(BaseErrorCode.BAD_REQUEST.getErrorCode())
                     .description("Tạo user trên Keycloak thất bại: " + response.getStatusInfo())
                     .build();
         }
 
-        // 2. Lấy keycloak user id = userId
         String locationHeader = response.getHeaderString("Location");
         String kcId = locationHeader.substring(locationHeader.lastIndexOf("/") + 1);
         UUID userId = UUID.fromString(kcId);
 
         try {
-            // 3. Lưu User vào DB (userId = keycloak id)
             User user = new User();
             user.setUserId(userId);
             user.setUsername(request.getUsername());
@@ -127,7 +141,6 @@ public class SystemUserService {
             user.setRole(request.getRole());
             userRepository.save(user);
 
-            // 4. Lưu Merchant hoặc Customer
             if (request.getRole() == Role.PARTNER) {
                 Merchant merchant = new Merchant();
                 merchant.setUserId(userId);
@@ -142,6 +155,7 @@ public class SystemUserService {
             usersResource().delete(kcId);
             throw BaseException.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .errorCode(BaseErrorCode.INTERNAL_ERROR.getErrorCode())
                     .description("Tạo user thất bại, đã rollback: " + e.getMessage())
                     .build();
         }
@@ -163,6 +177,7 @@ public class SystemUserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> BaseException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
+                        .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
                         .description("User không tồn tại: " + id)
                         .build());
 
@@ -197,6 +212,7 @@ public class SystemUserService {
         userRepository.findById(id)
                 .orElseThrow(() -> BaseException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
+                        .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
                         .description("User không tồn tại: " + id)
                         .build());
         usersResource().delete(id.toString());
@@ -209,6 +225,7 @@ public class SystemUserService {
         userRepository.findById(id)
                 .orElseThrow(() -> BaseException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
+                        .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
                         .description("User không tồn tại: " + id)
                         .build());
         CredentialRepresentation cred = new CredentialRepresentation();

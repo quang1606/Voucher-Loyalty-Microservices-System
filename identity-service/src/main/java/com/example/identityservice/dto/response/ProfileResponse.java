@@ -1,7 +1,7 @@
 package com.example.identityservice.dto.response;
 
-import com.example.identityservice.entity.enums.CustomerTier;
-import com.example.identityservice.entity.enums.MerchantCategory;
+import com.example.identityservice.constant.CustomerTier;
+import com.example.identityservice.constant.MerchantCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

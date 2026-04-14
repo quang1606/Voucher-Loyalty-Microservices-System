@@ -1,6 +1,6 @@
 package com.example.identityservice.entity;
 
-import com.example.identityservice.entity.enums.CustomerTier;
+import com.example.identityservice.constant.CustomerTier;
 import jakarta.persistence.*;
 import lombok.Data;
 

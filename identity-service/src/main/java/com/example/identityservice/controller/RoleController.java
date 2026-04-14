@@ -7,6 +7,7 @@ import com.example.identityservice.dto.request.UpdateRoleAttributesRequest;
 import com.example.identityservice.dto.request.UpdateRoleRequest;
 import com.example.identityservice.dto.response.RoleDetailResponse;
 import com.example.identityservice.service.RoleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class RoleController {
     }
 
     @PostMapping
-    public ResponseEntity<BaseResponse<Void>> createRole(@RequestBody CreateRoleRequest request) {
+    public ResponseEntity<BaseResponse<Void>> createRole(@Valid @RequestBody CreateRoleRequest request) {
         roleService.createRole(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponse.<Void>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())

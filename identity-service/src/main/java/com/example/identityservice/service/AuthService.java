@@ -10,7 +10,8 @@ import com.example.identityservice.dto.response.CreateUserResponse;
 import com.example.identityservice.dto.response.LoginResponse;
 import com.example.identityservice.entity.Customer;
 import com.example.identityservice.entity.User;
-import com.example.identityservice.entity.enums.Role;
+import com.example.identityservice.constant.Role;
+import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;
 import org.springframework.http.HttpStatus;
 import com.example.identityservice.repository.CustomerRepository;
@@ -31,7 +32,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -78,6 +78,7 @@ public class AuthService {
         } catch (Exception e) {
             throw BaseException.builder()
                     .httpStatus(HttpStatus.UNAUTHORIZED)
+                    .errorCode(BaseErrorCode.UNAUTHORIZED.getErrorCode())
                     .description("Đăng nhập thất bại: " + e.getMessage())
                     .build();
         }
@@ -112,6 +113,7 @@ public class AuthService {
         } catch (Exception e) {
             throw BaseException.builder()
                     .httpStatus(HttpStatus.UNAUTHORIZED)
+                    .errorCode(BaseErrorCode.UNAUTHORIZED.getErrorCode())
                     .description("Refresh token thất bại: " + e.getMessage())
                     .build();
         }
@@ -119,6 +121,14 @@ public class AuthService {
 
     @Transactional
     public CreateUserResponse registerCustomer(RegisterCustomerRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw BaseException.builder()
+                    .httpStatus(HttpStatus.CONFLICT)
+                    .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
+                    .description("Email đã tồn tại: " + request.getEmail())
+                    .build();
+        }
+
         UserRepresentation kcUser = new UserRepresentation();
         kcUser.setUsername(request.getUsername());
         kcUser.setEmail(request.getEmail());
@@ -136,6 +146,7 @@ public class AuthService {
         if (response.getStatus() != 201) {
             throw BaseException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
+                    .errorCode(BaseErrorCode.BAD_REQUEST.getErrorCode())
                     .description("Đăng ký thất bại: " + response.getStatusInfo())
                     .build();
         }
@@ -162,6 +173,7 @@ public class AuthService {
             usersResource().delete(kcId);
             throw BaseException.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .errorCode(BaseErrorCode.INTERNAL_ERROR.getErrorCode())
                     .description("Đăng ký thất bại, đã rollback: " + e.getMessage())
                     .build();
         }

@@ -5,6 +5,7 @@ import com.example.common.BaseResponse;
 import com.example.identityservice.dto.request.*;
 import com.example.identityservice.dto.response.*;
 import com.example.identityservice.service.SystemUserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class SystemUserController {
     }
 
     @PostMapping
-    public ResponseEntity<BaseResponse<CreateUserResponse>> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<BaseResponse<CreateUserResponse>> createUser(@Valid @RequestBody CreateUserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponse.<CreateUserResponse>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())
@@ -61,7 +62,7 @@ public class SystemUserController {
     }
 
     @PostMapping("/{id}/reset-password")
-    public ResponseEntity<BaseResponse<Void>> resetPassword(@PathVariable UUID id, @RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<BaseResponse<Void>> resetPassword(@PathVariable UUID id, @Valid @RequestBody ResetPasswordRequest request) {
         systemUserService.resetPassword(id, request);
         return ResponseEntity.ok(BaseResponse.<Void>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())

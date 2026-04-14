@@ -6,6 +6,7 @@ import com.example.identityservice.dto.request.ChangePasswordRequest;
 import com.example.identityservice.dto.request.UpdateProfileRequest;
 import com.example.identityservice.dto.response.ProfileResponse;
 import com.example.identityservice.service.ProfileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class ProfileController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<BaseResponse<Void>> changePassword(@RequestBody ChangePasswordRequest request) {
+    public ResponseEntity<BaseResponse<Void>> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
         profileService.changePassword(request);
         return ResponseEntity.ok(BaseResponse.<Void>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())

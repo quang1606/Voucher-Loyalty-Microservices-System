@@ -1,6 +1,6 @@
 package com.example.identityservice.entity;
 
-import com.example.identityservice.entity.enums.Role;
+import com.example.identityservice.constant.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;

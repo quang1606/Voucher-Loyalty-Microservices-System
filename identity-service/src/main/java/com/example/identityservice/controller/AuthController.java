@@ -10,6 +10,7 @@ import com.example.identityservice.dto.response.AllowedPagesResponse;
 import com.example.identityservice.dto.response.CreateUserResponse;
 import com.example.identityservice.dto.response.LoginResponse;
 import com.example.identityservice.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<BaseResponse<LoginResponse>> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<BaseResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(BaseResponse.<LoginResponse>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())
@@ -33,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<BaseResponse<CreateUserResponse>> register(@RequestBody RegisterCustomerRequest request) {
+    public ResponseEntity<BaseResponse<CreateUserResponse>> register(@Valid @RequestBody RegisterCustomerRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponse.<CreateUserResponse>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())
@@ -43,7 +44,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<BaseResponse<LoginResponse>> refresh(@RequestBody RefreshTokenRequest request) {
+    public ResponseEntity<BaseResponse<LoginResponse>> refresh(@Valid @RequestBody RefreshTokenRequest request) {
         return ResponseEntity.ok(BaseResponse.<LoginResponse>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())
@@ -53,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("/allowed-pages")
-    public ResponseEntity<BaseResponse<AllowedPagesResponse>> getAllowedPages(@RequestBody AllowedPagesRequest request) {
+    public ResponseEntity<BaseResponse<AllowedPagesResponse>> getAllowedPages(@Valid @RequestBody AllowedPagesRequest request) {
         return ResponseEntity.ok(BaseResponse.<AllowedPagesResponse>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())

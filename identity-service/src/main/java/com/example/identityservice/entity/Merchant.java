@@ -1,7 +1,7 @@
 package com.example.identityservice.entity;
 
-import com.example.identityservice.entity.enums.MerchantCategory;
-import com.example.identityservice.entity.enums.MerchantStatus;
+import com.example.identityservice.constant.MerchantCategory;
+import com.example.identityservice.constant.MerchantStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;
