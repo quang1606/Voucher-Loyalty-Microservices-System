@@ -7,7 +7,7 @@ import com.example.identityservice.dto.request.UpdateUserRequest;
 import com.example.identityservice.dto.response.CreateUserResponse;
 import com.example.identityservice.dto.response.SystemUserResponse;
 import com.example.identityservice.entity.Customer;
-import com.example.identityservice.entity.Merchant;
+import com.example.identityservice.entity.Partner;
 import com.example.identityservice.entity.User;
 import com.example.identityservice.constant.Role;
 import com.example.common.BaseErrorCode;
@@ -50,8 +50,8 @@ public class SystemUserService {
 
     public List<SystemUserResponse> getAllUsers() {
         List<User> dbUsers = userRepository.findAll();
-        Map<UUID, Merchant> merchants = merchantRepository.findAll().stream()
-                .collect(Collectors.toMap(Merchant::getUserId, m -> m));
+        Map<UUID, Partner> merchants = merchantRepository.findAll().stream()
+                .collect(Collectors.toMap(Partner::getUserId, m -> m));
         Map<UUID, Customer> customers = customerRepository.findAll().stream()
                 .collect(Collectors.toMap(Customer::getUserId, c -> c));
 
@@ -71,7 +71,7 @@ public class SystemUserService {
                 log.warn("Không lấy được Keycloak info cho user {}: {}", uid, e.getMessage());
             }
 
-            Merchant m = merchants.get(uid);
+            Partner m = merchants.get(uid);
             if (m != null) {
                 builder.storeName(m.getStoreName())
                         .phone(m.getPhone())
@@ -142,7 +142,7 @@ public class SystemUserService {
             userRepository.save(user);
 
             if (request.getRole() == Role.PARTNER) {
-                Merchant merchant = new Merchant();
+                Partner merchant = new Partner();
                 merchant.setUserId(userId);
                 merchant.setStoreName(request.getStoreName());
                 merchant.setPhone(request.getPhone());

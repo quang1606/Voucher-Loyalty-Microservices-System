@@ -1,5 +1,5 @@
 package com.example.identityservice.constant;
 
-public enum MerchantStatus {
+public enum Partner {
     ACTIVE, LOCKED
 }

@@ -28,6 +28,12 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8180/realms/voucher-loyalty}
+
   jpa:
     hibernate:
       ddl-auto: update

@@ -1,6 +1,6 @@
 package com.example.identityservice.dto.request;
 
-import com.example.identityservice.constant.MerchantCategory;
+import com.example.identityservice.constant.PartnerCategory;
 import com.example.identityservice.constant.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,5 +29,5 @@ public class CreateUserRequest {
     private String storeName;
     private String phone;
     @NotNull(message = "Request type is required")
-    private MerchantCategory category;
+    private PartnerCategory category;
 }

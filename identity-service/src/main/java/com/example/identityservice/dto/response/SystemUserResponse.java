@@ -1,8 +1,8 @@
 package com.example.identityservice.dto.response;
 
 import com.example.identityservice.constant.CustomerTier;
-import com.example.identityservice.constant.MerchantCategory;
-import com.example.identityservice.constant.MerchantStatus;
+import com.example.identityservice.constant.PartnerCategory;
+import com.example.identityservice.constant.Partner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +25,8 @@ public class SystemUserResponse {
     // Merchant
     private String storeName;
     private String phone;
-    private MerchantCategory category;
-    private MerchantStatus status;
+    private PartnerCategory category;
+    private Partner status;
     // Customer
     private BigDecimal balance;
     private CustomerTier tier;

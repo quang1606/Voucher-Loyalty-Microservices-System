@@ -1,7 +1,6 @@
 package com.example.identityservice.entity;
 
-import com.example.identityservice.constant.MerchantCategory;
-import com.example.identityservice.constant.MerchantStatus;
+import com.example.identityservice.constant.PartnerCategory;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,9 +10,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "merchants")
+@Table(name = "partner")
 @Data
-public class Merchant {
+public class Partner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,14 +27,14 @@ public class Merchant {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MerchantCategory category;
+    private PartnerCategory category;
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal totalRevenue = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MerchantStatus status = MerchantStatus.ACTIVE;
+    private com.example.identityservice.constant.Partner status = com.example.identityservice.constant.Partner.ACTIVE;
 
     private String createdBy;
 

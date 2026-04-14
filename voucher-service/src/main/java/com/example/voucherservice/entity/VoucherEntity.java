@@ -3,12 +3,8 @@ package com.example.voucherservice.entity;
 
 import com.example.voucherservice.constant.DiscountType;
 import com.example.voucherservice.constant.VoucherStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -24,14 +20,14 @@ import org.hibernate.annotations.CreationTimestamp;
 public class VoucherEntity {
 
   @Id
-  @Column(name = "id", columnDefinition = "BINARY(16)")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(name = "request_id", nullable = false, length = 64)
   private String requestId;
 
-  @Column(name = "merchant_id", nullable = false)
-  private String merchantId;
+  @Column(name = "partner_id", nullable = false)
+  private String partnerId;
 
   @Column(name = "voucher_name")
   private String voucherName;
