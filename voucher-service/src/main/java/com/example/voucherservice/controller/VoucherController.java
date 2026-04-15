@@ -3,6 +3,7 @@ package com.example.voucherservice.controller;
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseResponse;
 import com.example.voucherservice.constant.DiscountType;
+import com.example.voucherservice.constant.RequestMode;
 import com.example.voucherservice.constant.RequestStatus;
 import com.example.voucherservice.dto.request.CreateVoucherExcelRequest;
 import com.example.voucherservice.dto.request.CreateVoucherExcel;
@@ -21,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/vouchers")

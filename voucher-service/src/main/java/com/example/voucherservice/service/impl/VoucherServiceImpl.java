@@ -3,15 +3,20 @@ package com.example.voucherservice.service.impl;
 import com.example.common.BaseException;
 import com.example.voucherservice.constant.RequestStatus;
 import com.example.voucherservice.dto.request.CreateVoucherRequest;
+import com.example.voucherservice.entity.VoucherDetailEntity;
 import com.example.voucherservice.entity.VoucherRequestEntity;
+import com.example.voucherservice.repository.VoucherRepository;
 import com.example.voucherservice.repository.VoucherRequestRepository;
 import com.example.voucherservice.service.AuthorizationService;
 import com.example.voucherservice.service.VoucherService;
 import com.example.voucherservice.service.helper.VoucherServiceHelper;
 import com.example.voucherservice.service.strategy.VoucherRequestStrategy;
 import com.example.voucherservice.service.strategy.VoucherRequestStrategyFactory;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class VoucherServiceImpl implements VoucherService {
 
+    private static final int BATCH_SIZE = 100;
+
     private final VoucherRequestStrategyFactory strategyFactory;
     private final VoucherServiceHelper voucherServiceHelper;
     private final AuthorizationService authorizationService;
     private final VoucherRequestRepository voucherRequestRepository;
+    private final VoucherRepository voucherRepository;
 
     @Override
     public void createVoucher(CreateVoucherRequest request) {
@@ -62,6 +70,7 @@ public class VoucherServiceImpl implements VoucherService {
     @Transactional
     public void confirmVoucher(Long id, String action) {
         if (!"APPROVED".equalsIgnoreCase(action) && !"REJECTED".equalsIgnoreCase(action)) {
+            log.warn("Invalid action received: {}", action);
             throw BaseException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .errorCode("INVALID_ACTION")
@@ -84,7 +93,49 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     private void handleRejected(VoucherRequestEntity entity) {
-        // TODO: implement rejected logic
+        String username = authorizationService.getName();
+
+        entity.setStatus(RequestStatus.REJECTED);
+        entity.setConfirmedBy(username);
+        entity.setConfirmedTime(LocalDateTime.now());
+        entity.setUpdatedBy(username);
+        voucherRequestRepository.save(entity);
+
+        Long nextId = 0L;
+        int totalProcessed = 0;
+        int batchNumber = 0;
+
+        while (true) {
+            List<VoucherDetailEntity> batch = voucherRepository
+                    .findByRequestIdAndRequestStatusAndIdGreaterThanOrderByIdAsc(
+                            entity.getRequestId(), RequestStatus.INIT, nextId,
+                            PageRequest.of(0, BATCH_SIZE));
+
+            if (batch.isEmpty()) {
+                log.warn("Batch #{} returned empty result, breaking loop", batchNumber);
+                break;
+            }
+
+            batchNumber++;
+            for (VoucherDetailEntity detail : batch) {
+                detail.setRequestStatus(RequestStatus.REJECTED);
+            }
+            voucherRepository.saveAll(batch);
+
+            totalProcessed += batch.size();
+            nextId = batch.get(batch.size() - 1).getId();
+
+            log.info("Rejected batch #{}: {} items, totalProcessed: {}",
+                    batchNumber, batch.size(), totalProcessed);
+
+            if (batch.size() < BATCH_SIZE) {
+                log.info("Last batch processed, breaking loop");
+                break;
+            }
+        }
+
+        log.info("Rejected all voucher details for requestId: {}, total: {}",
+                entity.getRequestId(), totalProcessed);
     }
 
     private void validateSystemFields(CreateVoucherRequest request) {

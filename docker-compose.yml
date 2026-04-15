@@ -155,7 +155,7 @@ services:
     image: kibana:8.10.2
     container_name: kibana
     environment:
-      - "NODE_OPTIONS=--max-old-space-size=256"
+      - "NODE_OPTIONS=--max-old-space-size=1024"
     ports:
       - "5601:5601"
     depends_on:
@@ -164,7 +164,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 384M
+          memory: 800M
     networks:
       - app-network
 
