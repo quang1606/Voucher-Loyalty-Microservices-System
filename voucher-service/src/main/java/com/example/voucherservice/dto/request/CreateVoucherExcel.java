@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateVoucherExcel {
-
+  private String partnerId;
   private String voucherName;
   private String description;
   private BigDecimal discountValue;

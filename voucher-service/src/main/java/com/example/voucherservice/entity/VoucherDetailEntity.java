@@ -1,7 +1,9 @@
 package com.example.voucherservice.entity;
 
 
+import com.example.voucherservice.constant.CustomerTier;
 import com.example.voucherservice.constant.DiscountType;
+import com.example.voucherservice.constant.RequestStatus;
 import com.example.voucherservice.constant.VoucherStatus;
 import jakarta.persistence.*;
 
@@ -17,7 +19,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VoucherEntity {
+public class VoucherDetailEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +36,10 @@ public class VoucherEntity {
 
   @Column(name = "description", columnDefinition = "TEXT")
   private String description;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "customer_tier")
+  private CustomerTier customerTier;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "discount_type")
@@ -53,6 +59,10 @@ public class VoucherEntity {
 
   @Column(name = "available_stock")
   private Integer availableStock;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "request_tatus")
+  private RequestStatus requestStatus;
 
   @Column(name = "max_collect")
   private Integer maxCollect;

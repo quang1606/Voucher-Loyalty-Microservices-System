@@ -90,21 +90,9 @@ public class SystemUserService {
 
     @Transactional
     public CreateUserResponse createUser(CreateUserRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw BaseException.builder()
-                    .httpStatus(HttpStatus.CONFLICT)
-                    .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
-                    .description("Email đã tồn tại: " + request.getEmail())
-                    .build();
-        }
-        if (request.getPhone() != null && merchantRepository.existsByPhone(request.getPhone())) {
-            throw BaseException.builder()
-                    .httpStatus(HttpStatus.CONFLICT)
-                    .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
-                    .description("Số điện thoại đã tồn tại: " + request.getPhone())
-                    .build();
-        }
-        // 1. Tạo trên Keycloak
+        validateCreateUserRequest(request);
+
+        // 1. Tạo user trên Keycloak
         UserRepresentation kcUser = new UserRepresentation();
         kcUser.setUsername(request.getUsername());
         kcUser.setEmail(request.getEmail());
@@ -132,6 +120,20 @@ public class SystemUserService {
         UUID userId = UUID.fromString(kcId);
 
         try {
+            RoleRepresentation roleRep = keycloak.realm(keycloakProps.getRealm())
+                    .roles().get(request.getRole().name()).toRepresentation();
+            usersResource().get(kcId).roles().realmLevel().add(List.of(roleRep));
+        } catch (Exception e) {
+            log.error("Assign role thất bại, rolling back Keycloak user: {}", kcId, e);
+            usersResource().delete(kcId);
+            throw BaseException.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .errorCode(BaseErrorCode.INTERNAL_ERROR.getErrorCode())
+                    .description("Assign role thất bại, đã rollback: " + e.getMessage())
+                    .build();
+        }
+
+        try {
             User user = new User();
             user.setUserId(userId);
             user.setUsername(request.getUsername());
@@ -150,7 +152,6 @@ public class SystemUserService {
                 merchantRepository.save(merchant);
             }
         } catch (Exception e) {
-            // 5. Compensating transaction
             log.error("DB save failed, rolling back Keycloak user: {}", kcId, e);
             usersResource().delete(kcId);
             throw BaseException.builder()
@@ -160,19 +161,34 @@ public class SystemUserService {
                     .build();
         }
 
-        // 6. Assign realm role
-        try {
-            RoleRepresentation roleRep = keycloak.realm(keycloakProps.getRealm())
-                    .roles().get(request.getRole().name()).toRepresentation();
-            usersResource().get(kcId).roles().realmLevel().add(List.of(roleRep));
-        } catch (Exception e) {
-            log.warn("Assign role thất bại cho user {}: {}", kcId, e.getMessage());
-        }
-
         return CreateUserResponse.builder().id(userId).build();
     }
 
-    @Transactional
+  private void validateCreateUserRequest(CreateUserRequest request) {
+    if (userRepository.existsByEmail(request.getEmail())) {
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.CONFLICT)
+          .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
+          .description("Email đã tồn tại: " + request.getEmail())
+          .build();
+    }
+    if (request.getPhone() != null && merchantRepository.existsByPhone(request.getPhone())) {
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.CONFLICT)
+          .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
+          .description("Số điện thoại đã tồn tại: " + request.getPhone())
+          .build();
+    }
+    if(request.getStoreName() !=null && merchantRepository.existsByStoreName(request.getStoreName())){
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.CONFLICT)
+          .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
+          .description("Tên đối tác đã tồn tại: " + request.getPhone())
+          .build();
+    }
+  }
+
+  @Transactional
     public void updateUser(UUID id, UpdateUserRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> BaseException.builder()

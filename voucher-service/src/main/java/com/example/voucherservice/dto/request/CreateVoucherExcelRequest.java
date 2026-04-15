@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUpdateInfoExcelRequest {
+public class CreateVoucherExcelRequest {
 
     @NotNull(message = "file is required")
     private MultipartFile file;

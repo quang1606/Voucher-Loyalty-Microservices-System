@@ -3,6 +3,7 @@ package com.example.voucherservice.entity;
 import com.example.voucherservice.constant.CreatorType;
 import com.example.voucherservice.constant.RequestMode;
 import com.example.voucherservice.constant.RequestStatus;
+import com.example.voucherservice.constant.VoucherPurpose;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,6 +40,10 @@ public class VoucherRequestEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "creator_type")
   private CreatorType creatorType;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "voucher_purpose")
+  private VoucherPurpose voucherPurpose;
 
   @Column(name = "file_name")
   private String fileName;

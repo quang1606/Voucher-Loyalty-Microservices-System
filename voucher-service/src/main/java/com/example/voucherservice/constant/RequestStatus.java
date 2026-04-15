@@ -2,8 +2,13 @@ package com.example.voucherservice.constant;
 
 public enum RequestStatus {
     DRAFT,
-    PENDING,
+    CANCELLED,
+    PENDING_APPROVE,
+    INIT,
     APPROVED,
     REJECTED,
-    PROCESSING
+    PROCESSING,
+    FAILED,
+    FINISH,
+    SUCCESS
 }

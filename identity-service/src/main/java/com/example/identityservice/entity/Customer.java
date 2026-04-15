@@ -23,7 +23,7 @@ public class Customer {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CustomerTier tier = CustomerTier.BRONZE;
+    private CustomerTier tier = CustomerTier.SILVER;
 
     @Column(nullable = false)
     private Long point = 0L;

@@ -3,15 +3,16 @@ package com.example.voucherservice.controller;
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseResponse;
 import com.example.voucherservice.constant.DiscountType;
-import com.example.voucherservice.constant.RequestMode;
 import com.example.voucherservice.constant.RequestStatus;
-import com.example.voucherservice.dto.request.CreateUpdateInfoExcelRequest;
+import com.example.voucherservice.dto.request.CreateVoucherExcelRequest;
 import com.example.voucherservice.dto.request.CreateVoucherExcel;
 
+import com.example.voucherservice.dto.request.CreateVoucherRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import com.example.voucherservice.service.VoucherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,33 +21,33 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/vouchers")
 @RequiredArgsConstructor
 public class VoucherController {
 
+  private final VoucherService voucherService;
+
   @PostMapping
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
-  public ResponseEntity<BaseResponse<Void>> createVoucher(@RequestBody List<CreateVoucherExcel> request) {
-    // TODO: call service
+  public ResponseEntity<BaseResponse<Void>> createVoucher( @Valid @RequestBody CreateVoucherRequest request) {
+    voucherService.createVoucher(request);
     return ResponseEntity.ok(BaseResponse.<Void>builder()
-            .status(BaseErrorCode.ERROR.getErrorNumCode())
-            .code(BaseErrorCode.ERROR.getErrorCode())
-            .message(BaseErrorCode.ERROR.getErrorDescription()).build());
+            .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+            .code(BaseErrorCode.SUCCESS.getErrorCode())
+            .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
   }
 
   @PostMapping(value = "/excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
-  public ResponseEntity<BaseResponse<Void>> createVoucherByExcel(@Valid @ModelAttribute CreateUpdateInfoExcelRequest request) {
+  public ResponseEntity<BaseResponse<Void>> createVoucherByExcel(@Valid @ModelAttribute CreateVoucherExcelRequest request) {
     // TODO: call service
     return ResponseEntity.ok(BaseResponse.<Void>builder()
-            .status(BaseErrorCode.ERROR.getErrorNumCode())
-            .code(BaseErrorCode.ERROR.getErrorCode())
-            .message(BaseErrorCode.ERROR.getErrorDescription())
-            .build());
-    
+        .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+        .code(BaseErrorCode.SUCCESS.getErrorCode())
+        .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
+
   }
 
   @GetMapping
@@ -68,34 +69,34 @@ public class VoucherController {
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping("/{requestId}/submit")
+  @PutMapping("/{id}/submit")
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
-  public ResponseEntity<BaseResponse<Void>> submitVoucher(@PathVariable String requestId) {
-    // TODO: call service
+  public ResponseEntity<BaseResponse<Void>> submitVoucher(@PathVariable Long id) {
+    voucherService.submitVoucher(id);
     return ResponseEntity.ok(BaseResponse.<Void>builder()
-            .status(BaseErrorCode.ERROR.getErrorNumCode())
-            .code(BaseErrorCode.ERROR.getErrorCode())
-            .message(BaseErrorCode.ERROR.getErrorDescription()).build());
+        .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+        .code(BaseErrorCode.SUCCESS.getErrorCode())
+        .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
   }
 
-  @PutMapping("/{requestId}/confirm")
+  @PutMapping("/{id}/confirm")
   @PreAuthorize("hasRole('CHECKER')")
-  public ResponseEntity<BaseResponse<Void>> confirmVoucher(@PathVariable String requestId,
+  public ResponseEntity<BaseResponse<Void>> confirmVoucher(@PathVariable Long id,
       @RequestParam String action) {
-    // TODO: call service - action: APPROVED / REJECTED
+    voucherService.confirmVoucher(id, action);
     return ResponseEntity.ok(BaseResponse.<Void>builder()
-            .status(BaseErrorCode.ERROR.getErrorNumCode())
-            .code(BaseErrorCode.ERROR.getErrorCode())
-            .message(BaseErrorCode.ERROR.getErrorDescription()).build());
+        .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+        .code(BaseErrorCode.SUCCESS.getErrorCode())
+        .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
   }
 
-  @PutMapping("/{requestId}/cancel")
+  @PutMapping("/{id}/cancel")
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
-  public ResponseEntity<BaseResponse<Void>> cancelVoucher(@PathVariable String requestId) {
-    // TODO: call service
+  public ResponseEntity<BaseResponse<Void>> cancelVoucher(@PathVariable Long id) {
+    voucherService.cancelVoucher(id);
     return ResponseEntity.ok(BaseResponse.<Void>builder()
-            .status(BaseErrorCode.ERROR.getErrorNumCode())
-            .code(BaseErrorCode.ERROR.getErrorCode())
-            .message(BaseErrorCode.ERROR.getErrorDescription()).build());
+        .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+        .code(BaseErrorCode.SUCCESS.getErrorCode())
+        .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
   }
 }

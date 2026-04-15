@@ -41,30 +41,11 @@ public class AuthorizationService {
     }
 
     public boolean isAdmin() {
-        return isAdmin(SecurityContextHolder.getContext().getAuthentication());
+        return hasRole("ADMIN");
     }
 
-    public boolean isAdmin(Authentication authentication) {
-        if (authentication == null) {
-            return false;
-        }
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        if (authorities == null) {
-            return false;
-        }
-        for (GrantedAuthority ga : authorities) {
-            if (ga == null) {
-                continue;
-            }
-            String a = ga.getAuthority();
-            if (a == null) {
-                continue;
-            }
-            if (a.equalsIgnoreCase("ROLE_ADMIN") || a.equalsIgnoreCase("ADMIN")) {
-                return true;
-            }
-        }
-        return false;
+    public boolean isPartner() {
+        return hasRole("PARTNER");
     }
 
     public boolean hasRole(String role) {
