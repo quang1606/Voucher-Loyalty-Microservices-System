@@ -3,26 +3,30 @@ package com.example.voucherservice.controller;
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseResponse;
 import com.example.voucherservice.constant.DiscountType;
-import com.example.voucherservice.constant.RequestMode;
 import com.example.voucherservice.constant.RequestStatus;
 import com.example.voucherservice.dto.request.CreateVoucherExcelRequest;
-import com.example.voucherservice.dto.request.CreateVoucherExcel;
-
 import com.example.voucherservice.dto.request.CreateVoucherRequest;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import jakarta.validation.Valid;
+import com.example.voucherservice.dto.response.VoucherRequestResponse;
 import com.example.voucherservice.service.VoucherService;
+import jakarta.validation.Valid;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/vouchers")
@@ -44,7 +48,7 @@ public class VoucherController {
   @PostMapping(value = "/excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
   public ResponseEntity<BaseResponse<Void>> createVoucherByExcel(@Valid @ModelAttribute CreateVoucherExcelRequest request) {
-    // TODO: call service
+    voucherService.createVoucherByExcel(request);
     return ResponseEntity.ok(BaseResponse.<Void>builder()
         .status(BaseErrorCode.SUCCESS.getErrorNumCode())
         .code(BaseErrorCode.SUCCESS.getErrorCode())
@@ -54,14 +58,20 @@ public class VoucherController {
 
   @GetMapping
   @PreAuthorize("hasAnyRole('MAKER', 'CHECKER', 'PARTNER')")
-  public ResponseEntity<?> getVoucher(@RequestParam(name = "status", required = false) RequestStatus status,
-                                      @RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
-                                      @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
-                                      @RequestParam(name = "partnerId", required = false) String partnerId,
-                                      @RequestParam(name = "requestType", required = false)DiscountType discountType,
-                                      @PageableDefault(size = 20) Pageable pageable)   {
-    // TODO: call service
-    return ResponseEntity.ok().build();
+  public ResponseEntity<BaseResponse<Page<VoucherRequestResponse>>> getVoucher(
+      @RequestParam(name = "status", required = false) RequestStatus status,
+      @RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
+      @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
+      @RequestParam(name = "partnerId", required = false) String partnerId,
+      @RequestParam(name = "requestType", required = false) DiscountType discountType,
+      @PageableDefault(size = 20) Pageable pageable) {
+    Page<VoucherRequestResponse> data = voucherService.getVouchers(
+        status, fromDate, toDate, partnerId, discountType, pageable);
+    return ResponseEntity.ok(BaseResponse.<Page<VoucherRequestResponse>>builder()
+        .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+        .code(BaseErrorCode.SUCCESS.getErrorCode())
+        .message(BaseErrorCode.SUCCESS.getErrorDescription())
+        .data(data).build());
   }
 
   @GetMapping("/{requestId}")

@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,9 @@ public class VoucherDetailEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Column(name = "voucher_code", unique = true, nullable = false, length = 16)
+  private String voucherCode;
 
   @Column(name = "request_id", nullable = false, length = 64)
   private String requestId;
@@ -83,4 +87,11 @@ public class VoucherDetailEntity {
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
+
+  @PrePersist
+  private void generateVoucherCode() {
+    if (this.voucherCode == null) {
+      this.voucherCode = "VCH-" + UUID.randomUUID().toString().replace("-", "").substring(0, 10).toUpperCase();
+    }
+  }
 }

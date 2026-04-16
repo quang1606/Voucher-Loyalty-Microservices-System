@@ -1,6 +1,9 @@
 package com.example.identityservice.service;
 
+import com.example.common.BaseErrorCode;
+import com.example.common.BaseException;
 import com.example.identityservice.configuration.KeycloakProperties;
+import com.example.identityservice.constant.Role;
 import com.example.identityservice.dto.request.CreateUserRequest;
 import com.example.identityservice.dto.request.ResetPasswordRequest;
 import com.example.identityservice.dto.request.UpdateUserRequest;
@@ -9,14 +12,14 @@ import com.example.identityservice.dto.response.SystemUserResponse;
 import com.example.identityservice.entity.Customer;
 import com.example.identityservice.entity.Partner;
 import com.example.identityservice.entity.User;
-import com.example.identityservice.constant.Role;
-import com.example.common.BaseErrorCode;
-import com.example.common.BaseException;
-import org.springframework.http.HttpStatus;
 import com.example.identityservice.repository.CustomerRepository;
 import com.example.identityservice.repository.MerchantRepository;
 import com.example.identityservice.repository.UserRepository;
 import jakarta.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
@@ -25,13 +28,9 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

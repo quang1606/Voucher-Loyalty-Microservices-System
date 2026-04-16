@@ -2,7 +2,6 @@ package com.example.voucherservice.dto.request;
 
 import com.example.voucherservice.constant.CustomerTier;
 import com.example.voucherservice.constant.DiscountType;
-import com.example.voucherservice.constant.VoucherPurpose;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,8 +19,6 @@ public class CreateVoucherRequest {
 
     @NotBlank(message = "Description is required")
     private String description;
-
-    private VoucherPurpose voucherPurpose;
 
     private CustomerTier customerTier;
 
