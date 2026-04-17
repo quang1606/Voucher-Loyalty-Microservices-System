@@ -52,7 +52,7 @@ public class VoucherServiceHelper {
   @Transactional
   public VoucherRequestEntity saveExcelVoucherRequest(String requestId, String fileName,
       DiscountType discountType, String username, boolean isPartner,
-      List<CreateVoucherExcel> dataList) {
+      String storeName, List<CreateVoucherExcel> dataList) {
     VoucherRequestEntity entity = new VoucherRequestEntity();
     entity.setRequestId(requestId);
     entity.setRequestMode(RequestMode.EXCEL);
@@ -61,13 +61,13 @@ public class VoucherServiceHelper {
     entity.setFileName(fileName);
     entity.setStatus(RequestStatus.DRAFT);
     entity.setCreatedBy(username);
+    entity.setStoreName(isPartner ? storeName : null);
     voucherRequestRepository.save(entity);
 
     List<VoucherDetailEntity> batch = new ArrayList<>();
     for (CreateVoucherExcel row : dataList) {
       VoucherDetailEntity detail = new VoucherDetailEntity();
       detail.setRequestId(requestId);
-      detail.setPartnerId(isPartner ? username : row.getPartnerId());
       detail.setVoucherName(row.getVoucherName());
       detail.setDescription(row.getDescription());
       detail.setCustomerTier(isPartner ? CustomerTier.ALL
@@ -101,7 +101,8 @@ public class VoucherServiceHelper {
     }
 
     @Transactional
-    public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner, String partnerId) {
+    public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner,
+        String partnerId, String storeName) {
         try {
           String requestId = "VOUCHER_" + System.currentTimeMillis();
 
@@ -112,11 +113,11 @@ public class VoucherServiceHelper {
            requestEntity.setVoucherPurpose(VoucherPurpose.HUNT);
             requestEntity.setStatus(RequestStatus.INIT);
             requestEntity.setCreatedBy(username);
+            requestEntity.setStoreName(isPartner ? storeName : null);
             voucherRequestRepository.save(requestEntity);
 
             VoucherDetailEntity voucherDetailEntity = new VoucherDetailEntity();
             voucherDetailEntity.setRequestId(requestId);
-            voucherDetailEntity.setPartnerId(isPartner ? partnerId : null);
             voucherDetailEntity.setCustomerTier(isPartner ? CustomerTier.ALL : request.getCustomerTier());
             voucherDetailEntity.setVoucherName(request.getVoucherName());
             voucherDetailEntity.setDescription(request.getDescription());

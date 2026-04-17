@@ -1,12 +1,23 @@
 package com.example.voucherservice.service.impl;
 
 import com.example.common.BaseException;
+import com.example.voucherservice.constant.CreatorType;
+import com.example.voucherservice.constant.ConfirmAction;
+import com.example.voucherservice.constant.CustomerTier;
 import com.example.voucherservice.constant.DiscountType;
+import com.example.voucherservice.constant.RequestMode;
 import com.example.voucherservice.constant.RequestStatus;
+import com.example.voucherservice.constant.VoucherPurpose;
+import com.example.voucherservice.constant.VoucherStatus;
+import com.example.voucherservice.dto.projection.ProjectionStatus;
+import com.example.voucherservice.dto.projection.ProjectionTotalVoucher;
+import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
 import com.example.voucherservice.dto.request.CreateVoucherExcel;
 import com.example.voucherservice.dto.request.CreateVoucherExcelRequest;
 import com.example.voucherservice.dto.request.CreateVoucherRequest;
+import com.example.voucherservice.dto.response.VoucherDetailResponsePage;
 import com.example.voucherservice.dto.response.VoucherRequestResponse;
+import com.example.voucherservice.dto.response.VoucherRequestResponsePage;
 import com.example.voucherservice.entity.VoucherDetailEntity;
 import com.example.voucherservice.entity.VoucherRequestEntity;
 import com.example.voucherservice.mapper.VoucherMapper;
@@ -18,17 +29,20 @@ import com.example.voucherservice.service.helper.VoucherServiceHelper;
 import com.example.voucherservice.service.helper.excel.ExcelReaderHelper;
 import com.example.voucherservice.service.strategy.VoucherRequestStrategy;
 import com.example.voucherservice.service.strategy.VoucherRequestStrategyFactory;
+import com.example.voucherservice.specification.VoucherDetailSpecification;
+import com.example.voucherservice.specification.VoucherRequestSpecification;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -64,9 +78,10 @@ public class VoucherServiceImpl implements VoucherService {
       }
       String username = authorizationService.getName();
       boolean isPartner = authorizationService.isPartner();
+      String storeName = isPartner ? authorizationService.getStoreName() : null;
       VoucherRequestEntity requestEntity = voucherServiceHelper.saveExcelVoucherRequest(
           request.getRequestId(), request.getFile().getOriginalFilename(),
-          request.getDiscountType(), username, isPartner, dataList);
+          request.getDiscountType(), username, isPartner, storeName, dataList);
 
       VoucherRequestStrategy strategy = strategyFactory.getStrategy(request.getDiscountType());
       strategy.processExcelRequest(requestEntity, dataList);
@@ -116,17 +131,120 @@ public class VoucherServiceImpl implements VoucherService {
   }
 
   @Override
-  public Page<VoucherRequestResponse> getVouchers(RequestStatus status, LocalDateTime fromDate,
-      LocalDateTime toDate, String partnerId, DiscountType discountType, Pageable pageable) {
-    String createdBy = null;
-    if (authorizationService.isPartner()) {
-      createdBy = authorizationService.getName();
-    } else if (partnerId != null) {
-      createdBy = partnerId;
+  public VoucherRequestResponsePage getVouchers(RequestStatus status, RequestMode requestMode,
+      CreatorType creatorType, VoucherPurpose voucherPurpose, String storeName,
+      LocalDateTime fromDate, LocalDateTime toDate, Pageable pageable) {
+
+    if (authorizationService.isPartner()
+        && creatorType != null && creatorType != CreatorType.PARTNER) {
+      return VoucherRequestResponsePage.builder()
+          .data(Collections.emptyList())
+          .totalElements(0)
+          .totalPages(0)
+          .page(pageable.getPageNumber())
+          .size(pageable.getPageSize())
+          .build();
     }
-    Page<VoucherRequestEntity> page = voucherRequestRepository.findByFilters(
-        status, fromDate, toDate, createdBy, pageable);
-    return page.map(VoucherMapper::toRequestResponse);
+
+    String statusValue = status != null ? status.name() : null;
+    List<String> listStatus;
+    if (authorizationService.isCheckerRole()) {
+      listStatus = List.of(RequestStatus.PENDING_APPROVE.name(), RequestStatus.APPROVED.name(),
+          RequestStatus.REJECTED.name(), RequestStatus.FINISH.name());
+      if (statusValue != null && !listStatus.contains(statusValue)) {
+        return VoucherRequestResponsePage.builder()
+            .data(Collections.emptyList())
+            .totalElements(0)
+            .totalPages(0)
+            .page(pageable.getPageNumber())
+            .size(pageable.getPageSize())
+            .build();
+      }
+    } else {
+      listStatus = statusValue != null ? List.of(statusValue) : null;
+    }
+
+    if (authorizationService.isPartner()) {
+      creatorType = CreatorType.PARTNER;
+      storeName = authorizationService.getStoreName();
+    }
+
+    String createdBy = authorizationService.isPartner() ? authorizationService.getName() : null;
+
+    Specification<VoucherRequestEntity> spec = VoucherRequestSpecification.withFilters(
+        listStatus, fromDate, toDate, createdBy, requestMode, creatorType, voucherPurpose, storeName);
+
+    Page<VoucherRequestEntity> pageResult = voucherRequestRepository.findAll(spec, pageable);
+
+    List<String> resultRequestIds = pageResult.getContent().stream()
+        .map(VoucherRequestEntity::getRequestId)
+        .toList();
+
+    List<ProjectionTotalVoucher> totals = resultRequestIds.isEmpty()
+        ? Collections.emptyList()
+        : voucherRepository.countTotalVoucherByRequestIds(resultRequestIds);
+    List<ProjectionStatus> statuses = resultRequestIds.isEmpty()
+        ? Collections.emptyList()
+        : voucherRepository.countStatusByRequestIds(resultRequestIds);
+
+    return VoucherRequestResponsePage.builder()
+        .data(VoucherMapper.toRequestResponseList(pageResult.getContent(), totals, statuses))
+        .totalElements(pageResult.getTotalElements())
+        .totalPages(pageResult.getTotalPages())
+        .page(pageResult.getNumber())
+        .size(pageResult.getSize())
+        .build();
+  }
+
+  @Override
+  public VoucherDetailResponsePage getAllVoucherDetails(CreatorType creatorType,
+      CustomerTier customerTier, DiscountType discountType, VoucherPurpose voucherPurpose,
+      VoucherStatus voucherStatus, String storeName,
+      LocalDateTime fromDate, LocalDateTime toDate, Pageable pageable) {
+
+    if (authorizationService.isPartner()
+        && creatorType != null && creatorType != CreatorType.PARTNER) {
+      return emptyDetailPage(pageable);
+    }
+
+    if (authorizationService.isPartner()) {
+      creatorType = CreatorType.PARTNER;
+      storeName = authorizationService.getStoreName();
+    }
+
+    String createdBy = authorizationService.isPartner() ? authorizationService.getName() : null;
+
+    Specification<VoucherRequestEntity> requestSpec = VoucherRequestSpecification.withFilters(
+        null, null, null, createdBy, null, creatorType, voucherPurpose, storeName);
+    List<String> requestIds = voucherRequestRepository.findAll(requestSpec).stream()
+        .map(VoucherRequestEntity::getRequestId)
+        .toList();
+
+    if (requestIds.isEmpty()) {
+      return emptyDetailPage(pageable);
+    }
+
+    Specification<VoucherDetailEntity> detailSpec = VoucherDetailSpecification.withAllFilters(
+        requestIds, customerTier, discountType, voucherStatus, fromDate, toDate);
+    Page<VoucherDetailEntity> page = voucherRepository.findAll(detailSpec, pageable);
+
+    return VoucherDetailResponsePage.builder()
+        .data(VoucherMapper.toDetailResponseList(page.getContent()))
+        .totalElements(page.getTotalElements())
+        .totalPages(page.getTotalPages())
+        .page(page.getNumber())
+        .size(page.getSize())
+        .build();
+  }
+
+  private VoucherDetailResponsePage emptyDetailPage(Pageable pageable) {
+    return VoucherDetailResponsePage.builder()
+        .data(Collections.emptyList())
+        .totalElements(0)
+        .totalPages(0)
+        .page(pageable.getPageNumber())
+        .size(pageable.getPageSize())
+        .build();
   }
 
   @Override
@@ -140,8 +258,9 @@ public class VoucherServiceImpl implements VoucherService {
     strategy.validateRequest(request);
 
     String username = authorizationService.getName();
-    String partnerId = isPartner ? username : username;
-    voucherServiceHelper.saveVoucher(request, username, isPartner, partnerId);
+    String partnerId = isPartner ? authorizationService.getPartnerId() : null;
+    String storeName = isPartner ? authorizationService.getStoreName() : null;
+    voucherServiceHelper.saveVoucher(request, username, isPartner, partnerId, storeName);
   }
 
   @Override
@@ -163,19 +282,21 @@ public class VoucherServiceImpl implements VoucherService {
   }
 
   @Override
-  @Transactional
-  public void confirmVoucher(Long id, String action) {
-    if (!"APPROVED".equalsIgnoreCase(action) && !"REJECTED".equalsIgnoreCase(action)) {
-      log.warn("Invalid action received: {}", action);
-      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST).errorCode("INVALID_ACTION")
-          .description("Action must be APPROVED or REJECTED").build();
+  public void confirmVoucher(Long id, ConfirmVoucherRequest request) {
+    if (request.getAction() == ConfirmAction.REJECTED
+        && (request.getReason() == null || request.getReason().isBlank())) {
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("MISSING_REASON")
+          .description("Reason is required when rejecting")
+          .build();
     }
 
     VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
         RequestStatus.PENDING_APPROVE);
 
-    if ("REJECTED".equalsIgnoreCase(action)) {
-      handleRejected(entity);
+    if (request.getAction() == ConfirmAction.REJECTED) {
+      handleRejected(entity, request.getReason());
     } else {
       handleApproved(entity);
     }
@@ -231,10 +352,11 @@ public class VoucherServiceImpl implements VoucherService {
     }
   }
 
-  private void handleRejected(VoucherRequestEntity entity) {
+  private void handleRejected(VoucherRequestEntity entity, String reason) {
     String username = authorizationService.getName();
 
     entity.setStatus(RequestStatus.REJECTED);
+    entity.setReason(reason);
     entity.setConfirmedBy(username);
     entity.setConfirmedTime(LocalDateTime.now());
     entity.setUpdatedBy(username);
@@ -281,5 +403,38 @@ public class VoucherServiceImpl implements VoucherService {
           .errorCode("MISSING_CUSTOMER_TIER")
           .description("Customer tier is required for system creator").build();
     }
+  }
+
+  @Override
+  public VoucherRequestResponse getVoucherById(Long id, String voucherName,
+      RequestStatus status, Pageable pageable) {
+    VoucherRequestEntity entity = voucherRequestRepository.findById(id)
+        .orElseThrow(() -> BaseException.builder()
+            .httpStatus(HttpStatus.NOT_FOUND)
+            .errorCode("NOT_FOUND")
+            .description("Voucher request not found: " + id)
+            .build());
+
+    String requestId = entity.getRequestId();
+
+    Specification<VoucherDetailEntity> spec = VoucherDetailSpecification.withFilters(
+        requestId, voucherName, status);
+    Page<VoucherDetailEntity> detailPage = voucherRepository.findAll(spec, pageable);
+
+    List<ProjectionTotalVoucher> totals = voucherRepository
+        .countTotalVoucherByRequestIds(List.of(requestId));
+    List<ProjectionStatus> statuses = voucherRepository
+        .countStatusByRequestIds(List.of(requestId));
+
+    VoucherRequestResponse response = VoucherMapper.toRequestResponse(entity);
+    response.setTotalVoucher(totals.isEmpty() ? 0L : totals.get(0).getTotalVoucher());
+    response.setStatusCounts(statuses.stream()
+        .map(s -> VoucherRequestResponse.StatusCount.builder()
+            .requestStatus(s.getRequestStatus())
+            .count(s.getCount())
+            .build())
+        .toList());
+    response.setVoucherDetailResponses(VoucherMapper.toDetailResponseList(detailPage.getContent()));
+    return response;
   }
 }

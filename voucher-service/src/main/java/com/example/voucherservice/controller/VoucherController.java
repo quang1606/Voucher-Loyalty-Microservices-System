@@ -2,16 +2,23 @@ package com.example.voucherservice.controller;
 
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseResponse;
+import com.example.voucherservice.constant.CreatorType;
+import com.example.voucherservice.constant.CustomerTier;
 import com.example.voucherservice.constant.DiscountType;
+import com.example.voucherservice.constant.RequestMode;
 import com.example.voucherservice.constant.RequestStatus;
+import com.example.voucherservice.constant.VoucherPurpose;
+import com.example.voucherservice.constant.VoucherStatus;
+import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
 import com.example.voucherservice.dto.request.CreateVoucherExcelRequest;
 import com.example.voucherservice.dto.request.CreateVoucherRequest;
+import com.example.voucherservice.dto.response.VoucherDetailResponsePage;
 import com.example.voucherservice.dto.response.VoucherRequestResponse;
+import com.example.voucherservice.dto.response.VoucherRequestResponsePage;
 import com.example.voucherservice.service.VoucherService;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -58,27 +65,60 @@ public class VoucherController {
 
   @GetMapping
   @PreAuthorize("hasAnyRole('MAKER', 'CHECKER', 'PARTNER')")
-  public ResponseEntity<BaseResponse<Page<VoucherRequestResponse>>> getVoucher(
+  public ResponseEntity<BaseResponse<VoucherRequestResponsePage>>getVoucher(
       @RequestParam(name = "status", required = false) RequestStatus status,
+      @RequestParam(name = "requestMode", required = false) RequestMode requestMode,
+      @RequestParam(name = "creatorType", required = false) CreatorType creatorType,
+      @RequestParam(name = "voucherPurpose", required = false) VoucherPurpose voucherPurpose,
+      @RequestParam(name = "storeName", required = false) String storeName,
       @RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
       @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
-      @RequestParam(name = "partnerId", required = false) String partnerId,
-      @RequestParam(name = "requestType", required = false) DiscountType discountType,
       @PageableDefault(size = 20) Pageable pageable) {
-    Page<VoucherRequestResponse> data = voucherService.getVouchers(
-        status, fromDate, toDate, partnerId, discountType, pageable);
-    return ResponseEntity.ok(BaseResponse.<Page<VoucherRequestResponse>>builder()
+    VoucherRequestResponsePage data = voucherService.getVouchers(
+        status, requestMode, creatorType, voucherPurpose, storeName,
+        fromDate, toDate, pageable);
+    return ResponseEntity.ok(BaseResponse.<VoucherRequestResponsePage>builder()
         .status(BaseErrorCode.SUCCESS.getErrorNumCode())
         .code(BaseErrorCode.SUCCESS.getErrorCode())
         .message(BaseErrorCode.SUCCESS.getErrorDescription())
         .data(data).build());
   }
 
-  @GetMapping("/{requestId}")
+  @GetMapping("/details")
   @PreAuthorize("hasAnyRole('MAKER', 'CHECKER', 'PARTNER')")
-  public ResponseEntity<?> getVoucherById(@PathVariable Long requestId) {
-    // TODO: call service
-    return ResponseEntity.ok().build();
+  public ResponseEntity<BaseResponse<VoucherDetailResponsePage>> getAllVoucherDetails(
+      @RequestParam(name = "creatorType", required = false) CreatorType creatorType,
+      @RequestParam(name = "customerTier", required = false) CustomerTier customerTier,
+      @RequestParam(name = "discountType", required = false) DiscountType discountType,
+      @RequestParam(name = "voucherPurpose", required = false) VoucherPurpose voucherPurpose,
+      @RequestParam(name = "voucherStatus", required = false) VoucherStatus voucherStatus,
+      @RequestParam(name = "storeName", required = false) String storeName,
+      @RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
+      @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
+      @PageableDefault(size = 20) Pageable pageable) {
+    VoucherDetailResponsePage data = voucherService.getAllVoucherDetails(
+        creatorType, customerTier, discountType, voucherPurpose, voucherStatus,
+        storeName, fromDate, toDate, pageable);
+    return ResponseEntity.ok(BaseResponse.<VoucherDetailResponsePage>builder()
+        .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+        .code(BaseErrorCode.SUCCESS.getErrorCode())
+        .message(BaseErrorCode.SUCCESS.getErrorDescription())
+        .data(data).build());
+  }
+
+  @GetMapping("/{id}")
+  @PreAuthorize("hasAnyRole('MAKER', 'CHECKER', 'PARTNER')")
+  public ResponseEntity<BaseResponse<VoucherRequestResponse>> getVoucherById(
+      @PathVariable Long id,
+      @RequestParam(name = "voucherName", required = false) String voucherName,
+      @RequestParam(name = "status", required = false) RequestStatus status,
+      @PageableDefault(size = 20) Pageable pageable) {
+    VoucherRequestResponse data = voucherService.getVoucherById(id, voucherName, status, pageable);
+    return ResponseEntity.ok(BaseResponse.<VoucherRequestResponse>builder()
+        .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+        .code(BaseErrorCode.SUCCESS.getErrorCode())
+        .message(BaseErrorCode.SUCCESS.getErrorDescription())
+        .data(data).build());
   }
 
   @PutMapping("/{id}/submit")
@@ -94,8 +134,8 @@ public class VoucherController {
   @PutMapping("/{id}/confirm")
   @PreAuthorize("hasRole('CHECKER')")
   public ResponseEntity<BaseResponse<Void>> confirmVoucher(@PathVariable Long id,
-      @RequestParam String action) {
-    voucherService.confirmVoucher(id, action);
+      @Valid @RequestBody ConfirmVoucherRequest request) {
+    voucherService.confirmVoucher(id, request);
     return ResponseEntity.ok(BaseResponse.<Void>builder()
         .status(BaseErrorCode.SUCCESS.getErrorNumCode())
         .code(BaseErrorCode.SUCCESS.getErrorCode())

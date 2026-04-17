@@ -20,7 +20,6 @@ public class VoucherDetailResponse {
     private Long id;
     private String voucherCode;
     private String requestId;
-    private String partnerId;
     private String voucherName;
     private String description;
     private CustomerTier customerTier;

@@ -2,6 +2,8 @@ package com.example.voucherservice.repository;
 
 import com.example.voucherservice.entity.AuditLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface AuditLogRepository extends JpaRepository<AuditLogEntity, Long> {
+public interface AuditLogRepository extends JpaRepository<AuditLogEntity, Long>,
+    JpaSpecificationExecutor<AuditLogEntity> {
 }

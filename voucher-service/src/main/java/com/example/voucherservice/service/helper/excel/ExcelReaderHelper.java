@@ -26,7 +26,7 @@ public class ExcelReaderHelper {
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private static final String[] EXPECTED_HEADERS = {
-        "Partner Id", "Voucher Name", "Description", "Customer Tier",
+        "Voucher Name", "Description", "Customer Tier",
         "Voucher Purpose", "Discount Type", "Discount Value", "Max Discount",
         "Min Order Value", "Total Stock", "Max Collect", "Start Date", "End Date"
     };
@@ -77,45 +77,43 @@ public class ExcelReaderHelper {
 
     private boolean isAllRequiredFieldsBlank(Row row, DiscountType discountType) {
         boolean commonBlank = StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(0)))
-                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(1)))
-                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(6)))
-                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(9)))
-                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(11)))
-                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(12)));
+                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(5)))
+                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(8)))
+                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(10)))
+                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(11)));
         if (!commonBlank) {
             return false;
         }
         if (discountType == DiscountType.FIXED) {
-            return StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(8)));
+            return StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(7)));
         }
-        return StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(7)))
-                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(8)));
+        return StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(6)))
+                && StringUtils.isBlank(ExcelUtils.getCellValueAsString(row.getCell(7)));
     }
 
     private CreateVoucherExcel parseCommonFields(Row row, int rowIndex) {
         CreateVoucherExcel dto = new CreateVoucherExcel();
-        dto.setPartnerId(ExcelUtils.getCellValueAsString(row.getCell(0)));
-        dto.setVoucherName(ExcelUtils.getCellValueAsString(row.getCell(1)));
-        dto.setDescription(ExcelUtils.getCellValueAsString(row.getCell(2)));
-        dto.setCustomerTier(ExcelUtils.getCellValueAsString(row.getCell(3)));
-        dto.setVoucherPurpose(ExcelUtils.getCellValueAsString(row.getCell(4)));
-        dto.setDiscountType(ExcelUtils.getCellValueAsString(row.getCell(5)));
-        dto.setDiscountValue(parseBigDecimal(ExcelUtils.getCellValueAsString(row.getCell(6)), rowIndex, 6));
-        dto.setTotalStock(parseInteger(ExcelUtils.getCellValueAsString(row.getCell(9)), rowIndex, 9));
-        dto.setMaxCollect(parseInteger(ExcelUtils.getCellValueAsString(row.getCell(10)), rowIndex, 10));
-        dto.setStartDate(parseDateTime(ExcelUtils.getCellValueAsString(row.getCell(11)), rowIndex, 11));
-        dto.setEndDate(parseDateTime(ExcelUtils.getCellValueAsString(row.getCell(12)), rowIndex, 12));
+        dto.setVoucherName(ExcelUtils.getCellValueAsString(row.getCell(0)));
+        dto.setDescription(ExcelUtils.getCellValueAsString(row.getCell(1)));
+        dto.setCustomerTier(ExcelUtils.getCellValueAsString(row.getCell(2)));
+        dto.setVoucherPurpose(ExcelUtils.getCellValueAsString(row.getCell(3)));
+        dto.setDiscountType(ExcelUtils.getCellValueAsString(row.getCell(4)));
+        dto.setDiscountValue(parseBigDecimal(ExcelUtils.getCellValueAsString(row.getCell(5)), rowIndex, 5));
+        dto.setTotalStock(parseInteger(ExcelUtils.getCellValueAsString(row.getCell(8)), rowIndex, 8));
+        dto.setMaxCollect(parseInteger(ExcelUtils.getCellValueAsString(row.getCell(9)), rowIndex, 9));
+        dto.setStartDate(parseDateTime(ExcelUtils.getCellValueAsString(row.getCell(10)), rowIndex, 10));
+        dto.setEndDate(parseDateTime(ExcelUtils.getCellValueAsString(row.getCell(11)), rowIndex, 11));
         return dto;
     }
 
     private void parseFixedFields(CreateVoucherExcel dto, Row row, int rowIndex) {
-        dto.setMinOrderValue(parseBigDecimal(ExcelUtils.getCellValueAsString(row.getCell(8)), rowIndex, 8));
+        dto.setMinOrderValue(parseBigDecimal(ExcelUtils.getCellValueAsString(row.getCell(7)), rowIndex, 7));
         dto.setDiscountType(DiscountType.FIXED.name());
     }
 
     private void parsePercentFields(CreateVoucherExcel dto, Row row, int rowIndex) {
-        dto.setMaxDiscount(parseBigDecimal(ExcelUtils.getCellValueAsString(row.getCell(7)), rowIndex, 7));
-        dto.setMinOrderValue(parseBigDecimal(ExcelUtils.getCellValueAsString(row.getCell(8)), rowIndex, 8));
+        dto.setMaxDiscount(parseBigDecimal(ExcelUtils.getCellValueAsString(row.getCell(6)), rowIndex, 6));
+        dto.setMinOrderValue(parseBigDecimal(ExcelUtils.getCellValueAsString(row.getCell(7)), rowIndex, 7));
         dto.setDiscountType(DiscountType.PERCENT.name());
     }
 

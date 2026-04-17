@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CreateVoucherExcel {
-  private String partnerId;
   private String voucherName;
   private String description;
   private String customerTier;

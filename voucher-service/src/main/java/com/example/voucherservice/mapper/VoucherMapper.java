@@ -1,11 +1,15 @@
 package com.example.voucherservice.mapper;
 
+import com.example.voucherservice.dto.projection.ProjectionStatus;
+import com.example.voucherservice.dto.projection.ProjectionTotalVoucher;
 import com.example.voucherservice.dto.response.VoucherDetailResponse;
 import com.example.voucherservice.dto.response.VoucherRequestResponse;
+import com.example.voucherservice.dto.response.VoucherRequestResponse.StatusCount;
 import com.example.voucherservice.entity.VoucherDetailEntity;
 import com.example.voucherservice.entity.VoucherRequestEntity;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class VoucherMapper {
@@ -32,7 +36,38 @@ public final class VoucherMapper {
                 .updatedBy(entity.getUpdatedBy())
                 .confirmedTime(entity.getConfirmedTime())
                 .confirmedBy(entity.getConfirmedBy())
+                .storeName(entity.getStoreName())
                 .build();
+    }
+
+    public static List<VoucherRequestResponse> toRequestResponseList(
+            List<VoucherRequestEntity> entities,
+            List<ProjectionTotalVoucher> totals,
+            List<ProjectionStatus> statuses) {
+
+        if (entities == null || entities.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Map<String, Long> totalMap = totals.stream()
+                .collect(Collectors.toMap(ProjectionTotalVoucher::getRequestId,
+                        ProjectionTotalVoucher::getTotalVoucher));
+
+        Map<String, List<StatusCount>> statusMap = statuses.stream()
+                .collect(Collectors.groupingBy(ProjectionStatus::getRequestId,
+                        Collectors.mapping(
+                                s -> StatusCount.builder()
+                                        .requestStatus(s.getRequestStatus())
+                                        .count(s.getCount())
+                                        .build(),
+                                Collectors.toList())));
+
+        return entities.stream().map(entity -> {
+            VoucherRequestResponse response = toRequestResponse(entity);
+            response.setTotalVoucher(totalMap.getOrDefault(entity.getRequestId(), 0L));
+            response.setStatusCounts(statusMap.getOrDefault(entity.getRequestId(), Collections.emptyList()));
+            return response;
+        }).collect(Collectors.toList());
     }
 
     public static List<VoucherRequestResponse> toRequestResponseList(List<VoucherRequestEntity> entities) {
@@ -52,7 +87,6 @@ public final class VoucherMapper {
                 .id(entity.getId())
                 .voucherCode(entity.getVoucherCode())
                 .requestId(entity.getRequestId())
-                .partnerId(entity.getPartnerId())
                 .voucherName(entity.getVoucherName())
                 .description(entity.getDescription())
                 .customerTier(entity.getCustomerTier())

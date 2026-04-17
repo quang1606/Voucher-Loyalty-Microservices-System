@@ -74,4 +74,7 @@ public class VoucherRequestEntity {
 
   @Column(name = "confirmed_by")
   private String confirmedBy;
+
+  @Column(name = "store_name")
+  private String storeName;
 }
