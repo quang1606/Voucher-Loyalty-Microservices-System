@@ -151,5 +151,7 @@ private final VoucherRepository voucherRepository;
 
     log.info("Finished PERCENT excel request: {}, total: {}, failed: {}",
         requestId, totalProcessed, failedCount);
+
+    updateStatusAllFailed(requestEntity);
   }
 }

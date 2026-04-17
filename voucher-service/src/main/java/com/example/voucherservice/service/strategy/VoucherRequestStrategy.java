@@ -96,11 +96,25 @@ public abstract class VoucherRequestStrategy {
     log.info("Finished processing all voucher details for requestId: {}", requestId);
   }
 
+  protected void updateStatusAllFailed(VoucherRequestEntity entity) {
+    String requestId = entity.getRequestId();
+    boolean hasNonFailed = voucherRepository.existsByRequestIdAndRequestStatusNot(
+        requestId, RequestStatus.FAILED);
+    if (!hasNonFailed) {
+      entity.setStatus(RequestStatus.FAILED);
+      voucherRequestRepository.save(entity);
+      log.warn("All details FAILED for requestId: {}, request marked as FAILED", requestId);
+    }else {
+        log.info("successfully completed with entity id: {}", entity.getId());
+        entity.setStatus(RequestStatus.INIT);
+        voucherRequestRepository.save(entity);
+
+    }
+  }
+
   private void checkAndUpdateRequest(VoucherRequestEntity entity, RequestStatus status) {
     entity.setStatus(status);
     voucherRequestRepository.save(entity);
     log.info("Updated request {} to status {}", entity.getRequestId(), status);
   }
-
-
 }

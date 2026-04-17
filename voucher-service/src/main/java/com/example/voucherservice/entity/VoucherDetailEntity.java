@@ -32,7 +32,7 @@ public class VoucherDetailEntity {
   @Column(name = "request_id", nullable = false, length = 64)
   private String requestId;
 
-  @Column(name = "partner_id", nullable = false)
+  @Column(name = "partner_id")
   private String partnerId;
 
   @Column(name = "voucher_name")

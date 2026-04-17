@@ -19,10 +19,10 @@ public interface VoucherRequestRepository extends JpaRepository<VoucherRequestEn
     boolean existsByRequestIdAndStatusIn(String requestId, List<RequestStatus> statuses);
 
     @Query("SELECT r FROM VoucherRequestEntity r WHERE "
-            + "(:status IS NULL OR r.status = :status) "
-            + "AND (:fromDate IS NULL OR r.createdTime >= :fromDate) "
-            + "AND (:toDate IS NULL OR r.createdTime <= :toDate) "
-            + "AND (:createdBy IS NULL OR r.createdBy = :createdBy) "
+            + "(CAST(:status AS string) IS NULL OR r.status = :status) "
+            + "AND (CAST(:fromDate AS string) IS NULL OR r.createdTime >= :fromDate) "
+            + "AND (CAST(:toDate AS string) IS NULL OR r.createdTime <= :toDate) "
+            + "AND (CAST(:createdBy AS string) IS NULL OR r.createdBy = :createdBy) "
             + "ORDER BY r.createdTime DESC")
     Page<VoucherRequestEntity> findByFilters(
             @Param("status") RequestStatus status,

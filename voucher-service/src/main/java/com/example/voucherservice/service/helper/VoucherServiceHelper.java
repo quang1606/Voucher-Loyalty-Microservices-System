@@ -101,7 +101,7 @@ public class VoucherServiceHelper {
     }
 
     @Transactional
-    public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner) {
+    public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner, String partnerId) {
         try {
           String requestId = "VOUCHER_" + System.currentTimeMillis();
 
@@ -116,7 +116,7 @@ public class VoucherServiceHelper {
 
             VoucherDetailEntity voucherDetailEntity = new VoucherDetailEntity();
             voucherDetailEntity.setRequestId(requestId);
-            voucherDetailEntity.setPartnerId(isPartner ? username : null);
+            voucherDetailEntity.setPartnerId(isPartner ? partnerId : null);
             voucherDetailEntity.setCustomerTier(isPartner ? CustomerTier.ALL : request.getCustomerTier());
             voucherDetailEntity.setVoucherName(request.getVoucherName());
             voucherDetailEntity.setDescription(request.getDescription());

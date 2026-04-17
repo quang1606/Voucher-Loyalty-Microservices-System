@@ -140,7 +140,8 @@ public class VoucherServiceImpl implements VoucherService {
     strategy.validateRequest(request);
 
     String username = authorizationService.getName();
-    voucherServiceHelper.saveVoucher(request, username, isPartner);
+    String partnerId = isPartner ? username : username;
+    voucherServiceHelper.saveVoucher(request, username, isPartner, partnerId);
   }
 
   @Override

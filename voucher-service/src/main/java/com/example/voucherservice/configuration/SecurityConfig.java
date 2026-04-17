@@ -5,16 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.aop.Advisor;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -79,16 +76,9 @@ public class SecurityConfig {
   }
 
   @Bean
-  @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-  static Advisor preAuthorizeAuthorizationMethodInterceptor(RoleHierarchy roleHierarchy) {
-    DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
-    expressionHandler.setDefaultRolePrefix("ROLE_");
-    expressionHandler.setRoleHierarchy(roleHierarchy);
-
-    org.springframework.security.authorization.method.PreAuthorizeAuthorizationManager preAuthorizeManager =
-            new org.springframework.security.authorization.method.PreAuthorizeAuthorizationManager();
-    preAuthorizeManager.setExpressionHandler(expressionHandler);
-
-    return AuthorizationManagerBeforeMethodInterceptor.preAuthorize(preAuthorizeManager);
+  static MethodSecurityExpressionHandler methodSecurityExpressionHandler(RoleHierarchy roleHierarchy) {
+    DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
+    handler.setRoleHierarchy(roleHierarchy);
+    return handler;
   }
 }

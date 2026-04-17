@@ -14,4 +14,6 @@ public interface VoucherRepository extends JpaRepository<VoucherDetailEntity, Lo
     boolean existsByRequestIdAndRequestStatus(String requestId, RequestStatus requestStatus);
 
     boolean existsByRequestIdAndDiscountTypeIsNull(String requestId);
+
+    boolean existsByRequestIdAndRequestStatusNot(String requestId, RequestStatus requestStatus);
 }

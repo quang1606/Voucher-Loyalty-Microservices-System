@@ -137,5 +137,7 @@ public class VoucherFixedStrategy extends VoucherRequestStrategy {
 
     log.info("Finished FIXED excel request: {}, total: {}, failed: {}",
         requestId, totalProcessed, failedCount);
+
+    updateStatusAllFailed(requestEntity);
   }
 }
