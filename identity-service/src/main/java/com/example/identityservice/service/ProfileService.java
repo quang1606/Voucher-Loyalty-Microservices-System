@@ -113,4 +113,13 @@ public class ProfileService {
         cred.setTemporary(false);
         keycloakUser(userId).resetPassword(cred);
     }
+
+  public String getNameStore(String partnerId) {
+      return merchantRepository.findStoreNameByUserId(UUID.fromString(partnerId)).orElseThrow(() ->
+              BaseException.builder()
+                      .httpStatus(HttpStatus.NOT_FOUND)
+                      .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
+                      .description("Partner không tồn tại")
+                      .build()).toString();
+  }
 }

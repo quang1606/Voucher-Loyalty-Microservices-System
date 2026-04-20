@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package identity;
+
+import "identity/identity.entity.proto";
+
+option java_package = "vn.com.fcc.grpc.identity.service";
+option java_multiple_files = true;
+
+service IdentityService {
+  rpc GetIdentity(IdentityRequest) returns (IdentityResponse);
+}

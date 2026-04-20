@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package base;
+
+option java_package = "vn.com.grpc.base.entity";
+option java_multiple_files = true;
+
+
+message ResponseInfo{
+  string responseId =1 ;
+  string errorCode = 2;
+  int64 status = 3;
+  string message = 4;
+  int64 responseTime = 5;
+}

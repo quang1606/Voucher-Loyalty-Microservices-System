@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package identity;
+
+import "base/base.request.proto";
+import "base/base.response.proto";
+
+option java_package = "vn.com.grpc.identity.entity";
+option java_multiple_files = true;
+
+message IdentityRequest {
+  base.RequestInfo requestInfo = 1;
+  string partner_id = 2;
+}
+
+message IdentityResponse {
+  base.ResponseInfo responseInfo = 1;
+  string name_store = 2;
+}
