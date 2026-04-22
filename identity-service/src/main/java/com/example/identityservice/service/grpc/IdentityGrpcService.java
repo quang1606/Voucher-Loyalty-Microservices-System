@@ -26,21 +26,21 @@ public class IdentityGrpcService extends IdentityServiceGrpc.IdentityServiceImpl
                     .setNameStore(nameStore)
                     .build();
             responseObserver.onNext(response);
-            responseObserver.onCompleted();
         } catch (BaseException e) {
             log.error("BaseException in getIdentity: {}", e.getMessage());
             IdentityResponse response = IdentityResponse.newBuilder()
                     .setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e))
                     .build();
             responseObserver.onNext(response);
-            responseObserver.onCompleted();
         } catch (Exception e) {
             log.error("Exception in getIdentity: {}", e.getMessage(), e);
             IdentityResponse response = IdentityResponse.newBuilder()
                     .setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e))
                     .build();
             responseObserver.onNext(response);
-            responseObserver.onCompleted();
+
+        } finally {
+          responseObserver.onCompleted();
         }
     }
 }

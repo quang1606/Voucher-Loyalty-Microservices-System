@@ -2,6 +2,7 @@ package com.example.voucherservice.dto.request;
 
 import com.example.voucherservice.constant.CustomerTier;
 import com.example.voucherservice.constant.DiscountType;
+import com.example.voucherservice.constant.VoucherPurpose;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -47,4 +48,6 @@ public class CreateVoucherRequest {
     @NotNull(message = "End date is required")
     @Future(message = "End date must be in the future")
     private LocalDateTime endDate;
+
+    private VoucherPurpose voucherPurpose;
 }

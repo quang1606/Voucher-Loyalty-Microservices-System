@@ -101,8 +101,7 @@ public class VoucherServiceHelper {
     }
 
     @Transactional
-    public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner,
-        String partnerId, String storeName) {
+    public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner, String storeName) {
         try {
           String requestId = "VOUCHER_" + System.currentTimeMillis();
 
@@ -110,7 +109,7 @@ public class VoucherServiceHelper {
             requestEntity.setRequestId(requestId);
             requestEntity.setRequestMode(RequestMode.SINGLE);
             requestEntity.setCreatorType(isPartner ? CreatorType.PARTNER : CreatorType.SYSTEM);
-           requestEntity.setVoucherPurpose(VoucherPurpose.HUNT);
+            requestEntity.setVoucherPurpose(request.getVoucherPurpose() != null ? request.getVoucherPurpose() : VoucherPurpose.HUNT);
             requestEntity.setStatus(RequestStatus.INIT);
             requestEntity.setCreatedBy(username);
             requestEntity.setStoreName(isPartner ? storeName : null);

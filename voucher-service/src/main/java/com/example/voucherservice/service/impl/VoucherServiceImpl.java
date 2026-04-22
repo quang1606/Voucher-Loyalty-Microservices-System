@@ -3,6 +3,7 @@ package com.example.voucherservice.service.impl;
 import com.example.common.BaseException;
 import com.example.voucherservice.constant.CreatorType;
 import com.example.voucherservice.constant.ConfirmAction;
+import com.example.voucherservice.constant.RewardType;
 import com.example.voucherservice.constant.CustomerTier;
 import com.example.voucherservice.constant.DiscountType;
 import com.example.voucherservice.constant.RequestMode;
@@ -15,11 +16,14 @@ import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
 import com.example.voucherservice.dto.request.CreateVoucherExcel;
 import com.example.voucherservice.dto.request.CreateVoucherExcelRequest;
 import com.example.voucherservice.dto.request.CreateVoucherRequest;
+import com.example.voucherservice.dto.request.CreateMissionRequest;
 import com.example.voucherservice.dto.response.VoucherDetailResponsePage;
 import com.example.voucherservice.dto.response.VoucherRequestResponse;
 import com.example.voucherservice.dto.response.VoucherRequestResponsePage;
 import com.example.voucherservice.entity.VoucherDetailEntity;
 import com.example.voucherservice.entity.VoucherRequestEntity;
+import com.example.voucherservice.grpc.IdentityGrpcClient;
+import com.example.voucherservice.grpc.MissionGrpcClient;
 import com.example.voucherservice.mapper.VoucherMapper;
 import com.example.voucherservice.repository.VoucherRepository;
 import com.example.voucherservice.repository.VoucherRequestRepository;
@@ -31,6 +35,7 @@ import com.example.voucherservice.service.strategy.VoucherRequestStrategy;
 import com.example.voucherservice.service.strategy.VoucherRequestStrategyFactory;
 import com.example.voucherservice.specification.VoucherDetailSpecification;
 import com.example.voucherservice.specification.VoucherRequestSpecification;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,6 +49,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import vn.com.fcc.grpc.identity.service.IdentityServiceGrpc;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +64,8 @@ public class VoucherServiceImpl implements VoucherService {
   private final VoucherRequestRepository voucherRequestRepository;
   private final VoucherRepository voucherRepository;
   private final ExcelReaderHelper excelReaderHelper;
-
+  private final IdentityGrpcClient identityGrpcClient;
+  private final MissionGrpcClient missionGrpcClient;
   @Override
   public void createVoucherByExcel(CreateVoucherExcelRequest request) {
     MultipartFile file = request.getFile();
@@ -78,7 +85,8 @@ public class VoucherServiceImpl implements VoucherService {
       }
       String username = authorizationService.getName();
       boolean isPartner = authorizationService.isPartner();
-      String storeName = isPartner ? authorizationService.getStoreName() : null;
+      String partnerId = isPartner ? authorizationService.getPartnerId() : null;
+      String storeName = isPartner ? identityGrpcClient.getNameStore(partnerId) : null;
       VoucherRequestEntity requestEntity = voucherServiceHelper.saveExcelVoucherRequest(
           request.getRequestId(), request.getFile().getOriginalFilename(),
           request.getDiscountType(), username, isPartner, storeName, dataList);
@@ -164,10 +172,6 @@ public class VoucherServiceImpl implements VoucherService {
       listStatus = statusValue != null ? List.of(statusValue) : null;
     }
 
-    if (authorizationService.isPartner()) {
-      creatorType = CreatorType.PARTNER;
-      storeName = authorizationService.getStoreName();
-    }
 
     String createdBy = authorizationService.isPartner() ? authorizationService.getName() : null;
 
@@ -209,7 +213,6 @@ public class VoucherServiceImpl implements VoucherService {
 
     if (authorizationService.isPartner()) {
       creatorType = CreatorType.PARTNER;
-      storeName = authorizationService.getStoreName();
     }
 
     String createdBy = authorizationService.isPartner() ? authorizationService.getName() : null;
@@ -259,14 +262,15 @@ public class VoucherServiceImpl implements VoucherService {
 
     String username = authorizationService.getName();
     String partnerId = isPartner ? authorizationService.getPartnerId() : null;
-    String storeName = isPartner ? authorizationService.getStoreName() : null;
-    voucherServiceHelper.saveVoucher(request, username, isPartner, partnerId, storeName);
+    String storeName = isPartner ? identityGrpcClient.getNameStore(partnerId) : null;
+    voucherServiceHelper.saveVoucher(request, username, isPartner, storeName);
   }
 
   @Override
   public void submitVoucher(Long id) {
     VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
         RequestStatus.INIT);
+    validateNotRewardPurpose(entity);
     entity.setStatus(RequestStatus.PENDING_APPROVE);
     entity.setUpdatedBy(authorizationService.getName());
     voucherRequestRepository.save(entity);
@@ -276,6 +280,7 @@ public class VoucherServiceImpl implements VoucherService {
   public void cancelVoucher(Long id) {
     VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
         RequestStatus.INIT);
+    validateNotRewardPurpose(entity);
     entity.setStatus(RequestStatus.CANCELLED);
     entity.setUpdatedBy(authorizationService.getName());
     voucherRequestRepository.save(entity);
@@ -294,6 +299,7 @@ public class VoucherServiceImpl implements VoucherService {
 
     VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
         RequestStatus.PENDING_APPROVE);
+    validateNotRewardPurpose(entity);
 
     if (request.getAction() == ConfirmAction.REJECTED) {
       handleRejected(entity, request.getReason());
@@ -302,7 +308,8 @@ public class VoucherServiceImpl implements VoucherService {
     }
   }
 
-  private void handleApproved(VoucherRequestEntity entity) {
+  public void handleApproved(VoucherRequestEntity entity) {
+    validateNotRewardPurpose(entity);
     String username = authorizationService.getName();
 
     entity.setStatus(RequestStatus.APPROVED);
@@ -352,7 +359,7 @@ public class VoucherServiceImpl implements VoucherService {
     }
   }
 
-  private void handleRejected(VoucherRequestEntity entity, String reason) {
+  public void handleRejected(VoucherRequestEntity entity, String reason) {
     String username = authorizationService.getName();
 
     entity.setStatus(RequestStatus.REJECTED);
@@ -397,6 +404,16 @@ public class VoucherServiceImpl implements VoucherService {
         totalProcessed);
   }
 
+  private void validateNotRewardPurpose(VoucherRequestEntity entity) {
+    if (entity.getVoucherPurpose() == VoucherPurpose.REWARD) {
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("REWARD_VOUCHER_NOT_ALLOWED")
+          .description("Cannot perform this action on REWARD voucher. Use mission APIs instead.")
+          .build();
+    }
+  }
+
   private void validateSystemFields(CreateVoucherRequest request) {
     if (request.getCustomerTier() == null) {
       throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
@@ -437,4 +454,6 @@ public class VoucherServiceImpl implements VoucherService {
     response.setVoucherDetailResponses(VoucherMapper.toDetailResponseList(detailPage.getContent()));
     return response;
   }
+
+
 }

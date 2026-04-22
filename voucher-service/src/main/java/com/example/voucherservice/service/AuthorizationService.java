@@ -91,11 +91,4 @@ public class AuthorizationService {
         return jwt.getClaimAsString("partner_id");
     }
 
-    public String getStoreName() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !(auth.getPrincipal() instanceof Jwt jwt)) {
-            return null;
-        }
-        return jwt.getClaimAsString("store_name");
-    }
 }
