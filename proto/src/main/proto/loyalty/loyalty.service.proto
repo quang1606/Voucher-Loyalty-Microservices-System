@@ -8,6 +8,7 @@ option java_package = "vn.com.grpc.loyalty.service";
 option java_multiple_files = true;
 
 service LoyaltyService {
-  rpc CreateMission(CreateMissionRequest) returns (CreateMissionResponse);
+  rpc CreateMission(CreateMissionRequestGrpc) returns (CreateMissionResponseGrpc);
   rpc GetMissionById(GetMissionByIdRequest) returns (GetMissionByIdResponse);
+  rpc SearchMission(SearchMissionRequest) returns (SearchMissionResponse);
 }

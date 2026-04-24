@@ -6,15 +6,22 @@ import com.example.loyaltyservice.constant.TaskStatus;
 import com.example.loyaltyservice.entity.MissionEntity;
 import com.example.loyaltyservice.repository.MissionRepository;
 import com.example.loyaltyservice.service.MissionService;
+import com.example.loyaltyservice.service.specification.MissionSpecification;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import vn.com.grpc.loyalty.entity.CreateMissionRequest;
+import vn.com.grpc.loyalty.entity.CreateMissionRequestGrpc;
+import vn.com.grpc.loyalty.entity.SearchMissionRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +29,10 @@ import vn.com.grpc.loyalty.entity.CreateMissionRequest;
 public class MissionServiceImpl implements MissionService {
 
     private final MissionRepository missionRepository;
+    private final MissionSpecification missionSpecification;
 
     @Override
-    public Long createMission(CreateMissionRequest request) {
+    public Long createMission(CreateMissionRequestGrpc request) {
         log.info("Creating mission: {}", request.getMissionName());
 
         if (request.getMissionName().isBlank()) {
@@ -44,7 +52,7 @@ public class MissionServiceImpl implements MissionService {
         entity.setRewardValue(request.getRewardValue());
         entity.setStartDate(toLocalDateTime(request.getStartDate()));
         entity.setEndDate(toLocalDateTime(request.getEndDate()));
-        entity.setStatus(mapTaskStatus(request.getTaskStatus()));
+        entity.setStatus(TaskStatus.valueOf(request.getTaskStatus().name()));
 
         if (request.getPartnerId() != 0) {
             entity.setPartnerId(request.getPartnerId());
@@ -65,17 +73,31 @@ public class MissionServiceImpl implements MissionService {
                 .build());
     }
 
-    private TaskStatus mapTaskStatus(vn.com.grpc.loyalty.entity.TaskStatus status) {
-        return switch (status) {
-            case TASK_CANCELLED -> TaskStatus.CANCELLED;
-            case TASK_PENDING_APPROVE -> TaskStatus.PENDING_APPROVE;
-            case TASK_APPROVED -> TaskStatus.APPROVED;
-            case TASK_REJECTED -> TaskStatus.REJECTED;
-            case TASK_FAILED -> TaskStatus.FAILED;
-            case TASK_FINISH -> TaskStatus.FINISH;
-            default -> TaskStatus.INIT;
-        };
+    @Override
+    public Page<MissionEntity> searchMission(SearchMissionRequest request) {
+        log.info("Searching missions with filters - partnerId: {}, rewardType: {}, status: {}", 
+            request.getNameStore(), request.getRewardType(), request.getTaskStatus());
+        
+        Specification<MissionEntity> spec = missionSpecification.createSpecification(request);
+        Pageable pageable = createPageable(request.getPageable());
+        
+        return missionRepository.findAll(spec, pageable);
     }
+
+    private Pageable createPageable(vn.com.grpc.loyalty.entity.Pageable pageableGrpc) {
+        int page = Math.max(0, pageableGrpc.getPage());
+        int size = pageableGrpc.getSize() > 0 ? 
+            Math.min(pageableGrpc.getSize(), 100) : 20;
+        
+        if (pageableGrpc.getSort().isEmpty()) {
+            return PageRequest.of(page, size, Sort.by("id").descending());
+        }
+        
+        Sort sort = Sort.by(pageableGrpc.getSort());
+        return PageRequest.of(page, size, sort);
+    }
+
+
 
     private LocalDateTime toLocalDateTime(long epochMillis) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());

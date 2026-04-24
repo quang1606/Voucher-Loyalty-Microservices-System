@@ -4,23 +4,27 @@ import com.example.common.BaseException;
 import com.example.voucherservice.constant.ConfirmAction;
 import com.example.voucherservice.constant.RequestStatus;
 import com.example.voucherservice.constant.RewardType;
+import com.example.voucherservice.constant.TaskStatus;
 import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
 import com.example.voucherservice.dto.request.CreateMissionRequest;
+import com.example.voucherservice.dto.response.MissionResponse;
+import com.example.voucherservice.dto.response.VoucherRequestResponsePage;
 import com.example.voucherservice.entity.VoucherRequestEntity;
-import com.example.voucherservice.grpc.IdentityGrpcClient;
 import com.example.voucherservice.grpc.MissionGrpcClient;
-import com.example.voucherservice.repository.VoucherRepository;
 import com.example.voucherservice.repository.VoucherRequestRepository;
 import com.example.voucherservice.service.AuthorizationService;
 import com.example.voucherservice.service.MissionService;
 import com.example.voucherservice.service.helper.VoucherServiceHelper;
-import com.example.voucherservice.service.helper.excel.ExcelReaderHelper;
 import com.example.voucherservice.service.strategy.VoucherRequestStrategyFactory;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import vn.com.grpc.loyalty.entity.SearchMissionResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -155,6 +159,29 @@ public class MissionServiceImpl implements MissionService {
           .description("Failed to confirm mission: " + id)
           .build();
     }
+  }
+
+  @Override
+  public MissionResponse searchMissions(String nameStore, RewardType rewardType,
+      TaskStatus taskStatus,
+      Pageable pageable) {
+    List<String> status;
+    if ( authorizationService.isCheckerRole()) {
+      status = List.of(TaskStatus.PENDING_APPROVE.name(), TaskStatus.APPROVED.name(),
+          TaskStatus.FAILED.name(), TaskStatus.FINISH.name(), TaskStatus.REJECTED.name());
+      if (taskStatus != null && !status.contains(taskStatus.name())) {
+        return  MissionResponse.builder()
+            .data(Collections.emptyList())
+            .totalElements(0)
+            .totalPages(0)
+            .page(pageable.getPageNumber())
+            .size(pageable.getPageSize())
+            .build();
+      }
+    }
+    SearchMissionResponse response = missionGrpcClient.searchMissions(nameStore, rewardType,
+        taskStatus, pageable);
+    return null;
   }
 
   private void validateMissionRequest(CreateMissionRequest request) {

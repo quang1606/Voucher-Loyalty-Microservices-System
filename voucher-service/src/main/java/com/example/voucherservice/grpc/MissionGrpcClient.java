@@ -12,12 +12,15 @@ import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import vn.com.grpc.loyalty.entity.CreateMissionResponse;
+import vn.com.grpc.loyalty.entity.CreateMissionResponseGrpc;
 import vn.com.grpc.loyalty.entity.GetMissionByIdRequest;
 import vn.com.grpc.loyalty.entity.GetMissionByIdResponse;
 import vn.com.grpc.loyalty.entity.RewardType;
+import vn.com.grpc.loyalty.entity.SearchMissionRequest;
+import vn.com.grpc.loyalty.entity.SearchMissionResponse;
 import vn.com.grpc.loyalty.entity.TaskStatus;
 import vn.com.grpc.loyalty.service.LoyaltyServiceGrpc;
 
@@ -32,8 +35,8 @@ public class MissionGrpcClient {
   private LoyaltyServiceGrpc.LoyaltyServiceBlockingStub stub;
 
   public void createMission(CreateMissionRequest request) {
-    vn.com.grpc.loyalty.entity.CreateMissionRequest grpcRequest =
-        vn.com.grpc.loyalty.entity.CreateMissionRequest.newBuilder()
+    vn.com.grpc.loyalty.entity.CreateMissionRequestGrpc grpcRequest =
+        vn.com.grpc.loyalty.entity.CreateMissionRequestGrpc.newBuilder()
             .setRequestInfo(grpcUtils.builderRequestInfo())
             .setMissionName(request.getMissionName())
             .setMissionDescription(request.getMissionDescription())
@@ -43,14 +46,14 @@ public class MissionGrpcClient {
             .setPartnerId(request.getPartnerId() != null ? request.getPartnerId() : 0L)
             .setStartDate(request.getMissionStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
             .setEndDate(request.getMissionEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-            .setTaskStatus(mapTaskStatus(request.getTaskStatus()))
+            .setTaskStatus(TaskStatus.valueOf(request.getTaskStatus().name()))
             .build();
 
     log.info("gRPC createMission request - missionName: {}, status: {}",
         request.getMissionName(), request.getTaskStatus());
 
     try {
-      CreateMissionResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
+      CreateMissionResponseGrpc response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
           .createMission(grpcRequest);
       String errorCode = response.getResponseInfo().getErrorCode();
       if (!"success".equalsIgnoreCase(errorCode)) {
@@ -112,6 +115,43 @@ public class MissionGrpcClient {
     }
   }
 
+  public SearchMissionResponse searchMissions(String nameStore, com.example.voucherservice.constant.RewardType rewardType,
+      com.example.voucherservice.constant.TaskStatus taskStatus, Pageable pageable) {
+    SearchMissionRequest request = SearchMissionRequest.newBuilder()
+        .setRequestInfo(grpcUtils.builderRequestInfo())
+        .setPartnerId(nameStore)
+        .setRewardType(RewardType.valueOf(rewardType.name()))
+        .setTaskStatus(TaskStatus.valueOf(taskStatus.name()))
+        .setPageable(
+            vn.com.grpc.loyalty.entity.Pageable.newBuilder().setPage(pageable.getPageSize())
+                .setPage(pageable.getPageNumber()).build())
+        .build();
+    log.info("gRPC searchMissions request - partnerId: {} - rewardType: {} - taskStatus: {}", nameStore,rewardType,taskStatus);
+    try {
+      SearchMissionResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
+          .searchMission(request);
+      log.info("gRPC response : {}", response);
+      response.getResponseInfo().getErrorCode();
+      if (!"success".equalsIgnoreCase(
+                response.getResponseInfo().getErrorCode())
+      ) {
+        throw BaseException.builder()
+            .httpStatus(HttpStatus.BAD_REQUEST)
+            .errorCode(response.getResponseInfo().getErrorCode())
+            .description(response.getResponseInfo().getMessage())
+            .build();
+      }
+      return response;
+    } catch (Exception e) {
+      log.error("gRPC searchMissions Exception - error: {}", e.getMessage(), e);
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .errorCode("GRPC_ERROR")
+          .description("Failed to search missions")
+          .build();
+    }
+  }
+
   private CreateMissionRequest mapToCreateMissionRequest(GetMissionByIdResponse response) {
     CreateMissionRequest request = new CreateMissionRequest();
     request.setMissionName(response.getMissionName());
@@ -136,19 +176,5 @@ public class MissionGrpcClient {
         ? RewardType.POINT : RewardType.VOUCHER;
   }
 
-  private TaskStatus mapTaskStatus(RequestStatus status) {
-    if (status == null) {
-      return TaskStatus.TASK_INIT;
-    }
-    return switch (status) {
-      case INIT -> TaskStatus.TASK_INIT;
-      case PENDING_APPROVE -> TaskStatus.TASK_PENDING_APPROVE;
-      case APPROVED -> TaskStatus.TASK_APPROVED;
-      case REJECTED -> TaskStatus.TASK_REJECTED;
-      case CANCELLED -> TaskStatus.TASK_CANCELLED;
-      case FAILED -> TaskStatus.TASK_FAILED;
-      case FINISH -> TaskStatus.TASK_FINISH;
-      default -> TaskStatus.TASK_INIT;
-    };
-  }
+
 }

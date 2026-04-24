@@ -8,22 +8,23 @@ import "base/base.response.proto";
 option java_package = "vn.com.grpc.loyalty.entity";
 option java_multiple_files = true;
 
-enum RewardType {
+enum // Thay đổi từ:
+RewardType {
   POINT = 0;
   VOUCHER = 1;
 }
 
 enum TaskStatus {
-  TASK_CANCELLED = 0;
-  TASK_PENDING_APPROVE = 1;
-  TASK_INIT = 2;
-  TASK_APPROVED = 3;
-  TASK_REJECTED = 4;
-  TASK_FAILED = 5;
-  TASK_FINISH = 6;
+  CANCELLED = 0;
+  PENDING_APPROVE = 1;
+  INIT = 2;
+  APPROVED = 3;
+  REJECTED = 4;
+  FAILED = 5;
+  FINISH = 6;
 }
 
-message CreateMissionRequest {
+message CreateMissionRequestGrpc {
   base.RequestInfo requestInfo = 1;
   string mission_name = 2;
   string mission_description = 3;
@@ -36,7 +37,7 @@ message CreateMissionRequest {
   TaskStatus task_status = 10;
 }
 
-message CreateMissionResponse {
+message CreateMissionResponseGrpc {
   base.ResponseInfo responseInfo = 1;
 }
 
@@ -47,6 +48,39 @@ message GetMissionByIdRequest {
 
 message GetMissionByIdResponse {
   base.ResponseInfo responseInfo = 1;
+  string mission_name = 2;
+  string mission_description = 3;
+  double target_value = 4;
+  RewardType reward_type = 5;
+  string reward_value = 6;
+  int64 partner_id = 7;
+  int64 start_date = 8;
+  int64 end_date = 9;
+  TaskStatus task_status = 10;
+}
+
+message SearchMissionRequest {
+  base.RequestInfo requestInfo = 1;
+  string nameStore = 2;
+  RewardType reward_type = 3;
+  TaskStatus task_status = 4;
+  Pageable pageable = 5;
+}
+message Pageable {
+  int32 page = 1;
+  int32 size = 2;
+  string sort = 3;
+}
+
+message SearchMissionResponse {
+  base.ResponseInfo responseInfo = 1;
+  repeated MissionInfo missions = 2;
+  int32 total_elements = 3;
+  int32 total_pages = 4;
+}
+
+message MissionInfo {
+  int64 mission_id = 1;
   string mission_name = 2;
   string mission_description = 3;
   double target_value = 4;
