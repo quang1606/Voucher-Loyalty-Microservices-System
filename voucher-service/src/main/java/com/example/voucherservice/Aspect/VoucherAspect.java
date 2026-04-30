@@ -158,7 +158,7 @@ public class VoucherAspect {
             return result;
         } catch (Exception ex) {
             auditLogService.saveAuditLog(userId, userRole, action, resource, false, ex.getMessage());
-            log.error("Audit: action={}, userId={}, success=false, error={}", action, userId, ex.getMessage());
+            log.error("Audit: action={}, userId={}, success=false", action, userId, ex);
             throw ex;
         }
     }
@@ -173,8 +173,12 @@ public class VoucherAspect {
             if (userId == null) {
                 userId = jwt.getSubject();
             }
+
             userRole = auth.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
+                    .map(authority -> authority.getAuthority().replace("ROLE_", ""))
+                    .filter(role -> !role.equals("offline_access") &&
+                            !role.equals("default-roles-voucher-loyalty") &&
+                            !role.equals("uma_authorization"))
                     .findFirst()
                     .orElse("unknown");
         }

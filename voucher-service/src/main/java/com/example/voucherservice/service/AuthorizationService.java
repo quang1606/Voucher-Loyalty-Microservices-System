@@ -83,12 +83,12 @@ public class AuthorizationService {
         return authentication.getName();
     }
 
-    public String getPartnerId() {
+    public String getUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !(auth.getPrincipal() instanceof Jwt jwt)) {
             return null;
         }
-        return jwt.getClaimAsString("partner_id");
+        return jwt.getClaimAsString("user_id");
     }
 
 }

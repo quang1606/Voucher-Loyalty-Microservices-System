@@ -6,6 +6,7 @@ import com.example.voucherservice.constant.RewardType;
 import com.example.voucherservice.constant.TaskStatus;
 import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
 import com.example.voucherservice.dto.request.CreateMissionRequest;
+import com.example.voucherservice.dto.response.MissionDetailResponse;
 import com.example.voucherservice.dto.response.MissionResponse;
 import com.example.voucherservice.service.MissionService;
 import jakarta.validation.Valid;
@@ -22,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import vn.com.grpc.loyalty.entity.SearchMissionResponse;
 
 @RestController
 @RequestMapping("/api/v1/missions")
 @RequiredArgsConstructor
 public class MissionController {
   private final MissionService missionService;
+
   @PostMapping("/missions")
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
   public ResponseEntity<BaseResponse<Void>> createMission(@Valid @RequestBody CreateMissionRequest request) {
@@ -69,6 +70,7 @@ public class MissionController {
         .code(BaseErrorCode.SUCCESS.getErrorCode())
         .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
   }
+
   @GetMapping("/search")
   @PreAuthorize("hasAnyRole('MAKER', 'CHECKER', 'PARTNER')")
   public ResponseEntity<BaseResponse<MissionResponse>> searchMissions(
@@ -87,4 +89,15 @@ public class MissionController {
         .build());
   }
 
+  @GetMapping("/missions/{id}")
+  @PreAuthorize("hasAnyRole('MAKER', 'CHECKER', 'PARTNER')")
+  public ResponseEntity<BaseResponse<MissionDetailResponse>> getMissionDetail(@PathVariable Long id) {
+    MissionDetailResponse result = missionService.getMissionDetail(id);
+    return ResponseEntity.ok(BaseResponse.<MissionDetailResponse>builder()
+        .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+        .code(BaseErrorCode.SUCCESS.getErrorCode())
+        .message(BaseErrorCode.SUCCESS.getErrorDescription())
+        .data(result)
+        .build());
+  }
 }

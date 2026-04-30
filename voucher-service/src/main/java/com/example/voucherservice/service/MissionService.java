@@ -4,6 +4,7 @@ import com.example.voucherservice.constant.RewardType;
 import com.example.voucherservice.constant.TaskStatus;
 import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
 import com.example.voucherservice.dto.request.CreateMissionRequest;
+import com.example.voucherservice.dto.response.MissionDetailResponse;
 import com.example.voucherservice.dto.response.MissionResponse;
 import org.springframework.data.domain.Pageable;
 import vn.com.grpc.loyalty.entity.SearchMissionResponse;
@@ -18,4 +19,6 @@ public interface MissionService {
   void confirmMission(Long id, ConfirmVoucherRequest request);
 
   MissionResponse searchMissions(String nameStore, RewardType rewardType, TaskStatus taskStatus, Pageable pageable);
+
+  MissionDetailResponse getMissionDetail(Long missionId);
 }

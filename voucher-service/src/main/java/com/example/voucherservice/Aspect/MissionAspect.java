@@ -1,4 +1,4 @@
-package com.example.voucherservice.Aspect;
+package com.example.voucherservice.aspect;
 
 import com.example.voucherservice.dto.request.CreateMissionRequest;
 import com.example.voucherservice.service.AuditLogService;
@@ -21,7 +21,7 @@ public class MissionAspect {
 
     private final AuditLogService auditLogService;
 
-    @Around("execution(* com.example.voucherservice.controller.VoucherController.createMission(..))")
+    @Around("execution(* com.example.voucherservice.controller.MissionController.createMission(..))")
     public Object aroundCreateMission(ProceedingJoinPoint joinPoint) throws Throwable {
         String[] authInfo = extractAuthInfo();
         String userId = authInfo[0];
@@ -41,7 +41,7 @@ public class MissionAspect {
         return executeAndAudit(joinPoint, userId, userRole, action, resource);
     }
 
-    @Around("execution(* com.example.voucherservice.controller.VoucherController.submitMission(..))")
+    @Around("execution(* com.example.voucherservice.controller.MissionController.submitMission(..))")
     public Object aroundSubmitMission(ProceedingJoinPoint joinPoint) throws Throwable {
         String[] authInfo = extractAuthInfo();
         String userId = authInfo[0];
@@ -58,7 +58,7 @@ public class MissionAspect {
         return executeAndAudit(joinPoint, userId, userRole, action, resource);
     }
 
-    @Around("execution(* com.example.voucherservice.controller.VoucherController.confirmMission(..))")
+    @Around("execution(* com.example.voucherservice.controller.MissionController.confirmMission(..))")
     public Object aroundConfirmMission(ProceedingJoinPoint joinPoint) throws Throwable {
         String[] authInfo = extractAuthInfo();
         String userId = authInfo[0];
@@ -84,7 +84,7 @@ public class MissionAspect {
         return executeAndAudit(joinPoint, userId, userRole, action, resource);
     }
 
-    @Around("execution(* com.example.voucherservice.controller.VoucherController.cancelMission(..))")
+    @Around("execution(* com.example.voucherservice.controller.MissionController.cancelMission(..))")
     public Object aroundCancelMission(ProceedingJoinPoint joinPoint) throws Throwable {
         String[] authInfo = extractAuthInfo();
         String userId = authInfo[0];
@@ -126,7 +126,10 @@ public class MissionAspect {
                 userId = jwt.getSubject();
             }
             userRole = auth.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
+                    .map(authority -> authority.getAuthority().replace("ROLE_", ""))
+                    .filter(role -> !role.equals("offline_access") &&
+                            !role.equals("default-roles-voucher-loyalty") &&
+                            !role.equals("uma_authorization"))
                     .findFirst()
                     .orElse("unknown");
         }

@@ -10,7 +10,7 @@ import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;
 import org.springframework.http.HttpStatus;
 import com.example.identityservice.repository.CustomerRepository;
-import com.example.identityservice.repository.MerchantRepository;
+import com.example.identityservice.repository.PartnerRepository;
 import com.example.identityservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
@@ -31,7 +31,7 @@ public class ProfileService {
     private final Keycloak keycloak;
     private final KeycloakProperties keycloakProps;
     private final UserRepository userRepository;
-    private final MerchantRepository merchantRepository;
+    private final PartnerRepository partnerRepository;
     private final CustomerRepository customerRepository;
 
     private UUID getCurrentUserId() {
@@ -58,10 +58,11 @@ public class ProfileService {
                 .username(kcUser.getUsername())
                 .email(kcUser.getEmail())
                 .firstName(kcUser.getFirstName())
-                .lastName(kcUser.getLastName());
+                .lastName(kcUser.getLastName())
+                .role(user.getRole());
 
         if (user.getRole() == Role.PARTNER) {
-            merchantRepository.findByUserId(userId).ifPresent(m ->
+            partnerRepository.findByUserId(userId).ifPresent(m ->
                     builder.storeName(m.getStoreName())
                             .phone(m.getPhone())
                             .category(m.getCategory()));
@@ -97,10 +98,10 @@ public class ProfileService {
         userRepository.save(user);
 
         if (user.getRole() == Role.PARTNER) {
-            merchantRepository.findByUserId(userId).ifPresent(m -> {
+            partnerRepository.findByUserId(userId).ifPresent(m -> {
                 if (request.getPhone() != null) m.setPhone(request.getPhone());
                 if (request.getStoreName() != null) m.setStoreName(request.getStoreName());
-                merchantRepository.save(m);
+                partnerRepository.save(m);
             });
         }
     }
@@ -115,11 +116,24 @@ public class ProfileService {
     }
 
   public String getNameStore(String partnerId) {
-      return merchantRepository.findStoreNameByUserId(UUID.fromString(partnerId)).orElseThrow(() ->
+      return partnerRepository.findStoreNameByUserId(UUID.fromString(partnerId)).orElseThrow(() ->
               BaseException.builder()
                       .httpStatus(HttpStatus.NOT_FOUND)
                       .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
                       .description("Partner không tồn tại")
                       .build()).toString();
+  }
+
+  public boolean existsByStoreName(String storeName) {
+      return partnerRepository.existsByStoreName(storeName);
+  }
+
+  public com.example.identityservice.entity.Partner getPartnerByUserId(String userId) {
+      return partnerRepository.findByUserId(UUID.fromString(userId))
+          .orElseThrow(() -> BaseException.builder()
+              .httpStatus(HttpStatus.NOT_FOUND)
+              .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
+              .description("Partner không tồn tại với userId: " + userId)
+              .build());
   }
 }

@@ -1,12 +1,9 @@
 package com.example.voucherservice.grpc;
 
 import com.example.common.BaseException;
-import com.example.voucherservice.constant.RequestStatus;
 import com.example.voucherservice.dto.request.CreateMissionRequest;
+import com.example.voucherservice.service.AuthorizationService;
 import com.example.voucherservice.utils.GrpcUtils;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
@@ -33,17 +30,22 @@ public class MissionGrpcClient {
 
   @GrpcClient("loyalty-service")
   private LoyaltyServiceGrpc.LoyaltyServiceBlockingStub stub;
-
+  private final AuthorizationService authorizationService;
+  private final IdentityGrpcClient identityGrpcClient;
   public void createMission(CreateMissionRequest request) {
+    long partnerId = 0L;
+    if (authorizationService.isPartner()) {
+      partnerId = identityGrpcClient.getPartner(authorizationService.getUserId()).getId();
+    }
     vn.com.grpc.loyalty.entity.CreateMissionRequestGrpc grpcRequest =
         vn.com.grpc.loyalty.entity.CreateMissionRequestGrpc.newBuilder()
             .setRequestInfo(grpcUtils.builderRequestInfo())
             .setMissionName(request.getMissionName())
             .setMissionDescription(request.getMissionDescription())
             .setTargetValue(request.getTargetValue().doubleValue())
-            .setRewardType(mapRewardType(request.getRewardType()))
+            .setRewardType(RewardType.valueOf(request.getRewardType().name()))
             .setRewardValue(request.getRewardValue())
-            .setPartnerId(request.getPartnerId() != null ? request.getPartnerId() : 0L)
+            .setPartnerId(partnerId)
             .setStartDate(request.getMissionStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
             .setEndDate(request.getMissionEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
             .setTaskStatus(TaskStatus.valueOf(request.getTaskStatus().name()))
@@ -79,7 +81,7 @@ public class MissionGrpcClient {
     }
   }
 
-  public CreateMissionRequest getMissionById(Long missionId) {
+  public GetMissionByIdResponse getMissionById(Long missionId) {
     GetMissionByIdRequest grpcRequest = GetMissionByIdRequest.newBuilder()
         .setRequestInfo(grpcUtils.builderRequestInfo())
         .setMissionId(missionId)
@@ -99,7 +101,7 @@ public class MissionGrpcClient {
             .build();
       }
       log.info("gRPC getMissionById success - missionId: {}", missionId);
-      return mapToCreateMissionRequest(response);
+      return response;
     } catch (BaseException e) {
       log.error("gRPC getMissionById BaseException - missionId: {}, error: {}",
           missionId, e.getDescription());
@@ -117,16 +119,23 @@ public class MissionGrpcClient {
 
   public SearchMissionResponse searchMissions(String nameStore, com.example.voucherservice.constant.RewardType rewardType,
       com.example.voucherservice.constant.TaskStatus taskStatus, Pageable pageable) {
-    SearchMissionRequest request = SearchMissionRequest.newBuilder()
+    SearchMissionRequest.Builder builder = SearchMissionRequest.newBuilder()
         .setRequestInfo(grpcUtils.builderRequestInfo())
-        .setPartnerId(nameStore)
-        .setRewardType(RewardType.valueOf(rewardType.name()))
-        .setTaskStatus(TaskStatus.valueOf(taskStatus.name()))
         .setPageable(
-            vn.com.grpc.loyalty.entity.Pageable.newBuilder().setPage(pageable.getPageSize())
-                .setPage(pageable.getPageNumber()).build())
-        .build();
-    log.info("gRPC searchMissions request - partnerId: {} - rewardType: {} - taskStatus: {}", nameStore,rewardType,taskStatus);
+            vn.com.grpc.loyalty.entity.Pageable.newBuilder()
+                .setPage(pageable.getPageNumber())
+                .setSize(pageable.getPageSize()).build());
+    if (nameStore != null) {
+      builder.setNameStore(nameStore);
+    }
+    if (rewardType != null) {
+      builder.setRewardType(RewardType.valueOf(rewardType.name()));
+    }
+    if (taskStatus != null) {
+      builder.setTaskStatus(TaskStatus.valueOf(taskStatus.name()));
+    }
+    SearchMissionRequest request = builder.build();
+    log.info("gRPC searchMissions request - nameStore: {} - rewardType: {} - taskStatus: {}", nameStore, rewardType, taskStatus);
     try {
       SearchMissionResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
           .searchMission(request);
@@ -151,30 +160,4 @@ public class MissionGrpcClient {
           .build();
     }
   }
-
-  private CreateMissionRequest mapToCreateMissionRequest(GetMissionByIdResponse response) {
-    CreateMissionRequest request = new CreateMissionRequest();
-    request.setMissionName(response.getMissionName());
-    request.setMissionDescription(response.getMissionDescription());
-    request.setTargetValue(BigDecimal.valueOf(response.getTargetValue()));
-    request.setRewardType(response.getRewardType() == RewardType.POINT
-        ? com.example.voucherservice.constant.RewardType.POINT
-        : com.example.voucherservice.constant.RewardType.VOUCHER);
-    request.setRewardValue(response.getRewardValue());
-    request.setPartnerId(response.getPartnerId() != 0 ? response.getPartnerId() : null);
-    request.setMissionStartDate(toLocalDateTime(response.getStartDate()));
-    request.setMissionEndDate(toLocalDateTime(response.getEndDate()));
-    return request;
-  }
-
-  private LocalDateTime toLocalDateTime(long epochMillis) {
-    return LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
-  }
-
-  private RewardType mapRewardType(com.example.voucherservice.constant.RewardType rewardType) {
-    return rewardType == com.example.voucherservice.constant.RewardType.POINT
-        ? RewardType.POINT : RewardType.VOUCHER;
-  }
-
-
 }

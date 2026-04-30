@@ -20,6 +20,8 @@ public interface VoucherRepository extends JpaRepository<VoucherDetailEntity, Lo
     List<VoucherDetailEntity> findByRequestIdAndRequestStatusAndIdGreaterThanOrderByIdAsc(
             String requestId, RequestStatus requestStatus, Long id, Pageable pageable);
 
+    java.util.Optional<VoucherDetailEntity> findFirstByRequestId(String requestId);
+
     boolean existsByRequestIdAndRequestStatus(String requestId, RequestStatus requestStatus);
 
     boolean existsByRequestIdAndDiscountTypeIsNull(String requestId);

@@ -1,8 +1,6 @@
 package com.example.loyaltyservice.Grpc;
 
 import com.example.common.BaseException;
-import com.example.loyaltyservice.constant.RewardType;
-import com.example.loyaltyservice.constant.TaskStatus;
 import com.example.loyaltyservice.entity.MissionEntity;
 import com.example.loyaltyservice.service.MissionService;
 import com.example.loyaltyservice.utils.GrpcUtils;
@@ -11,13 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.data.domain.Page;
-import vn.com.grpc.loyalty.entity.CreateMissionRequestGrpc;
-import vn.com.grpc.loyalty.entity.CreateMissionResponseGrpc;
-import vn.com.grpc.loyalty.entity.GetMissionByIdRequest;
-import vn.com.grpc.loyalty.entity.GetMissionByIdResponse;
-import vn.com.grpc.loyalty.entity.MissionInfo;
-import vn.com.grpc.loyalty.entity.SearchMissionRequest;
-import vn.com.grpc.loyalty.entity.SearchMissionResponse;
+import vn.com.grpc.loyalty.entity.*;
 import vn.com.grpc.loyalty.service.LoyaltyServiceGrpc;
 
 import java.time.ZoneId;
@@ -67,12 +59,13 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                 .setMissionName(entity.getName())
                 .setMissionDescription(entity.getDescription())
                 .setTargetValue(entity.getTargetValue().doubleValue())
-                .setRewardType(mapRewardType(entity.getRewardType()))
+                .setRewardType(RewardType.valueOf(entity.getRewardType().name()))
                 .setRewardValue(entity.getRewardValue())
                 .setPartnerId(entity.getPartnerId() != null ? entity.getPartnerId() : 0L)
                 .setStartDate(entity.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .setTaskStatus(mapTaskStatus(entity.getStatus()));
+                .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
+                    .setRequestId(entity.getRequestId());
         } catch (BaseException e) {
             log.error("gRPC getMissionById BaseException - missionId: {}, errorCode: {}, message: {}",
                 request.getMissionId(), e.getErrorCode(), e.getDescription());
@@ -93,7 +86,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
         SearchMissionResponse.Builder responseBuilder = SearchMissionResponse.newBuilder();
         try {
             log.info("gRPC searchMission - requestId: {}, partnerId: {}, rewardType: {}, status: {}",
-                request.getRequestInfo().getRequestId(), request.getPartnerId(), 
+                request.getRequestInfo().getRequestId(), request.getNameStore(),
                 request.getRewardType(), request.getTaskStatus());
 
             Page<MissionEntity> page = missionService.searchMission(request);
@@ -109,12 +102,13 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                     .setMissionName(entity.getName())
                     .setMissionDescription(entity.getDescription())
                     .setTargetValue(entity.getTargetValue().doubleValue())
-                    .setRewardType(mapRewardType(entity.getRewardType()))
+                    .setRewardType(RewardType.valueOf(entity.getRewardType().name()))
                     .setRewardValue(entity.getRewardValue())
                     .setPartnerId(entity.getPartnerId() != null ? entity.getPartnerId() : 0L)
                     .setStartDate(entity.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                     .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                    .setTaskStatus(mapTaskStatus(entity.getStatus()))
+                    .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
+                        .setRequestId(entity.getRequestId())
                     .build();
                 responseBuilder.addMissions(missionInfo);
             }
@@ -132,21 +126,5 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
         }
     }
 
-    private vn.com.grpc.loyalty.entity.RewardType mapRewardType(RewardType rewardType) {
-        return rewardType == RewardType.POINT
-            ? vn.com.grpc.loyalty.entity.RewardType.POINT
-            : vn.com.grpc.loyalty.entity.RewardType.VOUCHER;
-    }
 
-    private vn.com.grpc.loyalty.entity.TaskStatus mapTaskStatus(TaskStatus status) {
-        return switch (status) {
-            case CANCELLED -> vn.com.grpc.loyalty.entity.TaskStatus.TASK_CANCELLED;
-            case PENDING_APPROVE -> vn.com.grpc.loyalty.entity.TaskStatus.TASK_PENDING_APPROVE;
-            case APPROVED -> vn.com.grpc.loyalty.entity.TaskStatus.TASK_APPROVED;
-            case REJECTED -> vn.com.grpc.loyalty.entity.TaskStatus.TASK_REJECTED;
-            case FAILED -> vn.com.grpc.loyalty.entity.TaskStatus.TASK_FAILED;
-            case FINISH -> vn.com.grpc.loyalty.entity.TaskStatus.TASK_FINISH;
-            default -> vn.com.grpc.loyalty.entity.TaskStatus.TASK_INIT;
-        };
-    }
 }

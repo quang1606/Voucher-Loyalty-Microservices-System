@@ -49,7 +49,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import vn.com.fcc.grpc.identity.service.IdentityServiceGrpc;
+import vn.com.grpc.identity.service.IdentityServiceGrpc;
 
 @Service
 @RequiredArgsConstructor
@@ -74,7 +74,7 @@ public class VoucherServiceImpl implements VoucherService {
     validateExcelRequest(request);
 
     try {
-      List<CreateVoucherExcel> dataList = excelReaderHelper.readExcel(request.getFile(),
+      List<CreateVoucherExcel> dataList = excelReaderHelper.  readExcel(request.getFile(),
           request.getDiscountType());
       if (dataList == null || dataList.isEmpty()) {
         throw BaseException.builder()
@@ -85,7 +85,7 @@ public class VoucherServiceImpl implements VoucherService {
       }
       String username = authorizationService.getName();
       boolean isPartner = authorizationService.isPartner();
-      String partnerId = isPartner ? authorizationService.getPartnerId() : null;
+      String partnerId = isPartner ? authorizationService.getUserId() : null;
       String storeName = isPartner ? identityGrpcClient.getNameStore(partnerId) : null;
       VoucherRequestEntity requestEntity = voucherServiceHelper.saveExcelVoucherRequest(
           request.getRequestId(), request.getFile().getOriginalFilename(),
@@ -261,7 +261,7 @@ public class VoucherServiceImpl implements VoucherService {
     strategy.validateRequest(request);
 
     String username = authorizationService.getName();
-    String partnerId = isPartner ? authorizationService.getPartnerId() : null;
+    String partnerId = isPartner ? authorizationService.getUserId() : null;
     String storeName = isPartner ? identityGrpcClient.getNameStore(partnerId) : null;
     voucherServiceHelper.saveVoucher(request, username, isPartner, storeName);
   }
@@ -415,6 +415,9 @@ public class VoucherServiceImpl implements VoucherService {
   }
 
   private void validateSystemFields(CreateVoucherRequest request) {
+    if (request.getVoucherPurpose() == VoucherPurpose.REWARD) {
+      return;
+    }
     if (request.getCustomerTier() == null) {
       throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
           .errorCode("MISSING_CUSTOMER_TIER")

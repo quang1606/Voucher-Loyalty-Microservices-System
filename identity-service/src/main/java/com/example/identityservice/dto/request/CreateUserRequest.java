@@ -28,6 +28,5 @@ public class CreateUserRequest {
     // Merchant fields
     private String storeName;
     private String phone;
-    @NotNull(message = "Request type is required")
     private PartnerCategory category;
 }

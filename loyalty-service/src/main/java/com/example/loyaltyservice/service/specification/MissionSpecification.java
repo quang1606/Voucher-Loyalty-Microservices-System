@@ -13,16 +13,13 @@ public class MissionSpecification {
   public Specification<MissionEntity> createSpecification(SearchMissionRequest request) {
     Specification<MissionEntity> spec = Specification.where(null);
 
-    request.getNameStore();
-    if (!request.getNameStore().trim().isEmpty()) {
-      spec = spec.and(nameStoreLike(request.getNameStore()));
-    }
-
-    if (request.getRewardType() != vn.com.grpc.loyalty.entity.RewardType.UNRECOGNIZED) {
+    if (request.getRewardTypeValue() > 0
+        && request.getRewardType() != vn.com.grpc.loyalty.entity.RewardType.UNRECOGNIZED) {
       spec = spec.and(rewardTypeEquals(RewardType.valueOf(request.getRewardType().name())));
     }
 
-    if (request.getTaskStatus() != vn.com.grpc.loyalty.entity.TaskStatus.UNRECOGNIZED) {
+    if (request.getTaskStatusValue() > 0
+        && request.getTaskStatus() != vn.com.grpc.loyalty.entity.TaskStatus.UNRECOGNIZED) {
       spec = spec.and(statusEquals(TaskStatus.valueOf(request.getTaskStatus().name())));
     }
 

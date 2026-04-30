@@ -3,6 +3,7 @@ package com.example.identityservice.service;
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;
 import com.example.identityservice.configuration.KeycloakProperties;
+import com.example.identityservice.constant.PartnerCategory;
 import com.example.identityservice.constant.Role;
 import com.example.identityservice.dto.request.CreateUserRequest;
 import com.example.identityservice.dto.request.ResetPasswordRequest;
@@ -13,7 +14,7 @@ import com.example.identityservice.entity.Customer;
 import com.example.identityservice.entity.Partner;
 import com.example.identityservice.entity.User;
 import com.example.identityservice.repository.CustomerRepository;
-import com.example.identityservice.repository.MerchantRepository;
+import com.example.identityservice.repository.PartnerRepository;
 import com.example.identityservice.repository.UserRepository;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
@@ -40,7 +41,7 @@ public class SystemUserService {
     private final Keycloak keycloak;
     private final KeycloakProperties keycloakProps;
     private final UserRepository userRepository;
-    private final MerchantRepository merchantRepository;
+    private final PartnerRepository partnerRepository;
     private final CustomerRepository customerRepository;
 
     private UsersResource usersResource() {
@@ -49,7 +50,7 @@ public class SystemUserService {
 
     public List<SystemUserResponse> getAllUsers() {
         List<User> dbUsers = userRepository.findAll();
-        Map<UUID, Partner> merchants = merchantRepository.findAll().stream()
+        Map<UUID, Partner> merchants = partnerRepository.findAll().stream()
                 .collect(Collectors.toMap(Partner::getUserId, m -> m));
         Map<UUID, Customer> customers = customerRepository.findAll().stream()
                 .collect(Collectors.toMap(Customer::getUserId, c -> c));
@@ -61,7 +62,8 @@ public class SystemUserService {
                     .username(user.getUsername())
                     .email(user.getEmail())
                     .firstName(user.getFirstName())
-                    .lastName(user.getLastName());
+                    .lastName(user.getLastName())
+                    .role(user.getRole());
 
             try {
                 UserRepresentation kcUser = usersResource().get(uid.toString()).toRepresentation();
@@ -141,14 +143,28 @@ public class SystemUserService {
             user.setLastName(request.getLastName());
             user.setRole(request.getRole());
             userRepository.save(user);
-
             if (request.getRole() == Role.PARTNER) {
+
+                PartnerCategory category;
+                try {
+                    category = PartnerCategory.valueOf(
+                            request.getCategory().name().trim().toUpperCase()
+                    );
+                } catch (IllegalArgumentException | NullPointerException ex) {
+                    throw BaseException.builder()
+                            .httpStatus(HttpStatus.BAD_REQUEST)
+                            .errorCode(BaseErrorCode.BAD_REQUEST.getErrorCode())
+                            .description("Category không hợp lệ")
+                            .build();
+                }
+
                 Partner merchant = new Partner();
                 merchant.setUserId(userId);
                 merchant.setStoreName(request.getStoreName());
                 merchant.setPhone(request.getPhone());
-                merchant.setCategory(request.getCategory());
-                merchantRepository.save(merchant);
+                merchant.setCategory(category);
+
+                partnerRepository.save(merchant);
             }
         } catch (Exception e) {
             log.error("DB save failed, rolling back Keycloak user: {}", kcId, e);
@@ -171,14 +187,14 @@ public class SystemUserService {
           .description("Email đã tồn tại: " + request.getEmail())
           .build();
     }
-    if (request.getPhone() != null && merchantRepository.existsByPhone(request.getPhone())) {
+    if (request.getPhone() != null && partnerRepository.existsByPhone(request.getPhone())) {
       throw BaseException.builder()
           .httpStatus(HttpStatus.CONFLICT)
           .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
           .description("Số điện thoại đã tồn tại: " + request.getPhone())
           .build();
     }
-    if(request.getStoreName() !=null && merchantRepository.existsByStoreName(request.getStoreName())){
+    if(request.getStoreName() !=null && partnerRepository.existsByStoreName(request.getStoreName())){
       throw BaseException.builder()
           .httpStatus(HttpStatus.CONFLICT)
           .errorCode(BaseErrorCode.CONFLICT.getErrorCode())
@@ -212,12 +228,12 @@ public class SystemUserService {
         userRepository.save(user);
 
         if (user.getRole() == Role.PARTNER) {
-            merchantRepository.findByUserId(id).ifPresent(m -> {
+            partnerRepository.findByUserId(id).ifPresent(m -> {
                 if (request.getStoreName() != null) m.setStoreName(request.getStoreName());
                 if (request.getPhone() != null) m.setPhone(request.getPhone());
                 if (request.getCategory() != null) m.setCategory(request.getCategory());
                 if (request.getStatus() != null) m.setStatus(request.getStatus());
-                merchantRepository.save(m);
+                partnerRepository.save(m);
             });
         }
     }
@@ -231,7 +247,7 @@ public class SystemUserService {
                         .description("User không tồn tại: " + id)
                         .build());
         usersResource().delete(id.toString());
-        merchantRepository.deleteByUserId(id);
+        partnerRepository.deleteByUserId(id);
         customerRepository.deleteByUserId(id);
         userRepository.deleteById(id);
     }

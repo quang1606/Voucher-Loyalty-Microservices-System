@@ -2,6 +2,7 @@ package com.example.identityservice.dto.response;
 
 import com.example.identityservice.constant.CustomerTier;
 import com.example.identityservice.constant.PartnerCategory;
+import com.example.identityservice.constant.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class ProfileResponse {
     private String email;
     private String firstName;
     private String lastName;
+    private Role role;
     // Merchant
     private String storeName;
     private String phone;

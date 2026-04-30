@@ -10,18 +10,20 @@ option java_multiple_files = true;
 
 enum // Thay đổi từ:
 RewardType {
-  POINT = 0;
-  VOUCHER = 1;
+  REWARD_TYPE_UNSPECIFIED = 0;
+  POINT = 1;
+  VOUCHER = 2;
 }
 
 enum TaskStatus {
-  CANCELLED = 0;
-  PENDING_APPROVE = 1;
-  INIT = 2;
-  APPROVED = 3;
-  REJECTED = 4;
-  FAILED = 5;
-  FINISH = 6;
+  TASK_STATUS_UNSPECIFIED = 0;
+  CANCELLED = 1;
+  PENDING_APPROVE = 2;
+  INIT = 3;
+  APPROVED = 4;
+  REJECTED = 5;
+  FAILED = 6;
+  FINISH = 7;
 }
 
 message CreateMissionRequestGrpc {
@@ -57,6 +59,7 @@ message GetMissionByIdResponse {
   int64 start_date = 8;
   int64 end_date = 9;
   TaskStatus task_status = 10;
+  string request_id=11;
 }
 
 message SearchMissionRequest {
@@ -90,4 +93,6 @@ message MissionInfo {
   int64 start_date = 8;
   int64 end_date = 9;
   TaskStatus task_status = 10;
+  string request_id=11;
+
 }

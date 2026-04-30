@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MerchantRepository extends JpaRepository<Partner, Long> {
+public interface PartnerRepository extends JpaRepository<Partner, Long> {
     Optional<Partner> findByUserId(UUID userId);
     void deleteByUserId(UUID userId);
     boolean existsByPhone(String phone);
