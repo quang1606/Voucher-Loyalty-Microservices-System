@@ -13,6 +13,11 @@ grpc:
       address: static://${LOYALTY_GRPC_HOST:localhost}:${LOYALTY_GRPC_PORT:9093}
       negotiation-type: plaintext
 
+logging:
+  level:
+    root: INFO
+    com.example.voucherservice: INFO
+
 spring:
   application:
     name: voucher-service
@@ -47,8 +52,9 @@ spring:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8180/realms/voucher-loyalty}
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: false
     properties:
       hibernate:

@@ -71,4 +71,20 @@ public final class VoucherDetailSpecification {
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }
+
+    public static Specification<VoucherDetailEntity> withCustomerTierAccess(
+        List<CustomerTier> accessibleTiers, List<String> huntRequestIds) {
+
+        return (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            predicates.add(root.get("customerTier").in(accessibleTiers));
+            predicates.add(cb.equal(root.get("status"), VoucherStatus.ACTIVE));
+            if (huntRequestIds != null && !huntRequestIds.isEmpty()) {
+                predicates.add(root.get("requestId").in(huntRequestIds));
+            }
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+    }
 }

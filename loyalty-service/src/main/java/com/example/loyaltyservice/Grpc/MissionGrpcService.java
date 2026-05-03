@@ -45,6 +45,29 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
     }
 
     @Override
+    public void updateMissionStatus(UpdateMissionStatusRequest request,
+        StreamObserver<UpdateMissionStatusResponse> responseObserver) {
+        UpdateMissionStatusResponse.Builder responseBuilder = UpdateMissionStatusResponse.newBuilder();
+        try {
+            log.info("gRPC updateMissionStatus - missionId: {}, newStatus: {}",
+                request.getMissionId(), request.getTaskStatus());
+            missionService.updateMissionStatus(request.getMissionId(), request.getTaskStatus().name());
+            responseBuilder.setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()));
+        } catch (BaseException e) {
+            log.error("gRPC updateMissionStatus BaseException - missionId: {}, error: {}",
+                request.getMissionId(), e.getDescription());
+            responseBuilder.setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e));
+        } catch (Exception e) {
+            log.error("gRPC updateMissionStatus Exception - missionId: {}, error: {}",
+                request.getMissionId(), e.getMessage(), e);
+            responseBuilder.setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e));
+        } finally {
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+        }
+    }
+
+    @Override
     public void getMissionById(GetMissionByIdRequest request,
         StreamObserver<GetMissionByIdResponse> responseObserver) {
         GetMissionByIdResponse.Builder responseBuilder = GetMissionByIdResponse.newBuilder();
@@ -85,8 +108,8 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
         StreamObserver<SearchMissionResponse> responseObserver) {
         SearchMissionResponse.Builder responseBuilder = SearchMissionResponse.newBuilder();
         try {
-            log.info("gRPC searchMission - requestId: {}, partnerId: {}, rewardType: {}, status: {}",
-                request.getRequestInfo().getRequestId(), request.getNameStore(),
+            log.info("gRPC searchMission - partnerId: {}, partnerId: {}, rewardType: {}, status: {}",
+                request.getRequestInfo().getRequestId(), request.getPartnerId(),
                 request.getRewardType(), request.getTaskStatus());
 
             Page<MissionEntity> page = missionService.searchMission(request);

@@ -1,6 +1,7 @@
 package com.example.voucherservice.repository;
 
 import com.example.voucherservice.constant.RequestStatus;
+import com.example.voucherservice.constant.VoucherPurpose;
 import com.example.voucherservice.entity.VoucherRequestEntity;
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,6 @@ public interface VoucherRequestRepository extends JpaRepository<VoucherRequestEn
     Optional<VoucherRequestEntity> findByRequestId(String requestId);
 
     boolean existsByRequestIdAndStatusIn(String requestId, List<RequestStatus> statuses);
+
+    List<VoucherRequestEntity> findByVoucherPurpose(VoucherPurpose voucherPurpose);
 }

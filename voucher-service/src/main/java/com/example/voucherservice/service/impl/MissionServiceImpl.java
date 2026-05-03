@@ -22,7 +22,6 @@ import com.example.voucherservice.service.strategy.VoucherRequestStrategyFactory
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -50,10 +49,11 @@ public class MissionServiceImpl implements MissionService {
     validateMissionRequest(request);
     try {
       request.setTaskStatus(RequestStatus.INIT);
+      missionGrpcClient.createMission(request);
       if (request.getRewardType() != RewardType.POINT) {
+        request.setVoucherPurpose(VoucherPurpose.REWARD);
         voucherService.createVoucher(request);
       }
-      missionGrpcClient.createMission(request);
       log.info("Mission created - name: {}, target: {}, reward: {} {}",
           request.getMissionName(), request.getTargetValue(),
           request.getRewardType(), request.getRewardValue());
@@ -61,10 +61,10 @@ public class MissionServiceImpl implements MissionService {
       log.error("Create mission BaseException - name: {}, errorCode: {}, message: {}",
           request.getMissionName(), e.getErrorCode(), e.getDescription());
       throw BaseException.builder()
-              .httpStatus(HttpStatus.BAD_REQUEST)
-              .errorCode("BAD_REQUEST")
-              .description("Failed to create mission: " +  e.getDescription())
-              .build();
+          .httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("BAD_REQUEST")
+          .description("Failed to create mission: " + e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("Create mission Exception - name: {}, error: {}",
           request.getMissionName(), e.getMessage(), e);
@@ -78,23 +78,25 @@ public class MissionServiceImpl implements MissionService {
 
   @Override
   public void submitMission(Long id) {
+    log.info("Submitting mission - id: {}", id);
     try {
       VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
           RequestStatus.INIT);
+      missionGrpcClient.updateMissionStatus(id, RequestStatus.PENDING_APPROVE);
+
       entity.setStatus(RequestStatus.PENDING_APPROVE);
       entity.setUpdatedBy(authorizationService.getName());
       voucherRequestRepository.save(entity);
-
-      GetMissionByIdResponse grpcResponse = missionGrpcClient.getMissionById(id);
-      CreateMissionRequest missionRequest = MissionMapper.toCreateMissionRequest(grpcResponse);
-      missionRequest.setTaskStatus(RequestStatus.PENDING_APPROVE);
-      missionGrpcClient.createMission(missionRequest);
 
       log.info("Mission submitted - id: {}", id);
     } catch (BaseException e) {
       log.error("Submit mission BaseException - id: {}, errorCode: {}, message: {}",
           id, e.getErrorCode(), e.getDescription());
-      throw e;
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("Submit mission Exception - id: {}, error: {}", id, e.getMessage(), e);
       throw BaseException.builder()
@@ -110,20 +112,21 @@ public class MissionServiceImpl implements MissionService {
     try {
       VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
           RequestStatus.INIT);
+      missionGrpcClient.updateMissionStatus(id, RequestStatus.CANCELLED);
+
       entity.setStatus(RequestStatus.CANCELLED);
       entity.setUpdatedBy(authorizationService.getName());
       voucherRequestRepository.save(entity);
-
-      GetMissionByIdResponse grpcResponse = missionGrpcClient.getMissionById(id);
-      CreateMissionRequest missionRequest = MissionMapper.toCreateMissionRequest(grpcResponse);
-      missionRequest.setTaskStatus(RequestStatus.CANCELLED);
-      missionGrpcClient.createMission(missionRequest);
 
       log.info("Mission cancelled - id: {}", id);
     } catch (BaseException e) {
       log.error("Cancel mission BaseException - id: {}, errorCode: {}, message: {}",
           id, e.getErrorCode(), e.getDescription());
-      throw e;
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("Cancel mission Exception - id: {}, error: {}", id, e.getMessage(), e);
       throw BaseException.builder()
@@ -151,23 +154,28 @@ public class MissionServiceImpl implements MissionService {
 
       RequestStatus newStatus;
       if (request.getAction() == ConfirmAction.REJECTED) {
-        voucherService.handleRejected(entity, request.getReason());
         newStatus = RequestStatus.REJECTED;
       } else {
-        voucherService.handleApproved(entity);
         newStatus = RequestStatus.APPROVED;
       }
 
-      GetMissionByIdResponse grpcResponse = missionGrpcClient.getMissionById(id);
-      CreateMissionRequest missionRequest = MissionMapper.toCreateMissionRequest(grpcResponse);
-      missionRequest.setTaskStatus(newStatus);
-      missionGrpcClient.createMission(missionRequest);
+      missionGrpcClient.updateMissionStatus(id, newStatus);
+
+      if (request.getAction() == ConfirmAction.REJECTED) {
+        voucherService.handleRejected(entity, request.getReason());
+      } else {
+        voucherService.handleApproved(entity);
+      }
 
       log.info("Mission confirmed - id: {}, action: {}", id, request.getAction());
     } catch (BaseException e) {
       log.error("Confirm mission BaseException - id: {}, errorCode: {}, message: {}",
           id, e.getErrorCode(), e.getDescription());
-      throw e;
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("Confirm mission Exception - id: {}, error: {}", id, e.getMessage(), e);
       throw BaseException.builder()
@@ -181,43 +189,33 @@ public class MissionServiceImpl implements MissionService {
   @Override
   public MissionResponse searchMissions(String nameStore, RewardType rewardType,
       TaskStatus taskStatus, Pageable pageable) {
-    List<String> status;
+
     if (authorizationService.isCheckerRole()) {
-      status = List.of(TaskStatus.PENDING_APPROVE.name(), TaskStatus.APPROVED.name(),
+      List<String> allowedStatuses = List.of(
+          TaskStatus.PENDING_APPROVE.name(), TaskStatus.APPROVED.name(),
           TaskStatus.FAILED.name(), TaskStatus.FINISH.name(), TaskStatus.REJECTED.name());
-      if (taskStatus != null && !status.contains(taskStatus.name())) {
-        return MissionResponse.builder()
-            .data(Collections.emptyList())
-            .totalElements(0)
-            .totalPages(0)
-            .page(pageable.getPageNumber())
-            .size(pageable.getPageSize())
-            .build();
-      }
-    }
-    String nameStorePartner = nameStore;
-    if (authorizationService.isPartner()) {
-      nameStorePartner = authorizationService.getName();
-      if (!identityGrpcClient.checkNameStore(nameStorePartner).getExists()) {
-        return MissionResponse.builder()
-            .data(Collections.emptyList())
-            .totalElements(0)
-            .totalPages(0)
-            .page(pageable.getPageNumber())
-            .size(pageable.getPageSize())
-            .build();
-      }
-      if (!Objects.equals(nameStorePartner, identityGrpcClient.getNameStore(authorizationService.getUserId()))) {
-        throw BaseException.builder()
-            .httpStatus(HttpStatus.NOT_FOUND)
-            .errorCode("NOT_FOUND")
-            .description("NameStore not found: " + nameStorePartner)
-            .build();
+      if (taskStatus != null && !allowedStatuses.contains(taskStatus.name())) {
+        return emptyMissionResponse(pageable);
       }
     }
 
-    SearchMissionResponse response = missionGrpcClient.searchMissions(nameStore, rewardType,
-        taskStatus, pageable);
+    Long partnerId = null;
+
+    if (authorizationService.isPartner()) {
+      partnerId = identityGrpcClient.getPartner(authorizationService.getUserId()).getId();
+    } else {
+      if (nameStore != null && !nameStore.isBlank()) {
+        try {
+          partnerId = identityGrpcClient.getPartnerByStoreName(nameStore).getId();
+        } catch (BaseException e) {
+          log.info("Partner not found for nameStore: {}", nameStore);
+          return emptyMissionResponse(pageable);
+        }
+      }
+    }
+
+    SearchMissionResponse response = missionGrpcClient.searchMissions(
+        partnerId, rewardType, taskStatus, pageable);
 
     return MissionMapper.toMissionResponse(response, pageable.getPageNumber(), pageable.getPageSize());
   }
@@ -239,6 +237,16 @@ public class MissionServiceImpl implements MissionService {
     return MissionDetailResponse.builder()
         .mission(missionDetail)
         .voucherDetail(voucherDetail)
+        .build();
+  }
+
+  private MissionResponse emptyMissionResponse(Pageable pageable) {
+    return MissionResponse.builder()
+        .data(Collections.emptyList())
+        .totalElements(0)
+        .totalPages(0)
+        .page(pageable.getPageNumber())
+        .size(pageable.getPageSize())
         .build();
   }
 

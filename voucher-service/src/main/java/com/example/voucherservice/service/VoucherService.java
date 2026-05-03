@@ -6,6 +6,7 @@ import com.example.voucherservice.constant.DiscountType;
 import com.example.voucherservice.constant.RequestMode;
 import com.example.voucherservice.constant.VoucherPurpose;
 import com.example.voucherservice.constant.VoucherStatus;
+import com.example.voucherservice.entity.VoucherDetailEntity;
 import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
 import com.example.voucherservice.dto.request.CreateVoucherRequest;
 import com.example.voucherservice.dto.request.CreateMissionRequest;
@@ -15,6 +16,7 @@ import com.example.voucherservice.dto.response.VoucherRequestResponse;
 import com.example.voucherservice.constant.RequestStatus;
 import com.example.voucherservice.dto.response.VoucherRequestResponsePage;
 import java.time.LocalDateTime;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface VoucherService {
@@ -40,4 +42,5 @@ public interface VoucherService {
     VoucherRequestResponse getVoucherById(Long id, String voucherName, RequestStatus status,
         Pageable pageable);
 
+    Page<VoucherDetailEntity> searchVouchersByTier(String customerTier, Pageable pageable);
 }

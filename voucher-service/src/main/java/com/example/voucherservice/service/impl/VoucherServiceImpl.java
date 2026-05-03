@@ -94,7 +94,11 @@ public class VoucherServiceImpl implements VoucherService {
       VoucherRequestStrategy strategy = strategyFactory.getStrategy(request.getDiscountType());
       strategy.processExcelRequest(requestEntity, dataList);
     } catch (BaseException e) {
-      throw e;
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       throw BaseException.builder()
           .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -142,7 +146,7 @@ public class VoucherServiceImpl implements VoucherService {
   public VoucherRequestResponsePage getVouchers(RequestStatus status, RequestMode requestMode,
       CreatorType creatorType, VoucherPurpose voucherPurpose, String storeName,
       LocalDateTime fromDate, LocalDateTime toDate, Pageable pageable) {
-
+    boolean isPartner = authorizationService.isPartner();
     if (authorizationService.isPartner()
         && creatorType != null && creatorType != CreatorType.PARTNER) {
       return VoucherRequestResponsePage.builder()
@@ -152,6 +156,14 @@ public class VoucherServiceImpl implements VoucherService {
           .page(pageable.getPageNumber())
           .size(pageable.getPageSize())
           .build();
+    }
+    String nameStorePartner ;
+    if (authorizationService.isPartner()) {
+      String userId = isPartner ? authorizationService.getUserId() : null;
+       nameStorePartner = isPartner ? identityGrpcClient.getNameStore(userId) : null;
+
+    }else {
+      nameStorePartner= storeName;
     }
 
     String statusValue = status != null ? status.name() : null;
@@ -176,7 +188,7 @@ public class VoucherServiceImpl implements VoucherService {
     String createdBy = authorizationService.isPartner() ? authorizationService.getName() : null;
 
     Specification<VoucherRequestEntity> spec = VoucherRequestSpecification.withFilters(
-        listStatus, fromDate, toDate, createdBy, requestMode, creatorType, voucherPurpose, storeName);
+        listStatus, fromDate, toDate, createdBy, requestMode, creatorType, voucherPurpose, nameStorePartner);
 
     Page<VoucherRequestEntity> pageResult = voucherRequestRepository.findAll(spec, pageable);
 
@@ -261,8 +273,8 @@ public class VoucherServiceImpl implements VoucherService {
     strategy.validateRequest(request);
 
     String username = authorizationService.getName();
-    String partnerId = isPartner ? authorizationService.getUserId() : null;
-    String storeName = isPartner ? identityGrpcClient.getNameStore(partnerId) : null;
+    String userId = isPartner ? authorizationService.getUserId() : null;
+    String storeName = isPartner ? identityGrpcClient.getNameStore(userId) : null;
     voucherServiceHelper.saveVoucher(request, username, isPartner, storeName);
   }
 
@@ -458,5 +470,21 @@ public class VoucherServiceImpl implements VoucherService {
     return response;
   }
 
+  @Override
+  public Page<VoucherDetailEntity> searchVouchersByTier(String customerTier, Pageable pageable) {
+    CustomerTier tier = CustomerTier.valueOf(customerTier);
+    List<CustomerTier> accessibleTiers = tier.accessibleTiers();
+
+    List<String> huntRequestIds = voucherRequestRepository
+        .findByVoucherPurpose(VoucherPurpose.HUNT)
+        .stream()
+        .map(VoucherRequestEntity::getRequestId)
+        .toList();
+
+    Specification<VoucherDetailEntity> spec =
+        VoucherDetailSpecification.withCustomerTierAccess(accessibleTiers, huntRequestIds);
+
+    return voucherRepository.findAll(spec, pageable);
+  }
 
 }

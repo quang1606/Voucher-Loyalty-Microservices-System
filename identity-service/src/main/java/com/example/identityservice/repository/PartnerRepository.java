@@ -13,5 +13,7 @@ public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
   boolean existsByStoreName(String storeName);
 
+  Optional<Partner> findByStoreName(String storeName);
+
   Optional<Object> findStoreNameByUserId(UUID uuid);
 }

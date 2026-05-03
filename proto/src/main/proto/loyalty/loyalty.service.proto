@@ -11,4 +11,5 @@ service LoyaltyService {
   rpc CreateMission(CreateMissionRequestGrpc) returns (CreateMissionResponseGrpc);
   rpc GetMissionById(GetMissionByIdRequest) returns (GetMissionByIdResponse);
   rpc SearchMission(SearchMissionRequest) returns (SearchMissionResponse);
+  rpc UpdateMissionStatus(UpdateMissionStatusRequest) returns (UpdateMissionStatusResponse);
 }

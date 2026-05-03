@@ -11,4 +11,5 @@ service IdentityService {
   rpc GetIdentity(IdentityRequest) returns (IdentityResponse);
   rpc CheckNameStore(CheckNameStoreRequest) returns (CheckNameStoreResponse);
   rpc GetPartner(GetPartnerRequest) returns (GetPartnerResponse);
+  rpc GetPartnerByName(GetPartnerByNameRequest) returns (GetPartnerByNameResponse);
 }

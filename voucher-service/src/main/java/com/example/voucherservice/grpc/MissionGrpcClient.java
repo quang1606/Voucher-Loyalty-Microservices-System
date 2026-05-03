@@ -19,6 +19,8 @@ import vn.com.grpc.loyalty.entity.RewardType;
 import vn.com.grpc.loyalty.entity.SearchMissionRequest;
 import vn.com.grpc.loyalty.entity.SearchMissionResponse;
 import vn.com.grpc.loyalty.entity.TaskStatus;
+import vn.com.grpc.loyalty.entity.UpdateMissionStatusRequest;
+import vn.com.grpc.loyalty.entity.UpdateMissionStatusResponse;
 import vn.com.grpc.loyalty.service.LoyaltyServiceGrpc;
 
 @Service
@@ -32,6 +34,7 @@ public class MissionGrpcClient {
   private LoyaltyServiceGrpc.LoyaltyServiceBlockingStub stub;
   private final AuthorizationService authorizationService;
   private final IdentityGrpcClient identityGrpcClient;
+
   public void createMission(CreateMissionRequest request) {
     long partnerId = 0L;
     if (authorizationService.isPartner()) {
@@ -69,7 +72,11 @@ public class MissionGrpcClient {
     } catch (BaseException e) {
       log.error("gRPC createMission BaseException - missionName: {}, error: {}",
           request.getMissionName(), e.getDescription());
-      throw e;
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("gRPC createMission Exception - missionName: {}, error: {}",
           request.getMissionName(), e.getMessage(), e);
@@ -105,7 +112,11 @@ public class MissionGrpcClient {
     } catch (BaseException e) {
       log.error("gRPC getMissionById BaseException - missionId: {}, error: {}",
           missionId, e.getDescription());
-      throw e;
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("gRPC getMissionById Exception - missionId: {}, error: {}",
           missionId, e.getMessage(), e);
@@ -117,16 +128,19 @@ public class MissionGrpcClient {
     }
   }
 
-  public SearchMissionResponse searchMissions(String nameStore, com.example.voucherservice.constant.RewardType rewardType,
+  public SearchMissionResponse searchMissions(Long partnerId,
+      com.example.voucherservice.constant.RewardType rewardType,
       com.example.voucherservice.constant.TaskStatus taskStatus, Pageable pageable) {
+
     SearchMissionRequest.Builder builder = SearchMissionRequest.newBuilder()
         .setRequestInfo(grpcUtils.builderRequestInfo())
         .setPageable(
             vn.com.grpc.loyalty.entity.Pageable.newBuilder()
                 .setPage(pageable.getPageNumber())
                 .setSize(pageable.getPageSize()).build());
-    if (nameStore != null) {
-      builder.setNameStore(nameStore);
+
+    if (partnerId != null && partnerId > 0) {
+      builder.setPartnerId(partnerId);
     }
     if (rewardType != null) {
       builder.setRewardType(RewardType.valueOf(rewardType.name()));
@@ -134,16 +148,15 @@ public class MissionGrpcClient {
     if (taskStatus != null) {
       builder.setTaskStatus(TaskStatus.valueOf(taskStatus.name()));
     }
+
     SearchMissionRequest request = builder.build();
-    log.info("gRPC searchMissions request - nameStore: {} - rewardType: {} - taskStatus: {}", nameStore, rewardType, taskStatus);
+    log.info("gRPC searchMissions request - partnerId: {}, rewardType: {}, taskStatus: {}",
+        partnerId, rewardType, taskStatus);
+
     try {
       SearchMissionResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
           .searchMission(request);
-      log.info("gRPC response : {}", response);
-      response.getResponseInfo().getErrorCode();
-      if (!"success".equalsIgnoreCase(
-                response.getResponseInfo().getErrorCode())
-      ) {
+      if (!"success".equalsIgnoreCase(response.getResponseInfo().getErrorCode())) {
         throw BaseException.builder()
             .httpStatus(HttpStatus.BAD_REQUEST)
             .errorCode(response.getResponseInfo().getErrorCode())
@@ -151,12 +164,54 @@ public class MissionGrpcClient {
             .build();
       }
       return response;
+    } catch (BaseException e) {
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("gRPC searchMissions Exception - error: {}", e.getMessage(), e);
       throw BaseException.builder()
           .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .errorCode("GRPC_ERROR")
           .description("Failed to search missions")
+          .build();
+    }
+  }
+
+  public void updateMissionStatus(Long missionId, com.example.voucherservice.constant.RequestStatus status) {
+    UpdateMissionStatusRequest request = UpdateMissionStatusRequest.newBuilder()
+        .setRequestInfo(grpcUtils.builderRequestInfo())
+        .setMissionId(missionId)
+        .setTaskStatus(TaskStatus.valueOf(status.name()))
+        .build();
+
+    log.info("gRPC updateMissionStatus - missionId: {}, status: {}", missionId, status);
+
+    try {
+      UpdateMissionStatusResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
+          .updateMissionStatus(request);
+      if (!"success".equalsIgnoreCase(response.getResponseInfo().getErrorCode())) {
+        throw BaseException.builder()
+            .httpStatus(HttpStatus.BAD_REQUEST)
+            .errorCode(response.getResponseInfo().getErrorCode())
+            .description(response.getResponseInfo().getMessage())
+            .build();
+      }
+    } catch (BaseException e) {
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
+    } catch (Exception e) {
+      log.error("gRPC updateMissionStatus Exception - missionId: {}, error: {}",
+          missionId, e.getMessage(), e);
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .errorCode("GRPC_ERROR")
+          .description("Failed to update mission status: " + missionId)
           .build();
     }
   }

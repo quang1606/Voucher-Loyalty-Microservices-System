@@ -8,13 +8,12 @@ import com.example.identityservice.dto.request.RegisterCustomerRequest;
 import com.example.identityservice.dto.response.AllowedPagesResponse;
 import com.example.identityservice.dto.response.CreateUserResponse;
 import com.example.identityservice.dto.response.LoginResponse;
-import com.example.identityservice.entity.Customer;
 import com.example.identityservice.entity.User;
 import com.example.identityservice.constant.Role;
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;
 import org.springframework.http.HttpStatus;
-import com.example.identityservice.repository.CustomerRepository;
+import com.example.identityservice.grpc.CustomerGrpcClient;
 import com.example.identityservice.repository.UserRepository;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +40,7 @@ public class AuthService {
     private final KeycloakProperties keycloakProps;
     private final Keycloak keycloak;
     private final UserRepository userRepository;
-    private final CustomerRepository customerRepository;
+    private final CustomerGrpcClient customerGrpcClient;
     private final RestTemplate restTemplate = new RestTemplate();
 
     private UsersResource usersResource() {
@@ -165,9 +164,9 @@ public class AuthService {
             user.setRole(Role.CUSTOMER);
             userRepository.save(user);
 
-            Customer customer = new Customer();
-            customer.setUserId(userId);
-            customerRepository.save(customer);
+            customerGrpcClient.createCustomerProfile(
+                    userId.toString(),
+                    request.getFirstName() + " " + request.getLastName());
         } catch (Exception e) {
             log.error("DB save failed, rolling back Keycloak user: {}", kcId, e);
             usersResource().delete(kcId);

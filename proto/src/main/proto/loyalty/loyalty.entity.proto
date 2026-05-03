@@ -64,7 +64,7 @@ message GetMissionByIdResponse {
 
 message SearchMissionRequest {
   base.RequestInfo requestInfo = 1;
-  string nameStore = 2;
+  int64 partner_id = 2;
   RewardType reward_type = 3;
   TaskStatus task_status = 4;
   Pageable pageable = 5;
@@ -95,4 +95,14 @@ message MissionInfo {
   TaskStatus task_status = 10;
   string request_id=11;
 
+}
+
+message UpdateMissionStatusRequest {
+  base.RequestInfo requestInfo = 1;
+  int64 mission_id = 2;
+  TaskStatus task_status = 3;
+}
+
+message UpdateMissionStatusResponse {
+  base.ResponseInfo responseInfo = 1;
 }

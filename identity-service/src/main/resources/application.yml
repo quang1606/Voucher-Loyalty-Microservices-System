@@ -4,6 +4,10 @@ server:
 grpc:
   server:
     port: ${GRPC_SERVER_PORT:9091}
+  client:
+    customer-service:
+      address: static://${CUSTOMER_GRPC_HOST:localhost}:${CUSTOMER_GRPC_PORT:9094}
+      negotiation-type: plaintext
 
 spring:
   application:
@@ -34,7 +38,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: false
     properties:
       hibernate:

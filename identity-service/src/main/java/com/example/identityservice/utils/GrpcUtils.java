@@ -4,10 +4,12 @@ import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import vn.com.grpc.base.entity.RequestInfo;
 import vn.com.grpc.base.entity.ResponseInfo;
 import vn.com.grpc.base.entity.ResponseInfo.Builder;
 
+@Component
 public class GrpcUtils {
 
   @Value("${spring.application.name}")

@@ -28,6 +28,18 @@ message CheckNameStoreResponse {
   bool exists = 2;
 }
 
+message GetPartnerByNameRequest {
+  base.RequestInfo requestInfo = 1;
+  string store_name = 2;
+}
+
+message GetPartnerByNameResponse {
+  base.ResponseInfo responseInfo = 1;
+  int64 id = 2;
+  string user_id = 3;
+  string store_name = 4;
+}
+
 message GetPartnerRequest {
   base.RequestInfo requestInfo = 1;
   string user_id = 2;

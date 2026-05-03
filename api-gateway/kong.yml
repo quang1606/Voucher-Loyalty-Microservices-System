@@ -55,3 +55,10 @@ services:
       - name: voucher-route
         paths:
           - /api/vouchers
+
+  - name: customer-service
+    url: http://customer-service:8084
+    routes:
+      - name: customer-route
+        paths:
+          - /api/customers

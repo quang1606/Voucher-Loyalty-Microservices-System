@@ -1,5 +1,6 @@
 package com.example.voucherservice.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class AuthorizationService {
 
     public Set<String> getAuthorities() {
@@ -88,7 +90,7 @@ public class AuthorizationService {
         if (auth == null || !(auth.getPrincipal() instanceof Jwt jwt)) {
             return null;
         }
-        return jwt.getClaimAsString("user_id");
+        return jwt.getSubject();
     }
 
 }

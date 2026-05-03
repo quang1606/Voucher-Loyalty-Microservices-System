@@ -13,6 +13,10 @@ public class MissionSpecification {
   public Specification<MissionEntity> createSpecification(SearchMissionRequest request) {
     Specification<MissionEntity> spec = Specification.where(null);
 
+    if (request.getPartnerId() > 0) {
+      spec = spec.and(partnerIdEquals(request.getPartnerId()));
+    }
+
     if (request.getRewardTypeValue() > 0
         && request.getRewardType() != vn.com.grpc.loyalty.entity.RewardType.UNRECOGNIZED) {
       spec = spec.and(rewardTypeEquals(RewardType.valueOf(request.getRewardType().name())));
@@ -26,12 +30,8 @@ public class MissionSpecification {
     return spec;
   }
 
-  private Specification<MissionEntity> nameStoreLike(String nameStore) {
-    return (root, query, cb) ->
-        cb.like(
-            cb.lower(root.get("nameStore")),
-            "%" + nameStore.trim().toLowerCase() + "%"
-        );
+  private Specification<MissionEntity> partnerIdEquals(Long partnerId) {
+    return (root, query, cb) -> cb.equal(root.get("partnerId"), partnerId);
   }
 
   private Specification<MissionEntity> rewardTypeEquals(RewardType rewardType) {

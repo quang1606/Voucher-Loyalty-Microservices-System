@@ -22,7 +22,7 @@
         <module>identity-service</module>
         <module>voucher-service</module>
         <module>loyalty-service</module>
-        <module>asset-service</module>
+        <module>customer-service</module>
         <module>notification-service</module>
     </modules>
 

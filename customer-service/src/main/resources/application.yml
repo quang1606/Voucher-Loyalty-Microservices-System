@@ -1,0 +1,75 @@
+server:
+  port: 8084
+
+grpc:
+  server:
+    port: ${GRPC_SERVER_PORT:9094}
+  client:
+    identity-service:
+      address: static://${IDENTITY_GRPC_HOST:localhost}:${IDENTITY_GRPC_PORT:9091}
+      negotiation-type: plaintext
+
+    loyalty-service:
+      address: static://${LOYALTY_GRPC_HOST:localhost}:${LOYALTY_GRPC_PORT:9093}
+      negotiation-type: plaintext
+
+    voucher-service:
+      address: static://${VOUCHER_GRPC_HOST:localhost}:${VOUCHER_GRPC_PORT:9099}
+      negotiation-type: plaintext
+
+logging:
+  level:
+    root: INFO
+    com.example.customerservice: INFO
+
+spring:
+  application:
+    name: customer-service
+  profiles:
+    active: default
+  config:
+    import:
+      - classpath:datasource.yml
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: customer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8180/realms/voucher-loyalty}
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package customer;
+
+import "base/base.request.proto";
+import "base/base.response.proto";
+
+option java_package = "vn.com.grpc.customer.entity";
+option java_multiple_files = true;
+
+message CreateCustomerProfileRequest {
+  base.RequestInfo requestInfo = 1;
+  string user_id = 2;
+  string full_name = 3;
+}
+
+message CreateCustomerProfileResponse {
+  base.ResponseInfo responseInfo = 1;
+}

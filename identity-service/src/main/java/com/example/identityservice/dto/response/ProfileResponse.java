@@ -1,6 +1,5 @@
 package com.example.identityservice.dto.response;
 
-import com.example.identityservice.constant.CustomerTier;
 import com.example.identityservice.constant.PartnerCategory;
 import com.example.identityservice.constant.Role;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -22,12 +20,8 @@ public class ProfileResponse {
     private String firstName;
     private String lastName;
     private Role role;
-    // Merchant
+    // Partner
     private String storeName;
     private String phone;
     private PartnerCategory category;
-    // Customer
-    private BigDecimal balance;
-    private CustomerTier tier;
-    private Long point;
 }

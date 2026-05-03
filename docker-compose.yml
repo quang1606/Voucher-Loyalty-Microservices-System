@@ -347,9 +347,11 @@ services:
     networks:
       - app-network
 
-  asset-service:
-    build: ./asset-service
-    container_name: asset-service
+  customer-service:
+    build: customer-servicee
+    container_name: customer-service
+    ports:
+      - "8084:8084"
     environment:
       DB_HOST: postgres
       DB_PORT: 5432

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import vn.com.grpc.identity.entity.CheckNameStoreRequest;
 import vn.com.grpc.identity.entity.CheckNameStoreResponse;
+import vn.com.grpc.identity.entity.GetPartnerByNameRequest;
+import vn.com.grpc.identity.entity.GetPartnerByNameResponse;
 import vn.com.grpc.identity.entity.GetPartnerRequest;
 import vn.com.grpc.identity.entity.GetPartnerResponse;
 import vn.com.grpc.identity.service.IdentityServiceGrpc;
@@ -24,7 +26,7 @@ public class IdentityGrpcClient {
   private final GrpcUtils grpcUtils;
 
   @GrpcClient("identity-service")
-  private IdentityServiceGrpc.IdentityServiceBlockingStub stub;
+  private  IdentityServiceGrpc.IdentityServiceBlockingStub stub;
 
   public String getNameStore(String UserId) {
     IdentityRequest request = IdentityRequest.newBuilder()
@@ -35,7 +37,7 @@ public class IdentityGrpcClient {
     log.info("gRPC getNameStore request - partnerId: {}", UserId);
 
     try {
-      IdentityResponse response = stub.withDeadlineAfter(30, TimeUnit.MILLISECONDS).getIdentity(request);
+      IdentityResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS).getIdentity(request);
       log.info("gRPC getNameStore response - partnerId: {}, nameStore: {}",
               UserId, response.getNameStore());
       String errorCode = response.getResponseInfo().getErrorCode();
@@ -50,7 +52,11 @@ public class IdentityGrpcClient {
     } catch (BaseException e) {
       log.error("gRPC getNameStore BaseException - partnerId: {}, error: {}",
               UserId, e.getDescription());
-      throw e;
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("gRPC getNameStore Exception - partnerId: {}, error: {}",
               UserId, e.getMessage(), e);
@@ -107,13 +113,56 @@ public class IdentityGrpcClient {
       log.info("gRPC getPartner response - userId: {}, storeName: {}", userId, response.getStoreName());
       return response;
     } catch (BaseException e) {
-      throw e;
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
     } catch (Exception e) {
       log.error("gRPC getPartner Exception - userId: {}, error: {}", userId, e.getMessage(), e);
       throw BaseException.builder()
           .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .errorCode("GRPC_ERROR")
           .description("Failed to get partner for userId: " + userId)
+          .build();
+    }
+  }
+
+  public GetPartnerByNameResponse getPartnerByStoreName(String storeName) {
+    GetPartnerByNameRequest request = GetPartnerByNameRequest.newBuilder()
+        .setRequestInfo(grpcUtils.builderRequestInfo())
+        .setStoreName(storeName)
+        .build();
+
+    log.info("gRPC getPartnerByStoreName request - storeName: {}", storeName);
+
+    try {
+      GetPartnerByNameResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
+          .getPartnerByName(request);
+      String errorCode = response.getResponseInfo().getErrorCode();
+      if (!"success".equalsIgnoreCase(errorCode)) {
+        throw BaseException.builder()
+            .httpStatus(HttpStatus.BAD_REQUEST)
+            .description(response.getResponseInfo().getMessage())
+            .errorCode(errorCode)
+            .build();
+      }
+      log.info("gRPC getPartnerByStoreName response - storeName: {}, partnerId: {}",
+          storeName, response.getId());
+      return response;
+    } catch (BaseException e) {
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
+    } catch (Exception e) {
+      log.error("gRPC getPartnerByStoreName Exception - storeName: {}, error: {}",
+          storeName, e.getMessage(), e);
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .errorCode("GRPC_ERROR")
+          .description("Failed to get partner by store name: " + storeName)
           .build();
     }
   }

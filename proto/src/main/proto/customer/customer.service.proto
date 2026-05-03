@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package customer;
+
+import "customer/customer.entity.proto";
+
+option java_package = "vn.com.grpc.customer.service";
+option java_multiple_files = true;
+
+service CustomerService {
+  rpc CreateCustomerProfile(CreateCustomerProfileRequest) returns (CreateCustomerProfileResponse);
+}

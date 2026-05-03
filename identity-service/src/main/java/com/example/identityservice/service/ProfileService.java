@@ -4,12 +4,12 @@ import com.example.identityservice.configuration.KeycloakProperties;
 import com.example.identityservice.dto.request.ChangePasswordRequest;
 import com.example.identityservice.dto.request.UpdateProfileRequest;
 import com.example.identityservice.dto.response.ProfileResponse;
+import com.example.identityservice.entity.Partner;
 import com.example.identityservice.entity.User;
 import com.example.identityservice.constant.Role;
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseException;
 import org.springframework.http.HttpStatus;
-import com.example.identityservice.repository.CustomerRepository;
 import com.example.identityservice.repository.PartnerRepository;
 import com.example.identityservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,6 @@ public class ProfileService {
     private final KeycloakProperties keycloakProps;
     private final UserRepository userRepository;
     private final PartnerRepository partnerRepository;
-    private final CustomerRepository customerRepository;
 
     private UUID getCurrentUserId() {
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -66,11 +65,6 @@ public class ProfileService {
                     builder.storeName(m.getStoreName())
                             .phone(m.getPhone())
                             .category(m.getCategory()));
-        } else if (user.getRole() == Role.CUSTOMER) {
-            customerRepository.findByUserId(userId).ifPresent(c ->
-                    builder.balance(c.getBalance())
-                            .tier(c.getTier())
-                            .point(c.getPoint()));
         }
         return builder.build();
     }
@@ -116,12 +110,13 @@ public class ProfileService {
     }
 
   public String getNameStore(String partnerId) {
-      return partnerRepository.findStoreNameByUserId(UUID.fromString(partnerId)).orElseThrow(() ->
+       Partner partner = partnerRepository.findByUserId(UUID.fromString(partnerId)).orElseThrow(() ->
               BaseException.builder()
                       .httpStatus(HttpStatus.NOT_FOUND)
                       .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
                       .description("Partner không tồn tại")
-                      .build()).toString();
+                      .build());
+       return  partner.getStoreName();
   }
 
   public boolean existsByStoreName(String storeName) {
@@ -134,6 +129,15 @@ public class ProfileService {
               .httpStatus(HttpStatus.NOT_FOUND)
               .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
               .description("Partner không tồn tại với userId: " + userId)
+              .build());
+  }
+
+  public Partner getPartnerByStoreName(String storeName) {
+      return partnerRepository.findByStoreName(storeName)
+          .orElseThrow(() -> BaseException.builder()
+              .httpStatus(HttpStatus.NOT_FOUND)
+              .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
+              .description("Partner không tồn tại với storeName: " + storeName)
               .build());
   }
 }

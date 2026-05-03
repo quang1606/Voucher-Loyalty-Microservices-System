@@ -75,8 +75,8 @@ public class MissionServiceImpl implements MissionService {
 
     @Override
     public Page<MissionEntity> searchMission(SearchMissionRequest request) {
-        log.info("Searching missions with filters - partnerId: {}, rewardType: {}, status: {}", 
-            request.getNameStore(), request.getRewardType(), request.getTaskStatus());
+        log.info("Searching missions with filters - PartnerId: {}, rewardType: {}, status: {}",
+            request.getPartnerId(), request.getRewardType(), request.getTaskStatus());
         
         Specification<MissionEntity> spec = missionSpecification.createSpecification(request);
         Pageable pageable = createPageable(request.getPageable());
@@ -101,5 +101,13 @@ public class MissionServiceImpl implements MissionService {
 
     private LocalDateTime toLocalDateTime(long epochMillis) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMillis), ZoneId.systemDefault());
+    }
+
+    @Override
+    public void updateMissionStatus(Long missionId, String status) {
+        MissionEntity entity = getMissionById(missionId);
+        entity.setStatus(TaskStatus.valueOf(status));
+        missionRepository.save(entity);
+        log.info("Mission status updated - id: {}, newStatus: {}", missionId, status);
     }
 }

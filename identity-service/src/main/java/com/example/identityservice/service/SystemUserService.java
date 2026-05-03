@@ -10,10 +10,8 @@ import com.example.identityservice.dto.request.ResetPasswordRequest;
 import com.example.identityservice.dto.request.UpdateUserRequest;
 import com.example.identityservice.dto.response.CreateUserResponse;
 import com.example.identityservice.dto.response.SystemUserResponse;
-import com.example.identityservice.entity.Customer;
 import com.example.identityservice.entity.Partner;
 import com.example.identityservice.entity.User;
-import com.example.identityservice.repository.CustomerRepository;
 import com.example.identityservice.repository.PartnerRepository;
 import com.example.identityservice.repository.UserRepository;
 import jakarta.ws.rs.core.Response;
@@ -42,7 +40,6 @@ public class SystemUserService {
     private final KeycloakProperties keycloakProps;
     private final UserRepository userRepository;
     private final PartnerRepository partnerRepository;
-    private final CustomerRepository customerRepository;
 
     private UsersResource usersResource() {
         return keycloak.realm(keycloakProps.getRealm()).users();
@@ -52,8 +49,6 @@ public class SystemUserService {
         List<User> dbUsers = userRepository.findAll();
         Map<UUID, Partner> merchants = partnerRepository.findAll().stream()
                 .collect(Collectors.toMap(Partner::getUserId, m -> m));
-        Map<UUID, Customer> customers = customerRepository.findAll().stream()
-                .collect(Collectors.toMap(Customer::getUserId, c -> c));
 
         return dbUsers.stream().map(user -> {
             UUID uid = user.getUserId();
@@ -78,12 +73,6 @@ public class SystemUserService {
                         .phone(m.getPhone())
                         .category(m.getCategory())
                         .status(m.getStatus());
-            }
-            Customer c = customers.get(uid);
-            if (c != null) {
-                builder.balance(c.getBalance())
-                        .tier(c.getTier())
-                        .point(c.getPoint());
             }
             return builder.build();
         }).collect(Collectors.toList());
@@ -248,7 +237,6 @@ public class SystemUserService {
                         .build());
         usersResource().delete(id.toString());
         partnerRepository.deleteByUserId(id);
-        customerRepository.deleteByUserId(id);
         userRepository.deleteById(id);
     }
 
