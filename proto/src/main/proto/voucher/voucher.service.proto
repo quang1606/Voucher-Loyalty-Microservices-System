@@ -9,4 +9,6 @@ option java_multiple_files = true;
 
 service VoucherGrpcService {
   rpc SearchVoucher(SearchVoucherRequest) returns (SearchVoucherResponse);
+  rpc GetVoucherByRequestId(GetVoucherByRequestIdRequest) returns (GetVoucherByRequestIdResponse);
+  rpc GetVoucherById(GetVoucherByIdRequest) returns (GetVoucherByIdResponse);
 }

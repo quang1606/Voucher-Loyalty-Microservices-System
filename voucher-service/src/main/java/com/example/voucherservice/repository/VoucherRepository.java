@@ -44,4 +44,6 @@ public interface VoucherRepository extends JpaRepository<VoucherDetailEntity, Lo
 
     @Query("SELECT v.requestId AS requestId, v.requestStatus AS requestStatus, COUNT(v) AS count FROM VoucherDetailEntity v WHERE v.requestId IN :requestIds GROUP BY v.requestId, v.requestStatus")
     List<ProjectionStatus> countStatusByRequestIds(List<String> requestIds);
+
+    int countByRequestId(String requestId);
 }

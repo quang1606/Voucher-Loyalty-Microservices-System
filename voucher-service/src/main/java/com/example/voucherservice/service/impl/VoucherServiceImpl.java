@@ -485,6 +485,16 @@ public class VoucherServiceImpl implements VoucherService {
         VoucherDetailSpecification.withCustomerTierAccess(accessibleTiers, huntRequestIds);
 
     return voucherRepository.findAll(spec, pageable);
+  }  @Override
+  public VoucherRequestEntity getVoucherByRequestId(String requestId) {
+    log.info("Getting voucher by requestId: {}", requestId);
+    return voucherRequestRepository.findByRequestId(requestId)
+        .orElseThrow(() -> BaseException.builder()
+            .httpStatus(HttpStatus.NOT_FOUND)
+            .errorCode("VOUCHER_REQUEST_NOT_FOUND")
+            .description("Voucher request not found with requestId: " + requestId)
+            .build());
   }
+
 
 }

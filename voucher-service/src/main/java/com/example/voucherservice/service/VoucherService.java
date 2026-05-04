@@ -7,6 +7,7 @@ import com.example.voucherservice.constant.RequestMode;
 import com.example.voucherservice.constant.VoucherPurpose;
 import com.example.voucherservice.constant.VoucherStatus;
 import com.example.voucherservice.entity.VoucherDetailEntity;
+import com.example.voucherservice.entity.VoucherRequestEntity;
 import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
 import com.example.voucherservice.dto.request.CreateVoucherRequest;
 import com.example.voucherservice.dto.request.CreateMissionRequest;
@@ -43,4 +44,6 @@ public interface VoucherService {
         Pageable pageable);
 
     Page<VoucherDetailEntity> searchVouchersByTier(String customerTier, Pageable pageable);
+
+    VoucherRequestEntity getVoucherByRequestId(String requestId);
 }

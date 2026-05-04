@@ -45,3 +45,59 @@ message VoucherInfo {
   string status = 15;
   int64 created_at = 16;
 }
+
+message GetVoucherByRequestIdRequest {
+  base.RequestInfo requestInfo = 1;
+  string request_id = 2;
+}
+
+message GetVoucherByRequestIdResponse {
+  base.ResponseInfo responseInfo = 1;
+  VoucherRequestDetail voucher_request = 2;
+}
+
+message VoucherRequestDetail {
+  string voucher_code = 1;
+  string voucher_name = 2;
+  string description = 3;
+  string discount_type = 4;
+  string discount_value = 5;
+  string max_discount = 6;
+  string min_order_value = 7;
+  int32 total_stock = 8;
+  int32 available_stock = 9;
+  int64 start_date = 10;
+  int64 end_date = 11;
+  string voucher_status = 12;
+  string name_store = 13;
+}
+
+message GetVoucherByIdRequest {
+  base.RequestInfo requestInfo = 1;
+  int64 voucher_id = 2;
+}
+
+message GetVoucherByIdResponse {
+  base.ResponseInfo responseInfo = 1;
+  VoucherDetail voucher = 2;
+}
+
+message VoucherDetail {
+  int64 id = 1;
+  string voucher_code = 2;
+  string voucher_name = 3;
+  string description = 4;
+  string customer_tier = 5;
+  string discount_type = 6;
+  string discount_value = 7;
+  string max_discount = 8;
+  string min_order_value = 9;
+  int32 total_stock = 10;
+  int32 available_stock = 11;
+  int32 max_collect = 12;
+  int64 start_date = 13;
+  int64 end_date = 14;
+  string status = 15;
+  int64 merchant_id = 16;
+  int64 created_at = 17;
+}
