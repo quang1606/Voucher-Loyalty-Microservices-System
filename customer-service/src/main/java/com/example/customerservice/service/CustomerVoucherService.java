@@ -1,18 +1,18 @@
 package com.example.customerservice.service;
 
 import com.example.customerservice.constant.CustomerVoucherStatus;
+import com.example.customerservice.dto.response.ApplicableVoucherListResponse;
+import com.example.customerservice.dto.response.AvailableVoucherListResponse;
 import com.example.customerservice.dto.response.CustomerVoucherListResponse;
-import com.example.customerservice.dto.response.CustomerVoucherResponse;
 import org.springframework.data.domain.Pageable;
-import vn.com.grpc.voucher.entity.SearchVoucherResponse;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 public interface CustomerVoucherService {
-    List<CustomerVoucherResponse> getMyVouchers(Long customerId);
-    SearchVoucherResponse getAvailableVouchersWithCollectedStatus(Long customerId, int page, int size);
+    AvailableVoucherListResponse getAvailableVouchersWithCollectedStatus(Long customerId, int page, int size);
     CustomerVoucherListResponse getCustomerVouchers(Long customerId, Long voucherId, 
                                                    CustomerVoucherStatus status,
                                                   Pageable pageable);
     void collectVoucher(Long customerId, Long voucherId);
+    ApplicableVoucherListResponse getApplicableVouchers(Long customerId, String nameStore, BigDecimal orderAmount);
 }

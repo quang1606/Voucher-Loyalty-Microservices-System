@@ -11,4 +11,5 @@ service VoucherGrpcService {
   rpc SearchVoucher(SearchVoucherRequest) returns (SearchVoucherResponse);
   rpc GetVoucherByRequestId(GetVoucherByRequestIdRequest) returns (GetVoucherByRequestIdResponse);
   rpc GetVoucherById(GetVoucherByIdRequest) returns (GetVoucherByIdResponse);
+  rpc GetMockInvoices(GetMockInvoicesRequest) returns (GetMockInvoicesResponse);
 }

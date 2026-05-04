@@ -1,8 +1,11 @@
 package com.example.voucherservice.grpc;
 
 import com.example.common.BaseException;
+import com.example.voucherservice.entity.MockInvoiceEntity;
 import com.example.voucherservice.entity.VoucherDetailEntity;
+import com.example.voucherservice.repository.MockInvoiceRepository;
 import com.example.voucherservice.repository.VoucherRepository;
+import com.example.voucherservice.repository.VoucherRequestRepository;
 import com.example.voucherservice.service.VoucherService;
 import com.example.voucherservice.utils.GrpcUtils;
 import io.grpc.stub.StreamObserver;
@@ -13,10 +16,13 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import vn.com.grpc.voucher.entity.GetMockInvoicesRequest;
+import vn.com.grpc.voucher.entity.GetMockInvoicesResponse;
 import vn.com.grpc.voucher.entity.GetVoucherByIdRequest;
 import vn.com.grpc.voucher.entity.GetVoucherByIdResponse;
 import vn.com.grpc.voucher.entity.GetVoucherByRequestIdRequest;
 import vn.com.grpc.voucher.entity.GetVoucherByRequestIdResponse;
+import vn.com.grpc.voucher.entity.MockInvoiceInfo;
 import vn.com.grpc.voucher.entity.SearchVoucherRequest;
 import vn.com.grpc.voucher.entity.SearchVoucherResponse;
 import vn.com.grpc.voucher.entity.VoucherDetail;
@@ -31,6 +37,8 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
 
     private final VoucherService voucherService;
     private final VoucherRepository voucherRepository;
+    private final MockInvoiceRepository mockInvoiceRepository;
+    private final VoucherRequestRepository voucherRequestRepository;
 
     @Override
     public void searchVoucher(SearchVoucherRequest request,
@@ -114,7 +122,7 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
                 .setVoucherName(entity.getVoucherName() != null ? entity.getVoucherName() : "")
                 .setDescription(entity.getDescription() != null ? entity.getDescription() : "")
                 .setCustomerTier(entity.getCustomerTier() != null ? entity.getCustomerTier().name() : "")
-                .setDiscountType(entity.getDiscountType() != null ? entity.getDiscountType().name() : "")
+                .setDiscountType(entity.getDiscountType() != null ? vn.com.grpc.voucher.entity.DiscountType.valueOf(entity.getDiscountType().name()) : vn.com.grpc.voucher.entity.DiscountType.FIXED)
                 .setDiscountValue(entity.getDiscountValue() != null ? entity.getDiscountValue().toPlainString() : "0")
                 .setMaxDiscount(entity.getMaxDiscount() != null ? entity.getMaxDiscount().toPlainString() : "0")
                 .setMinOrderValue(entity.getMinOrderValue() != null ? entity.getMinOrderValue().toPlainString() : "0")
@@ -129,13 +137,17 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
     }
 
     private VoucherDetail toVoucherDetail(VoucherDetailEntity entity) {
+        String creatorType = voucherRequestRepository.findByRequestId(entity.getRequestId())
+                .map(r -> r.getCreatorType() != null ? r.getCreatorType().name() : "").orElse("");
+        String nameStore = voucherRequestRepository.findByRequestId(entity.getRequestId())
+                .map(r -> r.getStoreName() != null ? r.getStoreName() : "").orElse("");
         return VoucherDetail.newBuilder()
                 .setId(entity.getId())
                 .setVoucherCode(entity.getVoucherCode())
                 .setVoucherName(entity.getVoucherName() != null ? entity.getVoucherName() : "")
                 .setDescription(entity.getDescription() != null ? entity.getDescription() : "")
                 .setCustomerTier(entity.getCustomerTier() != null ? entity.getCustomerTier().name() : "")
-                .setDiscountType(entity.getDiscountType() != null ? entity.getDiscountType().name() : "")
+                .setDiscountType(entity.getDiscountType() != null ? vn.com.grpc.voucher.entity.DiscountType.valueOf(entity.getDiscountType().name()) : vn.com.grpc.voucher.entity.DiscountType.FIXED)
                 .setDiscountValue(entity.getDiscountValue() != null ? entity.getDiscountValue().toPlainString() : "0")
                 .setMaxDiscount(entity.getMaxDiscount() != null ? entity.getMaxDiscount().toPlainString() : "0")
                 .setMinOrderValue(entity.getMinOrderValue() != null ? entity.getMinOrderValue().toPlainString() : "0")
@@ -145,16 +157,65 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
                 .setStartDate(entity.getStartDate() != null ? entity.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
                 .setEndDate(entity.getEndDate() != null ? entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
                 .setStatus(entity.getStatus() != null ? entity.getStatus().name() : "")
-                .setMerchantId(1L)
+                .setNameStore(nameStore)
+                .setCreatorType(!creatorType.isEmpty() ? vn.com.grpc.voucher.entity.CreatorType.valueOf(creatorType) : vn.com.grpc.voucher.entity.CreatorType.PARTNER)
                 .setCreatedAt(entity.getCreatedAt() != null ? entity.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
                 .build();
     }
+    @Override
+    public void getMockInvoices(GetMockInvoicesRequest request,
+                                StreamObserver<GetMockInvoicesResponse> responseObserver) {
+        GetMockInvoicesResponse.Builder responseBuilder = GetMockInvoicesResponse.newBuilder();
+        try {
+            log.info("gRPC getMockInvoices - requestId: {}, nameStore: {}, title: {}",
+                    request.getRequestInfo().getRequestId(), request.getNameStore(), request.getTitle());
+
+            String nameStore = request.getNameStore().isEmpty() ? null : request.getNameStore();
+            String title = request.getTitle().isEmpty() ? null : request.getTitle();
+            int page = request.getPage();
+            int size = request.getSize() > 0 ? request.getSize() : 20;
+
+            Page<MockInvoiceEntity> pageResult = mockInvoiceRepository.findByFilters(
+                    nameStore, title, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt")));
+
+            responseBuilder
+                    .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
+                    .setTotalElements((int) pageResult.getTotalElements())
+                    .setTotalPages(pageResult.getTotalPages());
+
+            for (MockInvoiceEntity entity : pageResult.getContent()) {
+                responseBuilder.addInvoices(toMockInvoiceInfo(entity));
+            }
+        } catch (BaseException e) {
+            log.error("gRPC getMockInvoices BaseException - errorCode: {}, message: {}",
+                    e.getErrorCode(), e.getDescription());
+            responseBuilder.setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e));
+        } catch (Exception e) {
+            log.error("gRPC getMockInvoices Exception - error: {}", e.getMessage(), e);
+            responseBuilder.setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e));
+        } finally {
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+        }
+    }
+
+    private MockInvoiceInfo toMockInvoiceInfo(MockInvoiceEntity entity) {
+        return MockInvoiceInfo.newBuilder()
+                .setId(entity.getId())
+                .setTitle(entity.getTitle() != null ? entity.getTitle() : "")
+                .setNameStore(entity.getNameStore() != null ? entity.getNameStore() : "")
+                .setAmount(entity.getAmount() != null ? entity.getAmount().toPlainString() : "0")
+                .setCreatedAt(entity.getCreatedAt() != null ? entity.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
+                .setUpdatedAt(entity.getUpdatedAt() != null ? entity.getUpdatedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
+                .build();
+    }
+
   private VoucherRequestDetail mapToVoucherRequestDetail(VoucherDetailEntity entity, String nameStore) {
     return VoucherRequestDetail.newBuilder()
         .setVoucherCode(entity.getVoucherCode() != null ? entity.getVoucherCode() : "")
         .setVoucherName(entity.getVoucherName() != null ? entity.getVoucherName() : "")
         .setDescription(entity.getDescription() != null ? entity.getDescription() : "")
-        .setDiscountType(entity.getDiscountType() != null ? entity.getDiscountType().name() : "")
+        .setDiscountType(entity.getDiscountType() != null ? vn.com.grpc.voucher.entity.DiscountType.valueOf(entity.getDiscountType().name()) : vn.com.grpc.voucher.entity.DiscountType.FIXED)
         .setDiscountValue(entity.getDiscountValue() != null ? entity.getDiscountValue().toString() : "")
         .setMaxDiscount(entity.getMaxDiscount() != null ? entity.getMaxDiscount().toString() : "")
         .setMinOrderValue(entity.getMinOrderValue() != null ? entity.getMinOrderValue().toString() : "")

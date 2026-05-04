@@ -1,12 +1,9 @@
-package com.example.voucherservice.dto.response;
+package com.example.customerservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -16,8 +13,7 @@ public class MockInvoiceResponse {
     private Long id;
     private String title;
     private String nameStore;
-    private BigDecimal amount;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String amount;
+    private Long createdAt;
+    private Long updatedAt;
 }
-

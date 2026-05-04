@@ -1,9 +1,13 @@
 package com.example.customerservice.service.impl;
 
 import com.example.common.BaseException;
+import com.example.customerservice.constant.CreatorType;
 import com.example.customerservice.constant.CustomerVoucherStatus;
+import com.example.customerservice.dto.response.ApplicableVoucherListResponse;
+import com.example.customerservice.dto.response.ApplicableVoucherResponse;
+import com.example.customerservice.dto.response.AvailableVoucherListResponse;
+import com.example.customerservice.dto.response.AvailableVoucherResponse;
 import com.example.customerservice.dto.response.CustomerVoucherListResponse;
-import com.example.customerservice.dto.response.CustomerVoucherResponse;
 import com.example.customerservice.entity.CustomerProfile;
 import com.example.customerservice.entity.CustomerVoucher;
 import com.example.customerservice.grpc.VoucherGrpcClient;
@@ -19,9 +23,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import vn.com.grpc.voucher.entity.SearchVoucherResponse;
+import vn.com.grpc.voucher.entity.VoucherInfo;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,15 +41,11 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
     private final VoucherGrpcClient voucherGrpcClient;
     private final AuthorizationService authorizationService;
 
-    @Override
-    public List<CustomerVoucherResponse> getMyVouchers(Long customerId) {
-        List<CustomerVoucher> vouchers = customerVoucherRepository.findByCustomerId(customerId);
-        return CustomerVoucherMapper.toResponseList(vouchers);
-    }
+
 
 
     @Override
-    public SearchVoucherResponse getAvailableVouchersWithCollectedStatus(Long customerId, int page, int size) {
+    public AvailableVoucherListResponse getAvailableVouchersWithCollectedStatus(Long customerId, int page, int size) {
         String userId = authorizationService.getUserId();
         CustomerProfile profile = customerProfileRepository.findByUserId(UUID.fromString(userId))
                 .orElseThrow(() -> BaseException.builder()
@@ -50,16 +54,40 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
                         .description("Customer profile not found")
                         .build());
 
-        SearchVoucherResponse response = voucherGrpcClient.searchVouchers(profile.getTier().name(), page, size, "createdAt,desc");
-        
-        // Kiểm tra trạng thái đã lấy voucher cho từng voucher
-        if (response.getVouchersList() != null) {
-            response.getVouchersList().forEach(voucher -> {
-                boolean isCollected = customerVoucherRepository.findByCustomerIdAndVoucherId(customerId, voucher.getId()).isPresent();
-            });
-        }
+        SearchVoucherResponse grpcResponse = voucherGrpcClient.searchVouchers(profile.getTier().name(), page, size, "createdAt,desc");
 
-        return response;
+        List<AvailableVoucherResponse> vouchers = grpcResponse.getVouchersList().stream()
+                .map(v -> toAvailableVoucherResponse(v, customerId))
+                .collect(Collectors.toList());
+
+        return AvailableVoucherListResponse.builder()
+                .data(vouchers)
+                .totalElements(grpcResponse.getTotalElements())
+                .totalPages(grpcResponse.getTotalPages())
+                .build();
+    }
+
+    private AvailableVoucherResponse toAvailableVoucherResponse(VoucherInfo v, Long customerId) {
+        boolean isCollected = customerVoucherRepository.findByCustomerIdAndVoucherId(customerId, v.getId()).isPresent();
+        return AvailableVoucherResponse.builder()
+                .id(v.getId())
+                .voucherCode(v.getVoucherCode())
+                .voucherName(v.getVoucherName())
+                .description(v.getDescription())
+                .customerTier(v.getCustomerTier())
+                .discountType(v.getDiscountType().name())
+                .discountValue(v.getDiscountValue())
+                .maxDiscount(v.getMaxDiscount())
+                .minOrderValue(v.getMinOrderValue())
+                .totalStock(v.getTotalStock())
+                .availableStock(v.getAvailableStock())
+                .maxCollect(v.getMaxCollect())
+                .startDate(v.getStartDate())
+                .endDate(v.getEndDate())
+                .status(v.getStatus())
+                .createdAt(v.getCreatedAt())
+                .collected(isCollected)
+                .build();
     }
 
     @Override
@@ -104,12 +132,71 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
         customerVoucher.setVoucherId(voucherId);
         customerVoucher.setAvailableUsage(voucherDetail.getMaxCollect());
         customerVoucher.setVoucherCode(voucherDetail.getVoucherCode());
-        customerVoucher.setMerchantId(voucherDetail.getMerchantId());
+        customerVoucher.setNameStore(voucherDetail.getNameStore());
+        customerVoucher.setCreatorType(CreatorType.valueOf(voucherDetail.getCreatorType().name()));
         customerVoucher.setStatus(CustomerVoucherStatus.AVAILABLE);
         customerVoucher.setObtainedAt(java.time.LocalDateTime.now());
         
         customerVoucherRepository.save(customerVoucher);
         log.info("Voucher collected successfully - customerId: {}, voucherId: {}, voucherCode: {}",
                 customerId, voucherId, voucherDetail.getVoucherCode());
+    }
+
+    @Override
+    public ApplicableVoucherListResponse getApplicableVouchers(Long customerId, String nameStore, BigDecimal orderAmount) {
+        log.info("Getting applicable vouchers - customerId: {}, nameStore: {}, orderAmount: {}",
+                customerId, nameStore, orderAmount);
+
+        List<CustomerVoucher> customerVouchers = customerVoucherRepository
+                .findAvailableByCustomerAndStore(customerId, nameStore, CreatorType.SYSTEM);
+
+        List<ApplicableVoucherResponse> results = new ArrayList<>();
+
+        for (CustomerVoucher cv : customerVouchers) {
+            try {
+                vn.com.grpc.voucher.entity.GetVoucherByIdResponse grpcResponse =
+                        voucherGrpcClient.getVoucherById(cv.getVoucherId());
+                vn.com.grpc.voucher.entity.VoucherDetail detail = grpcResponse.getVoucher();
+
+                boolean applicable = true;
+                String reason = null;
+
+                if (detail.getAvailableStock() <= 0) {
+                    applicable = false;
+                    reason = "Voucher đã hết lượt sử dụng";
+                } else {
+                    BigDecimal minOrder = new BigDecimal(detail.getMinOrderValue());
+                    if (orderAmount.compareTo(minOrder) < 0) {
+                        applicable = false;
+                        reason = "Đơn hàng tối thiểu " + detail.getMinOrderValue();
+                    }
+                }
+
+                results.add(ApplicableVoucherResponse.builder()
+                        .voucherId(cv.getVoucherId())
+                        .voucherCode(cv.getVoucherCode())
+                        .voucherName(detail.getVoucherName())
+                        .description(detail.getDescription())
+                        .discountType(detail.getDiscountType().name())
+                        .discountValue(detail.getDiscountValue())
+                        .maxDiscount(detail.getMaxDiscount())
+                        .minOrderValue(detail.getMinOrderValue())
+                        .availableStock(detail.getAvailableStock())
+                        .nameStore(detail.getNameStore())
+                        .creatorType(detail.getCreatorType().name())
+                        .applicable(applicable)
+                        .reason(reason)
+                        .build());
+            } catch (Exception e) {
+                log.warn("Failed to get voucher detail for voucherId: {}, skip", cv.getVoucherId());
+            }
+        }
+
+        results.sort((a, b) -> Boolean.compare(b.isApplicable(), a.isApplicable()));
+
+        return ApplicableVoucherListResponse.builder()
+                .data(results)
+                .totalElements(results.size())
+                .build();
     }
 }

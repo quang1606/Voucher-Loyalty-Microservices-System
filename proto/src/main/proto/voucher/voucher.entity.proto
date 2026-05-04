@@ -27,13 +27,23 @@ message SearchVoucherResponse {
   int32 total_pages = 4;
 }
 
+enum DiscountType {
+  FIXED = 0;
+  PERCENT = 1;
+}
+
+enum CreatorType {
+  PARTNER = 0;
+  SYSTEM = 1;
+}
+
 message VoucherInfo {
   int64 id = 1;
   string voucher_code = 2;
   string voucher_name = 3;
   string description = 4;
   string customer_tier = 5;
-  string discount_type = 6;
+  DiscountType discount_type = 6;
   string discount_value = 7;
   string max_discount = 8;
   string min_order_value = 9;
@@ -60,7 +70,7 @@ message VoucherRequestDetail {
   string voucher_code = 1;
   string voucher_name = 2;
   string description = 3;
-  string discount_type = 4;
+  DiscountType discount_type = 4;
   string discount_value = 5;
   string max_discount = 6;
   string min_order_value = 7;
@@ -88,7 +98,7 @@ message VoucherDetail {
   string voucher_name = 3;
   string description = 4;
   string customer_tier = 5;
-  string discount_type = 6;
+  DiscountType discount_type = 6;
   string discount_value = 7;
   string max_discount = 8;
   string min_order_value = 9;
@@ -98,6 +108,31 @@ message VoucherDetail {
   int64 start_date = 13;
   int64 end_date = 14;
   string status = 15;
-  int64 merchant_id = 16;
+  string name_store = 16;
   int64 created_at = 17;
+  CreatorType creator_type = 18;
+}
+
+message GetMockInvoicesRequest {
+  base.RequestInfo requestInfo = 1;
+  string name_store = 2;
+  string title = 3;
+  int32 page = 4;
+  int32 size = 5;
+}
+
+message GetMockInvoicesResponse {
+  base.ResponseInfo responseInfo = 1;
+  repeated MockInvoiceInfo invoices = 2;
+  int32 total_elements = 3;
+  int32 total_pages = 4;
+}
+
+message MockInvoiceInfo {
+  int64 id = 1;
+  string title = 2;
+  string name_store = 3;
+  string amount = 4;
+  int64 created_at = 5;
+  int64 updated_at = 6;
 }

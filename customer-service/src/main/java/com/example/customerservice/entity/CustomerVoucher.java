@@ -1,5 +1,6 @@
 package com.example.customerservice.entity;
 
+import com.example.customerservice.constant.CreatorType;
 import com.example.customerservice.constant.CustomerVoucherStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,12 @@ public class CustomerVoucher {
     @Column(name = "voucher_code", nullable = false, unique = true)
     private String voucherCode;
 
-    @Column(name = "merchant_id", nullable = false)
-    private Long merchantId;
+    @Column(name = "name_store")
+    private String nameStore;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "creator_type")
+    private CreatorType creatorType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

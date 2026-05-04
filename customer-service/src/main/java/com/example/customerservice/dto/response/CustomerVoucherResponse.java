@@ -1,5 +1,6 @@
 package com.example.customerservice.dto.response;
 
+import com.example.customerservice.constant.CreatorType;
 import com.example.customerservice.constant.CustomerVoucherStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,8 @@ public class CustomerVoucherResponse {
     private Long voucherId;
     private Integer availableUsage;
     private String voucherCode;
-    private Long merchantId;
+    private String nameStore;
+    private CreatorType creatorType;
     private CustomerVoucherStatus status;
     private LocalDateTime obtainedAt;
     private LocalDateTime usedAt;

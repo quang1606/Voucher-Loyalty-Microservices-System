@@ -1,5 +1,6 @@
 package com.example.customerservice.repository;
 
+import com.example.customerservice.constant.CreatorType;
 import com.example.customerservice.constant.CustomerVoucherStatus;
 import com.example.customerservice.entity.CustomerVoucher;
 import org.springframework.data.domain.Page;
@@ -28,4 +29,11 @@ public interface CustomerVoucherRepository extends JpaRepository<CustomerVoucher
                                       Pageable pageable);
     
     Optional<CustomerVoucher> findByCustomerIdAndVoucherId(Long customerId, Long voucherId);
+
+    @Query("SELECT cv FROM CustomerVoucher cv WHERE cv.customerId = :customerId " +
+           "AND cv.status = 'AVAILABLE' " +
+           "AND (cv.nameStore = :nameStore OR cv.creatorType = :systemType)")
+    List<CustomerVoucher> findAvailableByCustomerAndStore(@Param("customerId") Long customerId,
+                                                         @Param("nameStore") String nameStore,
+                                                         @Param("systemType") CreatorType systemType);
 }

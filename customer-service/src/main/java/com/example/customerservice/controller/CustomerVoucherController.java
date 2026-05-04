@@ -3,8 +3,9 @@ package com.example.customerservice.controller;
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseResponse;
 import com.example.customerservice.constant.CustomerVoucherStatus;
+import com.example.customerservice.dto.response.ApplicableVoucherListResponse;
+import com.example.customerservice.dto.response.AvailableVoucherListResponse;
 import com.example.customerservice.dto.response.CustomerVoucherListResponse;
-import com.example.customerservice.dto.response.CustomerVoucherResponse;
 import com.example.customerservice.service.CustomerVoucherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import vn.com.grpc.voucher.entity.SearchVoucherResponse;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/customers/vouchers")
@@ -24,26 +24,13 @@ public class CustomerVoucherController {
 
     private final CustomerVoucherService customerVoucherService;
 
-    @GetMapping("/{customerId}")
-    @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<BaseResponse<List<CustomerVoucherResponse>>> getMyVouchers(@PathVariable Long customerId) {
-        return ResponseEntity.ok(BaseResponse.<List<CustomerVoucherResponse>>builder()
-                .status(BaseErrorCode.SUCCESS.getErrorNumCode())
-                .code(BaseErrorCode.SUCCESS.getErrorCode())
-                .message(BaseErrorCode.SUCCESS.getErrorDescription())
-                .data(customerVoucherService.getMyVouchers(customerId))
-                .build());
-    }
-
-
-
     @GetMapping("/available/with-status")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<BaseResponse<SearchVoucherResponse>> getAvailableVouchersWithStatus(
+    public ResponseEntity<BaseResponse<AvailableVoucherListResponse>> getAvailableVouchersWithStatus(
             @RequestParam Long customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-        return ResponseEntity.ok(BaseResponse.<SearchVoucherResponse>builder()
+        return ResponseEntity.ok(BaseResponse.<AvailableVoucherListResponse>builder()
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .message(BaseErrorCode.SUCCESS.getErrorDescription())
@@ -88,6 +75,20 @@ public class CustomerVoucherController {
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .message(BaseErrorCode.SUCCESS.getErrorDescription())
                 .data(response)
+                .build());
+    }
+
+    @GetMapping("/applicable")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<BaseResponse<ApplicableVoucherListResponse>> getApplicableVouchers(
+            @RequestParam Long customerId,
+            @RequestParam String nameStore,
+            @RequestParam BigDecimal orderAmount) {
+        return ResponseEntity.ok(BaseResponse.<ApplicableVoucherListResponse>builder()
+                .status(BaseErrorCode.SUCCESS.getErrorNumCode())
+                .code(BaseErrorCode.SUCCESS.getErrorCode())
+                .message(BaseErrorCode.SUCCESS.getErrorDescription())
+                .data(customerVoucherService.getApplicableVouchers(customerId, nameStore, orderAmount))
                 .build());
     }
 }
