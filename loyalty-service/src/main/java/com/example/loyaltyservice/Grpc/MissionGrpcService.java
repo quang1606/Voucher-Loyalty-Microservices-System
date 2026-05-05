@@ -82,13 +82,14 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                 .setMissionName(entity.getName())
                 .setMissionDescription(entity.getDescription())
                 .setTargetValue(entity.getTargetValue().doubleValue())
+                .setTargetType(TargetType.valueOf(entity.getTargetType().name()))
                 .setRewardType(RewardType.valueOf(entity.getRewardType().name()))
                 .setRewardValue(entity.getRewardValue())
                 .setPartnerId(entity.getPartnerId() != null ? entity.getPartnerId() : 0L)
                 .setStartDate(entity.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
-                    .setRequestId(entity.getRequestId());
+                .setRequestId(entity.getRequestId());
         } catch (BaseException e) {
             log.error("gRPC getMissionById BaseException - missionId: {}, errorCode: {}, message: {}",
                 request.getMissionId(), e.getErrorCode(), e.getDescription());
@@ -125,13 +126,14 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                     .setMissionName(entity.getName())
                     .setMissionDescription(entity.getDescription())
                     .setTargetValue(entity.getTargetValue().doubleValue())
+                    .setTargetType(TargetType.valueOf(entity.getTargetType().name()))
                     .setRewardType(RewardType.valueOf(entity.getRewardType().name()))
                     .setRewardValue(entity.getRewardValue())
                     .setPartnerId(entity.getPartnerId() != null ? entity.getPartnerId() : 0L)
                     .setStartDate(entity.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                     .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                     .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
-                        .setRequestId(entity.getRequestId())
+                    .setRequestId(entity.getRequestId())
                     .build();
                 responseBuilder.addMissions(missionInfo);
             }

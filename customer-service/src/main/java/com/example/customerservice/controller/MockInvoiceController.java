@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/customers/invoices")
 @RequiredArgsConstructor
-public class MockInvoiceController {
+public class  MockInvoiceController {
 
     private final MockInvoiceService mockInvoiceService;
 

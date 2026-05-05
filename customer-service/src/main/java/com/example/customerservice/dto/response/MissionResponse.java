@@ -1,5 +1,6 @@
 package com.example.customerservice.dto.response;
 
+import com.example.customerservice.constant.CustomerMissionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,12 +28,15 @@ public class MissionResponse {
         private String missionName;
         private String missionDescription;
         private Double targetValue;
+        private String targetType;
         private String rewardType;
         private String rewardValue;
         private Long partnerId;
         private Long startDate;
         private Long endDate;
         private String taskStatus;
+        private Integer currentProgress;
+        private CustomerMissionStatus status;
         private VoucherRequestDetail voucherRequest;
     }
 }

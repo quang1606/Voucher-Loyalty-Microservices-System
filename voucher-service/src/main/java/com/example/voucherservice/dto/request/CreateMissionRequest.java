@@ -2,6 +2,7 @@ package com.example.voucherservice.dto.request;
 
 import com.example.voucherservice.constant.RewardType;
 import com.example.voucherservice.constant.RequestStatus;
+import com.example.voucherservice.constant.TargetType;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +27,9 @@ public class CreateMissionRequest extends CreateVoucherRequest {
     @NotNull(message = "Target value is required")
     @Positive(message = "Target value must be positive")
     private BigDecimal targetValue;
+
+    @NotNull(message = "Target type is required")
+    private TargetType targetType;
 
     @NotBlank(message = "Reward type is required")
     private RewardType rewardType; // "POINT" or "VOUCHER"

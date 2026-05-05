@@ -15,6 +15,12 @@ RewardType {
   VOUCHER = 2;
 }
 
+enum TargetType {
+  TARGET_TYPE_UNSPECIFIED = 0;
+  AMOUNT = 1;
+  COUNT = 2;
+}
+
 enum TaskStatus {
   TASK_STATUS_UNSPECIFIED = 0;
   CANCELLED = 1;
@@ -31,12 +37,13 @@ message CreateMissionRequestGrpc {
   string mission_name = 2;
   string mission_description = 3;
   double target_value = 4;
-  RewardType reward_type = 5;
-  string reward_value = 6;
-  int64 partner_id = 7;
-  int64 start_date = 8;
-  int64 end_date = 9;
-  TaskStatus task_status = 10;
+  TargetType target_type = 5;
+  RewardType reward_type = 6;
+  string reward_value = 7;
+  int64 partner_id = 8;
+  int64 start_date = 9;
+  int64 end_date = 10;
+  TaskStatus task_status = 11;
 }
 
 message CreateMissionResponseGrpc {
@@ -53,13 +60,14 @@ message GetMissionByIdResponse {
   string mission_name = 2;
   string mission_description = 3;
   double target_value = 4;
-  RewardType reward_type = 5;
-  string reward_value = 6;
-  int64 partner_id = 7;
-  int64 start_date = 8;
-  int64 end_date = 9;
-  TaskStatus task_status = 10;
-  string request_id=11;
+  TargetType target_type = 5;
+  RewardType reward_type = 6;
+  string reward_value = 7;
+  int64 partner_id = 8;
+  int64 start_date = 9;
+  int64 end_date = 10;
+  TaskStatus task_status = 11;
+  string request_id = 12;
 }
 
 message SearchMissionRequest {
@@ -87,14 +95,14 @@ message MissionInfo {
   string mission_name = 2;
   string mission_description = 3;
   double target_value = 4;
-  RewardType reward_type = 5;
-  string reward_value = 6;
-  int64 partner_id = 7;
-  int64 start_date = 8;
-  int64 end_date = 9;
-  TaskStatus task_status = 10;
-  string request_id=11;
-
+  TargetType target_type = 5;
+  RewardType reward_type = 6;
+  string reward_value = 7;
+  int64 partner_id = 8;
+  int64 start_date = 9;
+  int64 end_date = 10;
+  TaskStatus task_status = 11;
+  string request_id = 12;
 }
 
 message UpdateMissionStatusRequest {

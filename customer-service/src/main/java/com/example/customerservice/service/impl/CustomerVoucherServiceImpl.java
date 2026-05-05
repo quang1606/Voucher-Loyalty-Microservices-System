@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import vn.com.grpc.voucher.entity.SearchVoucherResponse;
@@ -40,6 +41,7 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
     private final CustomerProfileRepository customerProfileRepository;
     private final VoucherGrpcClient voucherGrpcClient;
     private final AuthorizationService authorizationService;
+    private final RedisTemplate<String, Object> redisTemplate;
 
 
 
@@ -127,10 +129,28 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
         vn.com.grpc.voucher.entity.GetVoucherByIdResponse voucherResponse = voucherGrpcClient.getVoucherById(voucherId);
         vn.com.grpc.voucher.entity.VoucherDetail voucherDetail = voucherResponse.getVoucher();
 
+        // Check stock from Redis
+        Integer availableStock = getVoucherStockFromRedis(voucherDetail.getVoucherCode());
+        if (availableStock == null) {
+            availableStock = voucherDetail.getAvailableStock();
+        }
+        
+        if (availableStock <= 0) {
+            throw BaseException.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .errorCode("VOUCHER_OUT_OF_STOCK")
+                    .description("Voucher is out of stock")
+                    .build();
+        }
+
+        // Calculate actual available usage based on remaining stock
+        int maxCollect = voucherDetail.getMaxCollect();
+        int actualAvailableUsage = Math.min(maxCollect, availableStock);
+
         CustomerVoucher customerVoucher = new CustomerVoucher();
         customerVoucher.setCustomerId(customerId);
         customerVoucher.setVoucherId(voucherId);
-        customerVoucher.setAvailableUsage(voucherDetail.getMaxCollect());
+        customerVoucher.setAvailableUsage(actualAvailableUsage);
         customerVoucher.setVoucherCode(voucherDetail.getVoucherCode());
         customerVoucher.setNameStore(voucherDetail.getNameStore());
         customerVoucher.setCreatorType(CreatorType.valueOf(voucherDetail.getCreatorType().name()));
@@ -138,8 +158,8 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
         customerVoucher.setObtainedAt(java.time.LocalDateTime.now());
         
         customerVoucherRepository.save(customerVoucher);
-        log.info("Voucher collected successfully - customerId: {}, voucherId: {}, voucherCode: {}",
-                customerId, voucherId, voucherDetail.getVoucherCode());
+        log.info("Voucher collected successfully - customerId: {}, voucherId: {}, voucherCode: {}, availableUsage: {}",
+                customerId, voucherId, voucherDetail.getVoucherCode(), actualAvailableUsage);
     }
 
     @Override
@@ -161,7 +181,11 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
                 boolean applicable = true;
                 String reason = null;
 
-                if (detail.getAvailableStock() <= 0) {
+                Integer availableStock = getVoucherStockFromRedis(detail.getVoucherCode());
+                if (availableStock != null && availableStock <= 0) {
+                    applicable = false;
+                    reason = "Voucher đã hết lượt sử dụng";
+                } else if (availableStock == null && detail.getAvailableStock() <= 0) {
                     applicable = false;
                     reason = "Voucher đã hết lượt sử dụng";
                 } else {
@@ -198,5 +222,16 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
                 .data(results)
                 .totalElements(results.size())
                 .build();
+    }
+
+    private Integer getVoucherStockFromRedis(String voucherCode) {
+        try {
+            String key = String.format("voucher:%s:stock", voucherCode);
+            Object value = redisTemplate.opsForValue().get(key);
+            return value != null ? (Integer) value : null;
+        } catch (Exception ex) {
+            log.warn("Failed to get voucher stock from Redis for code {}: {}", voucherCode, ex.getMessage());
+            return null;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.loyaltyservice.entity;
 
 import com.example.loyaltyservice.constant.RewardType;
+import com.example.loyaltyservice.constant.TargetType;
 import com.example.loyaltyservice.constant.TaskStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,12 @@ public class MissionEntity {
 
     @Column(name = "target_value")
     private BigDecimal targetValue;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "target_type")
+    private TargetType targetType;
+
+
 
     @Column(name = "partner_id")
     private Long partnerId;

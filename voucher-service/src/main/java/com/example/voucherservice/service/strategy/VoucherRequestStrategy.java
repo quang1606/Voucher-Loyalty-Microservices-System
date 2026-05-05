@@ -13,6 +13,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 
@@ -26,6 +27,9 @@ public abstract class VoucherRequestStrategy {
 
   @Autowired
   private VoucherRequestRepository voucherRequestRepository;
+
+  @Autowired
+  private RedisTemplate<String, Object> redisTemplate;
 
   public abstract boolean support(DiscountType type);
 
@@ -72,6 +76,8 @@ public abstract class VoucherRequestStrategy {
         try {
           processApprovalDetail(detail);
           detail.setRequestStatus(RequestStatus.SUCCESS);
+          saveVoucherToRedis(detail);
+
         } catch (Exception ex) {
           log.error("Failed to process detail id={}: {}", detail.getId(), ex.getMessage(), ex);
           detail.setRequestStatus(RequestStatus.FAILED);
@@ -116,5 +122,15 @@ public abstract class VoucherRequestStrategy {
     entity.setStatus(status);
     voucherRequestRepository.save(entity);
     log.info("Updated request {} to status {}", entity.getRequestId(), status);
+  }
+
+  private void saveVoucherToRedis(VoucherDetailEntity detail) {
+    try {
+      String key = String.format("voucher:%s:stock", detail.getVoucherCode());
+      redisTemplate.opsForValue().set(key, detail.getAvailableStock());
+      log.debug("Saved voucher to Redis: {} = {}", key, detail.getAvailableStock());
+    } catch (Exception ex) {
+      log.error("Failed to save voucher to Redis for code {}: {}", detail.getVoucherCode(), ex.getMessage());
+    }
   }
 }

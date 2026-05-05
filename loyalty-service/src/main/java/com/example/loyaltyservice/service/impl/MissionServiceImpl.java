@@ -2,6 +2,7 @@ package com.example.loyaltyservice.service.impl;
 
 import com.example.common.BaseException;
 import com.example.loyaltyservice.constant.RewardType;
+import com.example.loyaltyservice.constant.TargetType;
 import com.example.loyaltyservice.constant.TaskStatus;
 import com.example.loyaltyservice.entity.MissionEntity;
 import com.example.loyaltyservice.repository.MissionRepository;
@@ -48,6 +49,7 @@ public class MissionServiceImpl implements MissionService {
         entity.setName(request.getMissionName());
         entity.setDescription(request.getMissionDescription());
         entity.setTargetValue(new BigDecimal(request.getTargetValue()));
+        entity.setTargetType(TargetType.valueOf(request.getTargetType().name()));
         entity.setRewardType(RewardType.valueOf(request.getRewardType().name()));
         entity.setRewardValue(request.getRewardValue());
         entity.setStartDate(toLocalDateTime(request.getStartDate()));

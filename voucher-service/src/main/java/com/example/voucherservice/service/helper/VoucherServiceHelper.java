@@ -126,7 +126,7 @@ public class VoucherServiceHelper {
             voucherDetailEntity.setMaxDiscount(request.getMaxDiscount());
           }
             voucherDetailEntity.setMinOrderValue(request.getMinOrderValue());
-            voucherDetailEntity.setTotalStock(request.getTotalStock());
+            voucherDetailEntity.setTotalStock(request.getVoucherPurpose()==VoucherPurpose.HUNT? 1 : request.getTotalStock());
             voucherDetailEntity.setAvailableStock(request.getTotalStock());
             voucherDetailEntity.setMaxCollect(request.getMaxCollect());
             voucherDetailEntity.setStartDate(request.getStartDate());

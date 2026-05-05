@@ -46,6 +46,7 @@ public class MissionGrpcClient {
             .setMissionName(request.getMissionName())
             .setMissionDescription(request.getMissionDescription())
             .setTargetValue(request.getTargetValue().doubleValue())
+            .setTargetType(vn.com.grpc.loyalty.entity.TargetType.valueOf(request.getTargetType().name()))
             .setRewardType(RewardType.valueOf(request.getRewardType().name()))
             .setRewardValue(request.getRewardValue())
             .setPartnerId(partnerId)
