@@ -321,7 +321,6 @@ public class VoucherServiceImpl implements VoucherService {
   }
 
   public void handleApproved(VoucherRequestEntity entity) {
-    validateNotRewardPurpose(entity);
     String username = authorizationService.getName();
 
     entity.setStatus(RequestStatus.APPROVED);
@@ -421,7 +420,7 @@ public class VoucherServiceImpl implements VoucherService {
       throw BaseException.builder()
           .httpStatus(HttpStatus.BAD_REQUEST)
           .errorCode("REWARD_VOUCHER_NOT_ALLOWED")
-          .description("Cannot perform this action on REWARD voucher. Use mission APIs instead.")
+            .description("Cannot perform this action on REWARD voucher. Use mission APIs instead.")
           .build();
     }
   }

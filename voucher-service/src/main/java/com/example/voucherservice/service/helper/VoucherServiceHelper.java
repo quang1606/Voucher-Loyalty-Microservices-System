@@ -102,11 +102,10 @@ public class VoucherServiceHelper {
 
     @Transactional
     public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner, String storeName) {
+     log.info("request: {}, ispartner: {}",request,isPartner);
         try {
-          String requestId = "VOUCHER_" + System.currentTimeMillis();
-
             VoucherRequestEntity requestEntity = new VoucherRequestEntity();
-            requestEntity.setRequestId(requestId);
+            requestEntity.setRequestId(request.getRequestId());
             requestEntity.setRequestMode(RequestMode.SINGLE);
             requestEntity.setCreatorType(isPartner ? CreatorType.PARTNER : CreatorType.SYSTEM);
             requestEntity.setVoucherPurpose(request.getVoucherPurpose() != null ? request.getVoucherPurpose() : VoucherPurpose.HUNT);
@@ -116,12 +115,16 @@ public class VoucherServiceHelper {
             voucherRequestRepository.save(requestEntity);
 
             VoucherDetailEntity voucherDetailEntity = new VoucherDetailEntity();
-            voucherDetailEntity.setRequestId(requestId);
-            voucherDetailEntity.setCustomerTier(isPartner ? CustomerTier.ALL : request.getCustomerTier());
-            voucherDetailEntity.setVoucherName(request.getVoucherName());
+            voucherDetailEntity.setRequestId(request.getRequestId());
+            voucherDetailEntity.setCustomerTier(
+                    (isPartner || request.getVoucherPurpose() == VoucherPurpose.HUNT)
+                            ? CustomerTier.ALL
+                            : request.getCustomerTier()
+            );            voucherDetailEntity.setVoucherName(request.getVoucherName());
             voucherDetailEntity.setDescription(request.getDescription());
             voucherDetailEntity.setDiscountType(request.getDiscountType());
             voucherDetailEntity.setDiscountValue(request.getDiscountValue());
+            voucherDetailEntity.setDescription(request.getDescription());
           if (request.getDiscountType() != DiscountType.FIXED) {
             voucherDetailEntity.setMaxDiscount(request.getMaxDiscount());
           }

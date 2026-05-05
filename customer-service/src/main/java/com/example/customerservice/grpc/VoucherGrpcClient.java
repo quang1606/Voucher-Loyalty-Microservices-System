@@ -40,7 +40,7 @@ public class VoucherGrpcClient {
                         .build())
                 .build();
 
-        log.info("gRPC searchVouchers - customerTier: {}, page: {}, size: {}", customerTier, page, size);
+        log.info("gRPC searchVouchers request: {}", request);
         try {
             SearchVoucherResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
                     .searchVoucher(request);
@@ -52,7 +52,7 @@ public class VoucherGrpcClient {
                         .description(response.getResponseInfo().getMessage())
                         .build();
             }
-            log.info("call gRPC response: {}", response);
+            log.info("gRPC searchVouchers response: {}", response);
             return response;
         } catch (BaseException e) {
             log.error("gRPC searchVouchers BaseException - error: {}", e.getDescription());
@@ -77,7 +77,7 @@ public class VoucherGrpcClient {
                 .setVoucherId(voucherId)
                 .build();
 
-        log.info("gRPC getVoucherById - voucherId: {}", voucherId);
+        log.info("gRPC getVoucherById request: {}", request);
         try {
             GetVoucherByIdResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
                     .getVoucherById(request);
@@ -114,7 +114,7 @@ public class VoucherGrpcClient {
                 .setRequestId(requestId)
                 .build();
 
-        log.info("gRPC getVoucherByRequestId - requestId: {}", requestId);
+        log.info("gRPC getVoucherByRequestId request: {}", request);
         try {
             GetVoucherByRequestIdResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
                     .getVoucherByRequestId(request);
@@ -154,7 +154,7 @@ public class VoucherGrpcClient {
                 .setSize(size)
                 .build();
 
-        log.info("gRPC getMockInvoices - nameStore: {}, title: {}, page: {}, size: {}", nameStore, title, page, size);
+        log.info("gRPC getMockInvoices request: {}", request);
         try {
             GetMockInvoicesResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
                     .getMockInvoices(request);
@@ -166,6 +166,7 @@ public class VoucherGrpcClient {
                         .description(response.getResponseInfo().getMessage())
                         .build();
             }
+            log.info("gRPC getMockInvoices response: {}", response);
             return response;
         } catch (BaseException e) {
             log.error("gRPC getMockInvoices BaseException - error: {}", e.getDescription());

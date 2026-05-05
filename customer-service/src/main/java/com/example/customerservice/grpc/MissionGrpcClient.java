@@ -37,7 +37,7 @@ public class MissionGrpcClient {
                         .build())
                 .build();
 
-        log.info("gRPC getMissions - taskStatus: FINISH, page: {}, size: {}", page, size);
+        log.info("gRPC getMissions request: {}", request);
         try {
             SearchMissionResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
                     .searchMission(request);
@@ -74,7 +74,7 @@ public class MissionGrpcClient {
                 .setMissionId(missionId)
                 .build();
 
-        log.info("gRPC getMissionById - missionId: {}", missionId);
+        log.info("gRPC getMissionById request: {}", request);
         try {
             GetMissionByIdResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
                     .getMissionById(request);
@@ -86,7 +86,7 @@ public class MissionGrpcClient {
                         .description(response.getResponseInfo().getMessage())
                         .build();
             }
-            log.info("gRPC getMissionById success - missionId: {}", missionId);
+            log.info("gRPC getMissionById response: {}", response);
             return response;
         } catch (BaseException e) {
             log.error("gRPC getMissionById BaseException - missionId: {}, error: {}", missionId, e.getDescription());

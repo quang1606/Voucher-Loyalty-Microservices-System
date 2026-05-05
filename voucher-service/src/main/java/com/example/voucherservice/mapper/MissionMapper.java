@@ -50,6 +50,7 @@ public final class MissionMapper {
                 .startDate(toLocalDateTime(info.getStartDate()))
                 .endDate(toLocalDateTime(info.getEndDate()))
                 .status(TaskStatus.valueOf(info.getTaskStatus().name()))
+                .requestId(info.getRequestId())
                 .build();
     }
 
@@ -64,6 +65,7 @@ public final class MissionMapper {
                 .startDate(toLocalDateTime(response.getStartDate()))
                 .endDate(toLocalDateTime(response.getEndDate()))
                 .status(TaskStatus.valueOf(response.getTaskStatus().name()))
+                .requestId(response.getRequestId())
                 .build();
     }
 

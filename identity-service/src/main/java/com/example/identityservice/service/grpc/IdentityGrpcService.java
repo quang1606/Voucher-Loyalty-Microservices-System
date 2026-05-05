@@ -27,11 +27,13 @@ public class IdentityGrpcService extends IdentityServiceGrpc.IdentityServiceImpl
     @Override
     public void getIdentity(IdentityRequest request, StreamObserver<IdentityResponse> responseObserver) {
         try {
+            log.info("gRPC getIdentity request: {}", request);
             String nameStore = profileService.getNameStore(request.getPartnerId());
             IdentityResponse response = IdentityResponse.newBuilder()
                     .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
                     .setNameStore(nameStore)
                     .build();
+            log.info("gRPC getIdentity response: {}", response);
             responseObserver.onNext(response);
         } catch (BaseException e) {
             log.error("BaseException in getIdentity: {}", e.getMessage());
@@ -51,11 +53,14 @@ public class IdentityGrpcService extends IdentityServiceGrpc.IdentityServiceImpl
     @Override
     public void checkNameStore(CheckNameStoreRequest request, StreamObserver<CheckNameStoreResponse> responseObserver) {
         try {
+            log.info("gRPC checkNameStore request: {}", request);
             boolean exists = profileService.existsByStoreName(request.getNameStore());
-            responseObserver.onNext(CheckNameStoreResponse.newBuilder()
+            CheckNameStoreResponse response = CheckNameStoreResponse.newBuilder()
                     .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
                     .setExists(exists)
-                    .build());
+                    .build();
+            log.info("gRPC checkNameStore response: {}", response);
+            responseObserver.onNext(response);
         } catch (BaseException e) {
             log.error("BaseException in checkNameStore: {}", e.getMessage());
             responseObserver.onNext(CheckNameStoreResponse.newBuilder()
@@ -74,13 +79,16 @@ public class IdentityGrpcService extends IdentityServiceGrpc.IdentityServiceImpl
     @Override
     public void getPartner(GetPartnerRequest request, StreamObserver<GetPartnerResponse> responseObserver) {
         try {
+            log.info("gRPC getPartner request: {}", request);
             Partner partner = profileService.getPartnerByUserId(request.getUserId());
-            responseObserver.onNext(GetPartnerResponse.newBuilder()
+            GetPartnerResponse response = GetPartnerResponse.newBuilder()
                     .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
                     .setId(partner.getId())
                     .setUserId(partner.getUserId().toString())
                     .setStoreName(partner.getStoreName())
-                    .build());
+                    .build();
+            log.info("gRPC getPartner response: {}", response);
+            responseObserver.onNext(response);
         } catch (BaseException e) {
             log.error("BaseException in getPartner: {}", e.getMessage());
             responseObserver.onNext(GetPartnerResponse.newBuilder()
@@ -99,13 +107,16 @@ public class IdentityGrpcService extends IdentityServiceGrpc.IdentityServiceImpl
     @Override
     public void getPartnerByName(GetPartnerByNameRequest request, StreamObserver<GetPartnerByNameResponse> responseObserver) {
         try {
+            log.info("gRPC getPartnerByName request: {}", request);
             Partner partner = profileService.getPartnerByStoreName(request.getStoreName());
-            responseObserver.onNext(GetPartnerByNameResponse.newBuilder()
+            GetPartnerByNameResponse response = GetPartnerByNameResponse.newBuilder()
                     .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
                     .setId(partner.getId())
                     .setUserId(partner.getUserId().toString())
                     .setStoreName(partner.getStoreName())
-                    .build());
+                    .build();
+            log.info("gRPC getPartnerByName response: {}", response);
+            responseObserver.onNext(response);
         } catch (BaseException e) {
             log.error("BaseException in getPartnerByName: {}", e.getMessage());
             responseObserver.onNext(GetPartnerByNameResponse.newBuilder()

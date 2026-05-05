@@ -25,6 +25,7 @@ public class CustomerGrpcService extends CustomerServiceGrpc.CustomerServiceImpl
     public void createCustomerProfile(CreateCustomerProfileRequest request,
                                        StreamObserver<CreateCustomerProfileResponse> responseObserver) {
         try {
+            log.info("gRPC createCustomerProfile request: {}", request);
             UUID userId = UUID.fromString(request.getUserId());
             if (customerProfileRepository.existsByUserId(userId)) {
                 log.warn("CustomerProfile already exists for userId: {}", userId);
@@ -35,9 +36,11 @@ public class CustomerGrpcService extends CustomerServiceGrpc.CustomerServiceImpl
                 customerProfileRepository.save(profile);
                 log.info("Created CustomerProfile for userId: {}", userId);
             }
-            responseObserver.onNext(CreateCustomerProfileResponse.newBuilder()
+            CreateCustomerProfileResponse response = CreateCustomerProfileResponse.newBuilder()
                     .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
-                    .build());
+                    .build();
+            log.info("gRPC createCustomerProfile response: {}", response);
+            responseObserver.onNext(response);
         } catch (BaseException e) {
             log.error("BaseException in createCustomerProfile: {}", e.getDescription());
             responseObserver.onNext(CreateCustomerProfileResponse.newBuilder()

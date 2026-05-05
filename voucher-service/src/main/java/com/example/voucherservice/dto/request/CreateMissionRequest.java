@@ -31,11 +31,10 @@ public class CreateMissionRequest extends CreateVoucherRequest {
     @NotNull(message = "Target type is required")
     private TargetType targetType;
 
-    @NotBlank(message = "Reward type is required")
-    private RewardType rewardType; // "POINT" or "VOUCHER"
+    @NotNull(message = "Reward type is required")
+    private RewardType rewardType;
 
-    @NotBlank(message = "Reward value is required")
-    private String rewardValue; // Points amount or Voucher Campaign ID
+    private String rewardValue;
 
     private Long partnerId;
 

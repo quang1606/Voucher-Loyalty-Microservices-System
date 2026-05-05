@@ -34,12 +34,11 @@ public class IdentityGrpcClient {
         .setPartnerId(UserId)
         .build();
 
-    log.info("gRPC getNameStore request - partnerId: {}", UserId);
+    log.info("gRPC getNameStore request: {}", request);
 
     try {
       IdentityResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS).getIdentity(request);
-      log.info("gRPC getNameStore response - partnerId: {}, nameStore: {}",
-              UserId, response.getNameStore());
+      log.info("gRPC getNameStore response: {}", response);
       String errorCode = response.getResponseInfo().getErrorCode();
       if (!"success".equalsIgnoreCase(errorCode)) {
         throw BaseException.builder()
@@ -73,13 +72,12 @@ public class IdentityGrpcClient {
             .setNameStore(nameStore)
         .build();
 
-    log.info("gRPC checkNameStore request - nameStore: {}", nameStore);
+    log.info("gRPC checkNameStore request: {}", request);
 
     try {
       CheckNameStoreResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
           .checkNameStore(request);
-      log.info("gRPC checkNameStore response - nameStore: {}, result: {}",
-          nameStore, response.getExists());
+      log.info("gRPC checkNameStore response: {}", response);
       return response;
     } catch (Exception e) {
       log.error("gRPC checkNameStore Exception - nameStore: {}, error: {}",
@@ -98,7 +96,7 @@ public class IdentityGrpcClient {
         .setUserId(userId)
         .build();
 
-    log.info("gRPC getPartner request - userId: {}", userId);
+    log.info("gRPC getPartner request: {}", request);
 
     try {
       GetPartnerResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS).getPartner(request);
@@ -110,7 +108,7 @@ public class IdentityGrpcClient {
             .errorCode(errorCode)
             .build();
       }
-      log.info("gRPC getPartner response - userId: {}, storeName: {}", userId, response.getStoreName());
+      log.info("gRPC getPartner response: {}", response);
       return response;
     } catch (BaseException e) {
       throw BaseException.builder()
@@ -134,7 +132,7 @@ public class IdentityGrpcClient {
         .setStoreName(storeName)
         .build();
 
-    log.info("gRPC getPartnerByStoreName request - storeName: {}", storeName);
+    log.info("gRPC getPartnerByStoreName request: {}", request);
 
     try {
       GetPartnerByNameResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
@@ -147,8 +145,7 @@ public class IdentityGrpcClient {
             .errorCode(errorCode)
             .build();
       }
-      log.info("gRPC getPartnerByStoreName response - storeName: {}, partnerId: {}",
-          storeName, response.getId());
+      log.info("gRPC getPartnerByStoreName response: {}", response);
       return response;
     } catch (BaseException e) {
       throw BaseException.builder()

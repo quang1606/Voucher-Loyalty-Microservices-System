@@ -26,10 +26,10 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
         StreamObserver<CreateMissionResponseGrpc> responseObserver) {
         CreateMissionResponseGrpc.Builder responseBuilder = CreateMissionResponseGrpc.newBuilder();
         try {
-            log.info("gRPC createMission - requestId: {}, missionName: {}",
-                request.getRequestInfo().getRequestId(), request.getMissionName());
+            log.info("gRPC createMission request: {}", request);
             missionService.createMission(request);
             responseBuilder.setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()));
+            log.info("gRPC createMission response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC createMission BaseException - requestId: {}, errorCode: {}, message: {}",
                 request.getRequestInfo().getRequestId(), e.getErrorCode(), e.getDescription());
@@ -49,10 +49,10 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
         StreamObserver<UpdateMissionStatusResponse> responseObserver) {
         UpdateMissionStatusResponse.Builder responseBuilder = UpdateMissionStatusResponse.newBuilder();
         try {
-            log.info("gRPC updateMissionStatus - missionId: {}, newStatus: {}",
-                request.getMissionId(), request.getTaskStatus());
+            log.info("gRPC updateMissionStatus request: {}", request);
             missionService.updateMissionStatus(request.getMissionId(), request.getTaskStatus().name());
             responseBuilder.setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()));
+            log.info("gRPC updateMissionStatus response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC updateMissionStatus BaseException - missionId: {}, error: {}",
                 request.getMissionId(), e.getDescription());
@@ -72,8 +72,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
         StreamObserver<GetMissionByIdResponse> responseObserver) {
         GetMissionByIdResponse.Builder responseBuilder = GetMissionByIdResponse.newBuilder();
         try {
-            log.info("gRPC getMissionById - requestId: {}, missionId: {}",
-                request.getRequestInfo().getRequestId(), request.getMissionId());
+            log.info("gRPC getMissionById request: {}", request);
 
             MissionEntity entity = missionService.getMissionById(request.getMissionId());
 
@@ -90,6 +89,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                 .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
                 .setRequestId(entity.getRequestId());
+            log.info("gRPC getMissionById response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC getMissionById BaseException - missionId: {}, errorCode: {}, message: {}",
                 request.getMissionId(), e.getErrorCode(), e.getDescription());
@@ -109,9 +109,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
         StreamObserver<SearchMissionResponse> responseObserver) {
         SearchMissionResponse.Builder responseBuilder = SearchMissionResponse.newBuilder();
         try {
-            log.info("gRPC searchMission - partnerId: {}, partnerId: {}, rewardType: {}, status: {}",
-                request.getRequestInfo().getRequestId(), request.getPartnerId(),
-                request.getRewardType(), request.getTaskStatus());
+            log.info("gRPC searchMission request: {}", request);
 
             Page<MissionEntity> page = missionService.searchMission(request);
 
@@ -137,6 +135,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                     .build();
                 responseBuilder.addMissions(missionInfo);
             }
+            log.info("gRPC searchMission response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC searchMission BaseException - requestId: {}, errorCode: {}, message: {}",
                 request.getRequestInfo().getRequestId(), e.getErrorCode(), e.getDescription());

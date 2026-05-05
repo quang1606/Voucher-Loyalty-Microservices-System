@@ -45,7 +45,7 @@ public class MissionServiceImpl implements MissionService {
         }
 
         MissionEntity entity = new MissionEntity();
-        entity.setRequestId(request.getRequestInfo().getRequestId());
+        entity.setRequestId(request.getRequestId());
         entity.setName(request.getMissionName());
         entity.setDescription(request.getMissionDescription());
         entity.setTargetValue(new BigDecimal(request.getTargetValue()));
@@ -95,8 +95,11 @@ public class MissionServiceImpl implements MissionService {
             return PageRequest.of(page, size, Sort.by("id").descending());
         }
         
-        Sort sort = Sort.by(pageableGrpc.getSort());
-        return PageRequest.of(page, size, sort);
+        String[] parts = pageableGrpc.getSort().split(",");
+        String field = parts[0].trim();
+        Sort.Direction direction = parts.length > 1 && "asc".equalsIgnoreCase(parts[1].trim())
+            ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return PageRequest.of(page, size, Sort.by(direction, field));
     }
 
 

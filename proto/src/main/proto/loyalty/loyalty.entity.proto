@@ -44,6 +44,7 @@ message CreateMissionRequestGrpc {
   int64 start_date = 9;
   int64 end_date = 10;
   TaskStatus task_status = 11;
+  string request_id=12;
 }
 
 message CreateMissionResponseGrpc {

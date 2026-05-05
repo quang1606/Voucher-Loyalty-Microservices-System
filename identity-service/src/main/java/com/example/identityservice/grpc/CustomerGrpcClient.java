@@ -30,7 +30,7 @@ public class CustomerGrpcClient {
                 .setFullName(fullName)
                 .build();
 
-        log.info("gRPC createCustomerProfile request - userId: {}", userId);
+        log.info("gRPC createCustomerProfile request: {}", request);
 
         try {
             CreateCustomerProfileResponse response = stub
@@ -45,7 +45,7 @@ public class CustomerGrpcClient {
                         .errorCode(errorCode)
                         .build();
             }
-            log.info("gRPC createCustomerProfile success - userId: {}, response: {}", userId,response);
+            log.info("gRPC createCustomerProfile response: {}", response);
         } catch (BaseException e) {
             log.error("gRPC createCustomerProfile BaseException - userId: {}, error: {}", userId, e.getDescription());
             throw e;

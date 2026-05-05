@@ -45,8 +45,7 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
                               StreamObserver<SearchVoucherResponse> responseObserver) {
         SearchVoucherResponse.Builder responseBuilder = SearchVoucherResponse.newBuilder();
         try {
-            log.info("gRPC searchVoucher - requestId: {}, customerTier: {}",
-                    request.getRequestInfo().getRequestId(), request.getCustomerTier());
+            log.info("gRPC searchVoucher request: {}", request);
 
             int page = request.getPageable().getPage();
             int size = request.getPageable().getSize();
@@ -63,6 +62,7 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
             for (VoucherDetailEntity entity : pageResult.getContent()) {
                 responseBuilder.addVouchers(toVoucherInfo(entity));
             }
+            log.info("gRPC searchVoucher response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC searchVoucher BaseException - errorCode: {}, message: {}",
                     e.getErrorCode(), e.getDescription());
@@ -79,8 +79,7 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
   public void getVoucherById(GetVoucherByIdRequest request, StreamObserver<GetVoucherByIdResponse> responseObserver) {
     GetVoucherByIdResponse.Builder responseBuilder = GetVoucherByIdResponse.newBuilder();
     try {
-      log.info("gRPC getVoucherById - requestId: {}, voucherId: {}", 
-               request.getRequestInfo().getRequestId(), request.getVoucherId());
+      log.info("gRPC getVoucherById request: {}", request);
 
       VoucherDetailEntity voucher = voucherRepository.findById(request.getVoucherId())
           .orElseThrow(() -> new RuntimeException("Voucher not found with id: " + request.getVoucherId()));
@@ -90,6 +89,7 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
       responseBuilder
           .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
           .setVoucher(voucherDetail);
+      log.info("gRPC getVoucherById response: {}", responseBuilder.build());
 
     } catch (BaseException e) {
       log.error("gRPC getVoucherById BaseException - errorCode: {}, message: {}",
@@ -167,8 +167,7 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
                                 StreamObserver<GetMockInvoicesResponse> responseObserver) {
         GetMockInvoicesResponse.Builder responseBuilder = GetMockInvoicesResponse.newBuilder();
         try {
-            log.info("gRPC getMockInvoices - requestId: {}, nameStore: {}, title: {}",
-                    request.getRequestInfo().getRequestId(), request.getNameStore(), request.getTitle());
+            log.info("gRPC getMockInvoices request: {}", request);
 
             String nameStore = request.getNameStore().isEmpty() ? null : request.getNameStore();
             String title = request.getTitle().isEmpty() ? null : request.getTitle();
@@ -186,6 +185,7 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
             for (MockInvoiceEntity entity : pageResult.getContent()) {
                 responseBuilder.addInvoices(toMockInvoiceInfo(entity));
             }
+            log.info("gRPC getMockInvoices response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC getMockInvoices BaseException - errorCode: {}, message: {}",
                     e.getErrorCode(), e.getDescription());

@@ -48,15 +48,15 @@ public class MissionGrpcClient {
             .setTargetValue(request.getTargetValue().doubleValue())
             .setTargetType(vn.com.grpc.loyalty.entity.TargetType.valueOf(request.getTargetType().name()))
             .setRewardType(RewardType.valueOf(request.getRewardType().name()))
-            .setRewardValue(request.getRewardValue())
+            .setRewardValue(request.getRewardValue() != null ? request.getRewardValue() : "")
             .setPartnerId(partnerId)
             .setStartDate(request.getMissionStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
             .setEndDate(request.getMissionEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
             .setTaskStatus(TaskStatus.valueOf(request.getTaskStatus().name()))
+                .setRequestId(request.getRequestId())
             .build();
 
-    log.info("gRPC createMission request - missionName: {}, status: {}",
-        request.getMissionName(), request.getTaskStatus());
+    log.info("gRPC createMission request: {}", grpcRequest);
 
     try {
       CreateMissionResponseGrpc response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
@@ -69,7 +69,7 @@ public class MissionGrpcClient {
             .errorCode(errorCode)
             .build();
       }
-      log.info("gRPC createMission success - missionName: {}", request.getMissionName());
+      log.info("gRPC createMission response: {}", response);
     } catch (BaseException e) {
       log.error("gRPC createMission BaseException - missionName: {}, error: {}",
           request.getMissionName(), e.getDescription());
@@ -95,7 +95,7 @@ public class MissionGrpcClient {
         .setMissionId(missionId)
         .build();
 
-    log.info("gRPC getMissionById request - missionId: {}", missionId);
+    log.info("gRPC getMissionById request: {}", grpcRequest);
 
     try {
       GetMissionByIdResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
@@ -108,7 +108,7 @@ public class MissionGrpcClient {
             .errorCode(errorCode)
             .build();
       }
-      log.info("gRPC getMissionById success - missionId: {}", missionId);
+      log.info("gRPC getMissionById response: {}", response);
       return response;
     } catch (BaseException e) {
       log.error("gRPC getMissionById BaseException - missionId: {}, error: {}",
@@ -151,8 +151,7 @@ public class MissionGrpcClient {
     }
 
     SearchMissionRequest request = builder.build();
-    log.info("gRPC searchMissions request - partnerId: {}, rewardType: {}, taskStatus: {}",
-        partnerId, rewardType, taskStatus);
+    log.info("gRPC searchMissions request: {}", request);
 
     try {
       SearchMissionResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
@@ -164,6 +163,7 @@ public class MissionGrpcClient {
             .description(response.getResponseInfo().getMessage())
             .build();
       }
+      log.info("gRPC searchMissions response: {}", response);
       return response;
     } catch (BaseException e) {
       throw BaseException.builder()
@@ -188,7 +188,7 @@ public class MissionGrpcClient {
         .setTaskStatus(TaskStatus.valueOf(status.name()))
         .build();
 
-    log.info("gRPC updateMissionStatus - missionId: {}, status: {}", missionId, status);
+    log.info("gRPC updateMissionStatus request: {}", request);
 
     try {
       UpdateMissionStatusResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
@@ -200,6 +200,7 @@ public class MissionGrpcClient {
             .description(response.getResponseInfo().getMessage())
             .build();
       }
+      log.info("gRPC updateMissionStatus response: {}", response);
     } catch (BaseException e) {
       throw BaseException.builder()
           .httpStatus(e.getHttpStatus())

@@ -48,7 +48,10 @@ public class MissionServiceImpl implements MissionService {
   public void createMission(CreateMissionRequest request) {
     validateMissionRequest(request);
     try {
+      String requestId = "VOUCHER_" + System.currentTimeMillis();
+      request.setRequestId(requestId);
       request.setTaskStatus(RequestStatus.INIT);
+      log.info("requestId: {}",request.getRequestId());
       missionGrpcClient.createMission(request);
       if (request.getRewardType() != RewardType.POINT) {
         request.setVoucherPurpose(VoucherPurpose.REWARD);
@@ -255,6 +258,8 @@ public class MissionServiceImpl implements MissionService {
       try {
         long points = Long.parseLong(request.getRewardValue());
         if (points <= 0) {
+          throw new NumberFormatException();
+        }if (request.getRewardValue().isBlank()){
           throw new NumberFormatException();
         }
       } catch (NumberFormatException e) {
