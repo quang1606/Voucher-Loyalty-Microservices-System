@@ -26,6 +26,7 @@ public class KafkaService {
                         log.info("[{}] Send success", messageSn);
                     } else {
                         log.error("[{}] Send failure", messageSn, ex);
+
                     }
                 });
     }
