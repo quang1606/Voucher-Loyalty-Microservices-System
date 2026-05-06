@@ -90,16 +90,7 @@ public class MissionServiceImpl implements MissionService {
         int page = Math.max(0, pageableGrpc.getPage());
         int size = pageableGrpc.getSize() > 0 ? 
             Math.min(pageableGrpc.getSize(), 100) : 20;
-        
-        if (pageableGrpc.getSort().isEmpty()) {
             return PageRequest.of(page, size, Sort.by("id").descending());
-        }
-        
-        String[] parts = pageableGrpc.getSort().split(",");
-        String field = parts[0].trim();
-        Sort.Direction direction = parts.length > 1 && "asc".equalsIgnoreCase(parts[1].trim())
-            ? Sort.Direction.ASC : Sort.Direction.DESC;
-        return PageRequest.of(page, size, Sort.by(direction, field));
     }
 
 

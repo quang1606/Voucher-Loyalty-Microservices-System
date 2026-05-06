@@ -26,14 +26,13 @@ public class MissionGrpcClient {
     @GrpcClient("loyalty-service")
     private LoyaltyServiceGrpc.LoyaltyServiceBlockingStub stub;
 
-    public SearchMissionResponse getMissions(int page, int size, String sort) {
+    public SearchMissionResponse getMissions(int page, int size) {
         SearchMissionRequest request = SearchMissionRequest.newBuilder()
                 .setRequestInfo(grpcUtils.builderRequestInfo())
                 .setTaskStatus(TaskStatus.FINISH) // Mặc định FINISH
                 .setPageable(Pageable.newBuilder()
                         .setPage(page)
                         .setSize(size)
-                        .setSort(sort != null ? sort : "createdAt,desc")
                         .build())
                 .build();
 

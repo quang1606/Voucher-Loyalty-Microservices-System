@@ -59,7 +59,7 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
                         .build());
 
         // Get all missions from loyalty-service
-        SearchMissionResponse grpcResponse = missionGrpcClient.getMissions(page, size, "id,desc");
+        SearchMissionResponse grpcResponse = missionGrpcClient.getMissions(page, size);
         
         // Get customer mission progress
         List<CustomerMission> customerMissions = customerMissionRepository.findByCustomerId(profile.getId());

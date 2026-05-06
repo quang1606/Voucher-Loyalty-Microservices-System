@@ -1,6 +1,7 @@
 package com.example.customerservice.service.impl;
 
 import com.example.common.BaseException;
+import com.example.customerservice.constant.DiscountType;
 import com.example.customerservice.dto.event.LoyaltyPointEvent;
 import com.example.customerservice.dto.event.VoucherUsedEvent;
 import com.example.customerservice.dto.request.KafkaRequest;
@@ -211,7 +212,7 @@ public class PaymentServiceImpl implements PaymentService {
         try {
             // Get all active missions from loyalty-service
             vn.com.grpc.loyalty.entity.SearchMissionResponse allMissions = 
-                    missionGrpcClient.getMissions(0, 100, "id,desc");
+                    missionGrpcClient.getMissions(0, 100);
             
             for (vn.com.grpc.loyalty.entity.MissionInfo missionInfo : allMissions.getMissionsList()) {
                 // Create CustomerMission if not exists
@@ -323,14 +324,16 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         // Validate minimum order
+      if (voucherDetail.getDiscountType().name().equals(DiscountType.RECENT.name())) {
         BigDecimal minOrder = new BigDecimal(voucherDetail.getMinOrderValue());
         if (originalAmount.compareTo(minOrder) < 0) {
-            throw BaseException.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST)
-                    .errorCode("MIN_ORDER_NOT_MET")
-                    .description("Order amount does not meet minimum requirement: " + minOrder)
-                    .build();
+          throw BaseException.builder()
+              .httpStatus(HttpStatus.BAD_REQUEST)
+              .errorCode("MIN_ORDER_NOT_MET")
+              .description("Order amount does not meet minimum requirement: " + minOrder)
+              .build();
         }
+      }
 
         // Calculate discount
         BigDecimal discountAmount = calculateDiscount(voucherDetail, originalAmount);

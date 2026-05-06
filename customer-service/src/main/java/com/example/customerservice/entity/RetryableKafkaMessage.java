@@ -40,7 +40,7 @@ public class RetryableKafkaMessage {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private MessageStatus status = MessageStatus.PENDING;
+    private MessageStatus status;
 
     @Column(name = "error_message", columnDefinition = "TEXT")
     private String errorMessage;
@@ -57,10 +57,7 @@ public class RetryableKafkaMessage {
     private LocalDateTime updatedAt;
 
     public enum MessageStatus {
-        PENDING,
         PROCESSING,
-        SUCCESS,
         FAILED,
-        EXPIRED
     }
 }
