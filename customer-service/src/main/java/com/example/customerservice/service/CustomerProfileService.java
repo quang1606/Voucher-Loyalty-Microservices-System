@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface CustomerProfileService {
     CustomerProfileResponse getProfile(UUID customerId);
+    void createCustomerProfile(UUID userId, String fullName);
 }

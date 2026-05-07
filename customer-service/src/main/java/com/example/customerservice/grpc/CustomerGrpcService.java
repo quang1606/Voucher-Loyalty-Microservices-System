@@ -1,8 +1,7 @@
 package com.example.customerservice.grpc;
 
 import com.example.common.BaseException;
-import com.example.customerservice.entity.CustomerProfile;
-import com.example.customerservice.repository.CustomerProfileRepository;
+import com.example.customerservice.service.CustomerProfileService;
 import com.example.customerservice.utils.GrpcUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
@@ -19,23 +18,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomerGrpcService extends CustomerServiceGrpc.CustomerServiceImplBase {
 
-    private final CustomerProfileRepository customerProfileRepository;
+    private final CustomerProfileService customerProfileService;
 
     @Override
     public void createCustomerProfile(CreateCustomerProfileRequest request,
                                        StreamObserver<CreateCustomerProfileResponse> responseObserver) {
         try {
             log.info("gRPC createCustomerProfile request: {}", request);
-            UUID userId = UUID.fromString(request.getUserId());
-            if (customerProfileRepository.existsByUserId(userId)) {
-                log.warn("CustomerProfile already exists for userId: {}", userId);
-            } else {
-                CustomerProfile profile = new CustomerProfile();
-                profile.setUserId(userId);
-                profile.setFullName(request.getFullName());
-                customerProfileRepository.save(profile);
-                log.info("Created CustomerProfile for userId: {}", userId);
-            }
+            customerProfileService.createCustomerProfile(
+                    UUID.fromString(request.getUserId()), request.getFullName());
             CreateCustomerProfileResponse response = CreateCustomerProfileResponse.newBuilder()
                     .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
                     .build();

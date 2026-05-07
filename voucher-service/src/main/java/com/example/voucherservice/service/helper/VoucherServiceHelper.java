@@ -102,7 +102,7 @@ public class VoucherServiceHelper {
 
     @Transactional
     public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner, String storeName) {
-     log.info("request: {}, ispartner: {}",request,isPartner);
+        log.info("requestId: {}", request.getRequestId());
         try {
             VoucherRequestEntity requestEntity = new VoucherRequestEntity();
             requestEntity.setRequestId(request.getRequestId());
@@ -129,9 +129,9 @@ public class VoucherServiceHelper {
             voucherDetailEntity.setMaxDiscount(request.getMaxDiscount());
           }
             voucherDetailEntity.setMinOrderValue(request.getMinOrderValue());
-            voucherDetailEntity.setTotalStock(request.getVoucherPurpose()==VoucherPurpose.HUNT? 1 : request.getTotalStock());
+            voucherDetailEntity.setTotalStock( request.getTotalStock());
             voucherDetailEntity.setAvailableStock(request.getTotalStock());
-            voucherDetailEntity.setMaxCollect(request.getMaxCollect());
+            voucherDetailEntity.setMaxCollect(request.getVoucherPurpose()==VoucherPurpose.HUNT? 1 : request.getMaxCollect());
             voucherDetailEntity.setStartDate(request.getStartDate());
             voucherDetailEntity.setEndDate(request.getEndDate());
             voucherDetailEntity.setRequestStatus(RequestStatus.INIT);

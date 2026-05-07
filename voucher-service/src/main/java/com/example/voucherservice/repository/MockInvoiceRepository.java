@@ -10,11 +10,11 @@ import org.springframework.data.repository.query.Param;
 public interface MockInvoiceRepository extends JpaRepository<MockInvoiceEntity, Long> {
     
     Page<MockInvoiceEntity> findByNameStore(String nameStore, Pageable pageable);
-    
+
     @Query("SELECT m FROM MockInvoiceEntity m WHERE " +
-           "(:nameStore IS NULL OR LOWER(m.nameStore) LIKE LOWER(CONCAT('%', :nameStore, '%'))) AND " +
-           "(:title IS NULL OR LOWER(m.title) LIKE LOWER(CONCAT('%', :title, '%')))")
+            "(:nameStore IS NULL OR m.nameStore LIKE :nameStore) AND " +
+            "(:title IS NULL OR m.title LIKE :title)")
     Page<MockInvoiceEntity> findByFilters(@Param("nameStore") String nameStore,
-                                         @Param("title") String title,
-                                         Pageable pageable);
+                                          @Param("title") String title,
+                                          Pageable pageable);
 }

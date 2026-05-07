@@ -17,13 +17,13 @@ public class CustomerProfileController {
 
     private final CustomerProfileService customerProfileService;
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity<BaseResponse<CustomerProfileResponse>> getProfile(@PathVariable UUID customerId) {
+    @GetMapping("/{UerId}")
+    public ResponseEntity<BaseResponse<CustomerProfileResponse>> getProfile(@PathVariable UUID UerId) {
         return ResponseEntity.ok(BaseResponse.<CustomerProfileResponse>builder()
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())
                 .message(BaseErrorCode.SUCCESS.getErrorDescription())
-                .data(customerProfileService.getProfile(customerId))
+                .data(customerProfileService.getProfile(UerId))
                 .build());
     }
 }

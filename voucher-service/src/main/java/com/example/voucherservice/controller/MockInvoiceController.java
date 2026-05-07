@@ -23,7 +23,7 @@ public class MockInvoiceController {
     private final MockInvoiceService mockInvoiceService;
 
     @PostMapping
-    @PreAuthorize("hasRole('MERCHANT')")
+    @PreAuthorize(" hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<MockInvoiceResponse>> createInvoice(
             @Valid @RequestBody CreateMockInvoiceRequest request) {
         MockInvoiceResponse response = mockInvoiceService.createInvoice(request);
@@ -36,7 +36,7 @@ public class MockInvoiceController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('MERCHANT') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<MockInvoiceListResponse>> getInvoices(
             @RequestParam(required = false) String nameStore,
             @RequestParam(required = false) String title,
@@ -60,7 +60,7 @@ public class MockInvoiceController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('MERCHANT') or hasRole('ADMIN')")
+    @PreAuthorize(" hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<MockInvoiceResponse>> getInvoiceById(@PathVariable Long id) {
         MockInvoiceResponse response = mockInvoiceService.getInvoiceById(id);
         return ResponseEntity.ok(BaseResponse.<MockInvoiceResponse>builder()

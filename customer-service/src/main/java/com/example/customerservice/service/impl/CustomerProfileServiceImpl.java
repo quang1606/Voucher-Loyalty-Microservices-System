@@ -21,12 +21,12 @@ public class CustomerProfileServiceImpl implements CustomerProfileService {
     private final CustomerProfileRepository customerProfileRepository;
 
     @Override
-    public CustomerProfileResponse getProfile(UUID customerId) {
-        CustomerProfile profile = customerProfileRepository.findByUserId(customerId)
+    public CustomerProfileResponse getProfile(UUID UerId) {
+        CustomerProfile profile = customerProfileRepository.findByUserId(UerId)
                 .orElseThrow(() -> BaseException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
                         .errorCode(BaseErrorCode.NOT_FOUND.getErrorCode())
-                        .description("Customer not found: " + customerId)
+                        .description("User not found: " + UerId)
                         .build());
         return CustomerProfileResponse.builder()
                 .id(profile.getId())
@@ -38,5 +38,18 @@ public class CustomerProfileServiceImpl implements CustomerProfileService {
                 .status(profile.getStatus())
                 .createdAt(profile.getCreatedAt())
                 .build();
+    }
+
+    @Override
+    public void createCustomerProfile(UUID userId, String fullName) {
+        if (customerProfileRepository.existsByUserId(userId)) {
+            log.warn("CustomerProfile already exists for userId: {}", userId);
+            return;
+        }
+        CustomerProfile profile = new CustomerProfile();
+        profile.setUserId(userId);
+        profile.setFullName(fullName);
+        customerProfileRepository.save(profile);
+        log.info("Created CustomerProfile for userId: {}", userId);
     }
 }

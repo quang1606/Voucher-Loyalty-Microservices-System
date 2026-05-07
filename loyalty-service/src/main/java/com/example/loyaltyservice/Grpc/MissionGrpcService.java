@@ -112,7 +112,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
             log.info("gRPC searchMission request: {}", request);
 
             Page<MissionEntity> page = missionService.searchMission(request);
-
+            log.info("gRPC searchMission total elements: {}", page);
             responseBuilder
                 .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
                 .setTotalElements((int) page.getTotalElements())

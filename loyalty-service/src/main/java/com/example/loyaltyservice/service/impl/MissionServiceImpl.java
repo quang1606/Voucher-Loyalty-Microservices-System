@@ -102,7 +102,7 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public void updateMissionStatus(Long missionId, String status) {
         MissionEntity entity = getMissionById(missionId);
-        entity.setStatus(TaskStatus.valueOf(status));
+        entity.setStatus(TaskStatus.FINISH);
         missionRepository.save(entity);
         log.info("Mission status updated - id: {}, newStatus: {}", missionId, status);
     }
