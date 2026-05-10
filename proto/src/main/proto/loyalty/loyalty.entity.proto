@@ -113,4 +113,5 @@ message UpdateMissionStatusRequest {
 
 message UpdateMissionStatusResponse {
   base.ResponseInfo responseInfo = 1;
+  MissionInfo missions = 2;
 }

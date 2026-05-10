@@ -63,24 +63,9 @@ message GetVoucherByRequestIdRequest {
 
 message GetVoucherByRequestIdResponse {
   base.ResponseInfo responseInfo = 1;
-  VoucherRequestDetail voucher_request = 2;
+  repeated VoucherDetail voucher_request = 2;
 }
 
-message VoucherRequestDetail {
-  string voucher_code = 1;
-  string voucher_name = 2;
-  string description = 3;
-  DiscountType discount_type = 4;
-  string discount_value = 5;
-  string max_discount = 6;
-  string min_order_value = 7;
-  int32 total_stock = 8;
-  int32 available_stock = 9;
-  int64 start_date = 10;
-  int64 end_date = 11;
-  string voucher_status = 12;
-  string name_store = 13;
-}
 
 message GetVoucherByIdRequest {
   base.RequestInfo requestInfo = 1;

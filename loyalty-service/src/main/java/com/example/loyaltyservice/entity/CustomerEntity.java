@@ -11,11 +11,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_points")
+@Table(name = "customer_points")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserPointEntity {
+public class CustomerEntity {
 
     @Id
     @Column(name = "customer_id")

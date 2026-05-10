@@ -1,6 +1,7 @@
 package com.example.voucherservice.service.consumer;
 
 import com.example.common.BaseException;
+import com.example.voucherservice.constant.VoucherStatus;
 import com.example.voucherservice.dto.event.VoucherUsedEvent;
 import com.example.voucherservice.entity.VoucherDetailEntity;
 import com.example.voucherservice.repository.VoucherRepository;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +45,9 @@ public class VoucherUsedConsumer {
             int currentStock = voucher.getAvailableStock();
             if (currentStock > 0) {
                 voucher.setAvailableStock(currentStock - 1);
+                if(currentStock-1==0){
+                    voucher.setStatus(VoucherStatus.OUT_OF_STOCK);
+                }
                 voucherRepository.save(voucher);
                 
                 log.info("Reduced voucher stock in DB - voucherId: {}, code: {}, newStock: {}", 

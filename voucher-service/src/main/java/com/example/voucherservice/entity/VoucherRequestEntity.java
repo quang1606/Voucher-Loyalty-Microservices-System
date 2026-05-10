@@ -30,7 +30,7 @@ public class VoucherRequestEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "request_id", unique = true, nullable = false, length = 64)
+  @Column(name = "request_id",  nullable = false, length = 64)
   private String requestId;
 
   @Enumerated(EnumType.STRING)

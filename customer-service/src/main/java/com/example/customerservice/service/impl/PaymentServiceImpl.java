@@ -102,7 +102,9 @@ public class PaymentServiceImpl implements PaymentService {
         // Update customer missions
         updateCustomerMissions(profile.getId(), finalAmount);
 
+
         if (request.getVoucherId() != null) {
+            updateCustomerVoucherUsage(profile.getId(), request.getVoucherId());
             reduceVoucherStockInRedis(voucherResult.getVoucherCode());
             sendVoucherUsedEvent(transactionId, request.getVoucherId(), voucherResult.getVoucherCode(), profile.getId(), originalAmount, voucherResult.getDiscountAmount());
         }
@@ -287,6 +289,20 @@ public class PaymentServiceImpl implements PaymentService {
             customerMissionRepository.save(customerMission);
             log.info("Created new customer mission - customerId: {}, missionId: {}", customerId, missionId);
         }
+    }
+
+    private void updateCustomerVoucherUsage(Long customerId, Long voucherId) {
+        CustomerVoucher customerVoucher = customerVoucherRepository
+                .findByCustomerIdAndVoucherId(customerId, voucherId)
+                .orElse(null);
+        if (customerVoucher == null) return;
+
+        customerVoucher.setAvailableUsage(customerVoucher.getAvailableUsage() - 1);
+        if (customerVoucher.getAvailableUsage() <= 0) {
+            customerVoucher.setStatus(com.example.customerservice.constant.CustomerVoucherStatus.USED);
+            customerVoucher.setUsedAt(java.time.LocalDateTime.now());
+        }
+        customerVoucherRepository.save(customerVoucher);
     }
 
     private VoucherApplyResult validateAndApplyVoucher(PaymentRequest request, CustomerProfile profile, BigDecimal originalAmount) {

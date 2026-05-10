@@ -27,7 +27,6 @@ import vn.com.grpc.voucher.entity.SearchVoucherRequest;
 import vn.com.grpc.voucher.entity.SearchVoucherResponse;
 import vn.com.grpc.voucher.entity.VoucherDetail;
 import vn.com.grpc.voucher.entity.VoucherInfo;
-import vn.com.grpc.voucher.entity.VoucherRequestDetail;
 import vn.com.grpc.voucher.service.VoucherGrpcServiceGrpc;
 
 @GrpcService
@@ -75,6 +74,34 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
             responseObserver.onCompleted();
         }
     }
+  @Override
+  public void getVoucherByRequestId(GetVoucherByRequestIdRequest request, StreamObserver<GetVoucherByRequestIdResponse> responseObserver) {
+    GetVoucherByRequestIdResponse.Builder responseBuilder = GetVoucherByRequestIdResponse.newBuilder();
+    try {
+      log.info("gRPC getVoucherByRequestId request: {}", request);
+
+      var vouchers = voucherService.getVouchersByRequestId(request.getRequestId());
+      
+      for (VoucherDetailEntity voucher : vouchers) {
+        responseBuilder.addVoucherRequest(toVoucherDetail(voucher));
+      }
+
+      responseBuilder.setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()));
+      log.info("gRPC getVoucherByRequestId response: {}", responseBuilder.build());
+
+    } catch (BaseException e) {
+      log.error("gRPC getVoucherByRequestId BaseException - errorCode: {}, message: {}",
+                e.getErrorCode(), e.getDescription());
+      responseBuilder.setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e));
+    } catch (Exception e) {
+      log.error("gRPC getVoucherByRequestId Exception - error: {}", e.getMessage(), e);
+      responseBuilder.setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e));
+    } finally {
+      responseObserver.onNext(responseBuilder.build());
+      responseObserver.onCompleted();
+    }
+  }
+
   @Override
   public void getVoucherById(GetVoucherByIdRequest request, StreamObserver<GetVoucherByIdResponse> responseObserver) {
     GetVoucherByIdResponse.Builder responseBuilder = GetVoucherByIdResponse.newBuilder();
@@ -210,21 +237,5 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
                 .build();
     }
 
-  private VoucherRequestDetail mapToVoucherRequestDetail(VoucherDetailEntity entity, String nameStore) {
-    return VoucherRequestDetail.newBuilder()
-        .setVoucherCode(entity.getVoucherCode() != null ? entity.getVoucherCode() : "")
-        .setVoucherName(entity.getVoucherName() != null ? entity.getVoucherName() : "")
-        .setDescription(entity.getDescription() != null ? entity.getDescription() : "")
-        .setDiscountType(entity.getDiscountType() != null ? vn.com.grpc.voucher.entity.DiscountType.valueOf(entity.getDiscountType().name()) : vn.com.grpc.voucher.entity.DiscountType.FIXED)
-        .setDiscountValue(entity.getDiscountValue() != null ? entity.getDiscountValue().toString() : "")
-        .setMaxDiscount(entity.getMaxDiscount() != null ? entity.getMaxDiscount().toString() : "")
-        .setMinOrderValue(entity.getMinOrderValue() != null ? entity.getMinOrderValue().toString() : "")
-        .setTotalStock(entity.getTotalStock() != null ? entity.getTotalStock() : 0)
-        .setAvailableStock(entity.getAvailableStock() != null ? entity.getAvailableStock() : 0)
-        .setStartDate(entity.getStartDate() != null ? entity.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
-        .setEndDate(entity.getEndDate() != null ? entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
-        .setVoucherStatus(entity.getStatus() != null ? entity.getStatus().name() : "")
-        .setNameStore(nameStore != null ? nameStore : "")
-        .build();
-  }
+
 }

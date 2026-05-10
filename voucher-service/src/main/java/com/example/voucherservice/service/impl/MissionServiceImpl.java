@@ -29,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import vn.com.grpc.loyalty.entity.GetMissionByIdResponse;
 import vn.com.grpc.loyalty.entity.SearchMissionResponse;
+import vn.com.grpc.loyalty.entity.UpdateMissionStatusResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -51,12 +52,14 @@ public class MissionServiceImpl implements MissionService {
       String requestId = "VOUCHER_" + System.currentTimeMillis();
       request.setRequestId(requestId);
       request.setTaskStatus(RequestStatus.INIT);
-      log.info("requestId: {}",request.getRequestId());
-      missionGrpcClient.createMission(request);
+      log.info("Request: {}", requestId);
       if (request.getRewardType() != RewardType.POINT) {
         request.setVoucherPurpose(VoucherPurpose.REWARD);
-        voucherService.createVoucher(request);
       }
+      voucherService.createVoucher(request);
+
+      missionGrpcClient.createMission(request);
+
       log.info("Mission created - name: {}, target: {}, reward: {} {}",
           request.getMissionName(), request.getTargetValue(),
           request.getRewardType(), request.getRewardValue());
@@ -83,10 +86,10 @@ public class MissionServiceImpl implements MissionService {
   public void submitMission(Long id) {
     log.info("Submitting mission - id: {}", id);
     try {
-      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
-          RequestStatus.INIT);
-      missionGrpcClient.updateMissionStatus(id, RequestStatus.PENDING_APPROVE);
 
+      UpdateMissionStatusResponse response= missionGrpcClient.updateMissionStatus(id, RequestStatus.PENDING_APPROVE);
+      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(response.getMissions().getRequestId(),
+              RequestStatus.INIT);
       entity.setStatus(RequestStatus.PENDING_APPROVE);
       entity.setUpdatedBy(authorizationService.getName());
       voucherRequestRepository.save(entity);
@@ -113,10 +116,10 @@ public class MissionServiceImpl implements MissionService {
   @Override
   public void cancelMission(Long id) {
     try {
-      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
-          RequestStatus.INIT);
-      missionGrpcClient.updateMissionStatus(id, RequestStatus.CANCELLED);
 
+      UpdateMissionStatusResponse response= missionGrpcClient.updateMissionStatus(id, RequestStatus.CANCELLED);
+      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(response.getMissions().getRequestId(),
+              RequestStatus.INIT);
       entity.setStatus(RequestStatus.CANCELLED);
       entity.setUpdatedBy(authorizationService.getName());
       voucherRequestRepository.save(entity);
@@ -152,8 +155,7 @@ public class MissionServiceImpl implements MissionService {
             .build();
       }
 
-      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
-          RequestStatus.PENDING_APPROVE);
+
 
       RequestStatus newStatus;
       if (request.getAction() == ConfirmAction.REJECTED) {
@@ -162,8 +164,9 @@ public class MissionServiceImpl implements MissionService {
         newStatus = RequestStatus.APPROVED;
       }
 
-      missionGrpcClient.updateMissionStatus(id, newStatus);
-
+      UpdateMissionStatusResponse response= missionGrpcClient.updateMissionStatus(id, newStatus);
+      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(response.getMissions().getRequestId(),
+              RequestStatus.PENDING_APPROVE);
       if (request.getAction() == ConfirmAction.REJECTED) {
         voucherService.handleRejected(entity, request.getReason());
       } else {

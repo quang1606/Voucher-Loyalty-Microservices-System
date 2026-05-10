@@ -32,6 +32,22 @@ public class VoucherServiceHelper {
   private final VoucherRepository voucherRepository;
     private final VoucherRequestRepository voucherRequestRepository;
 
+    public VoucherRequestEntity findRequestByIdAndStatus(String id, RequestStatus expectedStatus) {
+        VoucherRequestEntity entity = voucherRequestRepository.findByRequestId(id)
+                .orElseThrow(() -> BaseException.builder()
+                        .httpStatus(HttpStatus.NOT_FOUND)
+                        .errorCode("REQUEST_NOT_FOUND")
+                        .description("Voucher request not found: " + id)
+                        .build());
+        if (entity.getStatus() != expectedStatus) {
+            throw BaseException.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .errorCode("INVALID_REQUEST_STATUS")
+                    .description("Expected status " + expectedStatus + " but was " + entity.getStatus())
+                    .build();
+        }
+        return entity;
+    }
     public VoucherRequestEntity findRequestByIdAndStatus(Long id, RequestStatus expectedStatus) {
         VoucherRequestEntity entity = voucherRequestRepository.findById(id)
                 .orElseThrow(() -> BaseException.builder()
@@ -102,6 +118,10 @@ public class VoucherServiceHelper {
 
     @Transactional
     public void saveVoucher(CreateVoucherRequest request, String username, boolean isPartner, String storeName) {
+        if (request.getRequestId() == null) {
+            String requestId = "VOUCHER_" + System.currentTimeMillis();
+            request.setRequestId(requestId);
+        }
         log.info("requestId: {}", request.getRequestId());
         try {
             VoucherRequestEntity requestEntity = new VoucherRequestEntity();

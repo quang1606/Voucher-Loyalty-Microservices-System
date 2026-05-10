@@ -100,10 +100,14 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public void updateMissionStatus(Long missionId, String status) {
+    public MissionEntity updateMissionStatus(Long missionId, String status) {
         MissionEntity entity = getMissionById(missionId);
-        entity.setStatus(TaskStatus.FINISH);
-        missionRepository.save(entity);
+        if (status.equalsIgnoreCase(TaskStatus.APPROVED.name())) {
+            entity.setStatus(TaskStatus.FINISH);
+        }
+        entity.setStatus(TaskStatus.valueOf(status));
+        MissionEntity saved = missionRepository.save(entity);
         log.info("Mission status updated - id: {}, newStatus: {}", missionId, status);
+        return saved;
     }
 }

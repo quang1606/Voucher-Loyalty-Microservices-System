@@ -50,8 +50,26 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
         UpdateMissionStatusResponse.Builder responseBuilder = UpdateMissionStatusResponse.newBuilder();
         try {
             log.info("gRPC updateMissionStatus request: {}", request);
-            missionService.updateMissionStatus(request.getMissionId(), request.getTaskStatus().name());
-            responseBuilder.setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()));
+            MissionEntity entity = missionService.updateMissionStatus(request.getMissionId(), request.getTaskStatus().name());
+
+            MissionInfo missionInfo = MissionInfo.newBuilder()
+                .setMissionId(entity.getId())
+                .setMissionName(entity.getName())
+                .setMissionDescription(entity.getDescription())
+                .setTargetValue(entity.getTargetValue().doubleValue())
+                .setTargetType(TargetType.valueOf(entity.getTargetType().name()))
+                .setRewardType(RewardType.valueOf(entity.getRewardType().name()))
+                .setRewardValue(entity.getRewardValue())
+                .setPartnerId(entity.getPartnerId() != null ? entity.getPartnerId() : 0L)
+                .setStartDate(entity.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
+                .setRequestId(entity.getRequestId())
+                .build();
+
+            responseBuilder
+                .setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()))
+                .setMissions(missionInfo);
             log.info("gRPC updateMissionStatus response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC updateMissionStatus BaseException - missionId: {}, error: {}",

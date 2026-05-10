@@ -181,7 +181,7 @@ public class MissionGrpcClient {
     }
   }
 
-  public void updateMissionStatus(Long missionId, com.example.voucherservice.constant.RequestStatus status) {
+  public UpdateMissionStatusResponse updateMissionStatus(Long missionId, com.example.voucherservice.constant.RequestStatus status) {
     UpdateMissionStatusRequest request = UpdateMissionStatusRequest.newBuilder()
         .setRequestInfo(grpcUtils.builderRequestInfo())
         .setMissionId(missionId)
@@ -201,6 +201,7 @@ public class MissionGrpcClient {
             .build();
       }
       log.info("gRPC updateMissionStatus response: {}", response);
+      return response;
     } catch (BaseException e) {
       throw BaseException.builder()
           .httpStatus(e.getHttpStatus())

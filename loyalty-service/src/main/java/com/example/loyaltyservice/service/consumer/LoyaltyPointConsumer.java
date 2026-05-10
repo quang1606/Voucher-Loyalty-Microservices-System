@@ -4,7 +4,7 @@ import com.example.common.BaseException;
 import com.example.loyaltyservice.constant.CustomerTier;
 import com.example.loyaltyservice.dto.event.LoyaltyPointEvent;
 import com.example.loyaltyservice.dto.event.TierUpgradeEvent;
-import com.example.loyaltyservice.entity.UserPointEntity;
+import com.example.loyaltyservice.entity.CustomerEntity;
 import com.example.loyaltyservice.repository.UserPointRepository;
 import com.example.loyaltyservice.service.KafkaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,8 +37,8 @@ public class LoyaltyPointConsumer {
             
             LoyaltyPointEvent event = objectMapper.readValue(message, LoyaltyPointEvent.class);
             
-            UserPointEntity userPoint = userPointRepository.findById(event.getCustomerId())
-                    .orElse(new UserPointEntity());
+            CustomerEntity userPoint = userPointRepository.findById(event.getCustomerId())
+                    .orElse(new CustomerEntity());
             
             if (userPoint.getCustomerId() == null) {
                 userPoint.setCustomerId(event.getCustomerId());

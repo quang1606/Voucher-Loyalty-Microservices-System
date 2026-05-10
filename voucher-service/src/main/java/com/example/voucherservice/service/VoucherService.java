@@ -17,6 +17,8 @@ import com.example.voucherservice.dto.response.VoucherRequestResponse;
 import com.example.voucherservice.constant.RequestStatus;
 import com.example.voucherservice.dto.response.VoucherRequestResponsePage;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -46,4 +48,6 @@ public interface VoucherService {
     Page<VoucherDetailEntity> searchVouchersByTier(String customerTier, Pageable pageable);
 
     VoucherRequestEntity getVoucherByRequestId(String requestId);
+
+    List<VoucherDetailEntity> getVouchersByRequestId(String requestId);
 }

@@ -13,5 +13,5 @@ public interface MissionService {
 
     Page<MissionEntity> searchMission(SearchMissionRequest request);
 
-    void updateMissionStatus(Long missionId, String status);
+    MissionEntity updateMissionStatus(Long missionId, String status);
 }

@@ -8,15 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import vn.com.grpc.voucher.entity.GetMockInvoicesRequest;
-import vn.com.grpc.voucher.entity.GetMockInvoicesResponse;
-import vn.com.grpc.voucher.entity.GetVoucherByIdRequest;
-import vn.com.grpc.voucher.entity.GetVoucherByIdResponse;
-import vn.com.grpc.voucher.entity.GetVoucherByRequestIdRequest;
-import vn.com.grpc.voucher.entity.GetVoucherByRequestIdResponse;
-import vn.com.grpc.voucher.entity.SearchVoucherRequest;
-import vn.com.grpc.voucher.entity.SearchVoucherResponse;
-import vn.com.grpc.voucher.entity.VoucherPageable;
+import vn.com.grpc.voucher.entity.*;
 import vn.com.grpc.voucher.service.VoucherGrpcServiceGrpc;
 
 @Service

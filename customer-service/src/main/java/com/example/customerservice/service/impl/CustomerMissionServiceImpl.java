@@ -27,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import vn.com.grpc.loyalty.entity.SearchMissionResponse;
+import vn.com.grpc.voucher.entity.GetVoucherByRequestIdResponse;
+import vn.com.grpc.voucher.entity.VoucherDetail;
 
 import java.util.List;
 import java.util.Map;
@@ -60,7 +62,7 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
 
         // Get all missions from loyalty-service
         SearchMissionResponse grpcResponse = missionGrpcClient.getMissions(page, size);
-        
+
         // Get customer mission progress
         List<CustomerMission> customerMissions = customerMissionRepository.findByCustomerId(profile.getId());
         Map<Long, CustomerMission> missionProgressMap = customerMissions.stream()
@@ -70,7 +72,7 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
         List<MissionResponse.MissionInfo> missionInfos = grpcResponse.getMissionsList().stream()
                 .map(grpcMission -> {
                     CustomerMission customerMission = missionProgressMap.get(grpcMission.getMissionId());
-                    
+
                     return MissionResponse.MissionInfo.builder()
                             .missionId(grpcMission.getMissionId())
                             .missionName(grpcMission.getMissionName())
@@ -127,16 +129,18 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
         }
 
         // Get mission details
-        vn.com.grpc.loyalty.entity.GetMissionByIdResponse missionResponse = 
+        vn.com.grpc.loyalty.entity.GetMissionByIdResponse missionResponse =
                 missionGrpcClient.getMissionById(missionId);
 
         String rewardType = missionResponse.getRewardType().name();
         String rewardValue = missionResponse.getRewardValue();
 
+        String request_Id = missionResponse.getRequestId();
+
         if ("POINT".equals(rewardType)) {
             return handlePointReward(customerMission, profile, rewardValue);
         } else if ("VOUCHER".equals(rewardType)) {
-            return handleVoucherReward(customerMission, profile, rewardValue);
+            return handleVoucherReward(customerMission, profile, request_Id);
         } else {
             throw BaseException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
@@ -146,34 +150,34 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
         }
     }
 
-    private ClaimMissionRewardResponse handlePointReward(CustomerMission customerMission, 
-                                                       CustomerProfile profile, String rewardValue) {
+    private ClaimMissionRewardResponse handlePointReward(CustomerMission customerMission,
+                                                         CustomerProfile profile, String rewardValue) {
         try {
             int points = Integer.parseInt(rewardValue);
-            
+
             // Update customer mission status
             customerMission.setStatus(CustomerMissionStatus.CLAIMED);
             customerMissionRepository.save(customerMission);
-            
+
             // Update customer profile points
             profile.setTotalPoints(profile.getTotalPoints() + points);
             customerProfileRepository.save(profile);
-            
+
             // Update leaderboard in Redis
             leaderboardService.updateCustomerPoints(profile.getId(), points);
-            
+
             // Send loyalty point event
             sendLoyaltyPointEvent("MISSION-" + customerMission.getId(), profile.getId(), points);
-            
-            log.info("Claimed point reward - customerId: {}, missionId: {}, points: {}", 
+
+            log.info("Claimed point reward - customerId: {}, missionId: {}, points: {}",
                     profile.getId(), customerMission.getMissionId(), points);
-            
+
             return ClaimMissionRewardResponse.builder()
                     .rewardType("POINT")
                     .rewardValue(rewardValue + " points")
                     .message("Successfully claimed " + points + " points")
                     .build();
-                    
+
         } catch (NumberFormatException ex) {
             throw BaseException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
@@ -183,47 +187,48 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
         }
     }
 
-    private ClaimMissionRewardResponse handleVoucherReward(CustomerMission customerMission, 
-                                                         CustomerProfile profile, String rewardValue) {
+    private ClaimMissionRewardResponse handleVoucherReward(CustomerMission customerMission,
+                                                           CustomerProfile profile, String request_Id) {
+        log.info("check voucher 2");
         try {
-            Long voucherId = Long.parseLong(rewardValue);
-            
+
+
             // Get voucher details from voucher-service
-            vn.com.grpc.voucher.entity.GetVoucherByIdResponse voucherResponse = 
-                    voucherGrpcClient.getVoucherById(voucherId);
-            vn.com.grpc.voucher.entity.VoucherDetail voucherDetail = voucherResponse.getVoucher();
-            
+            GetVoucherByRequestIdResponse voucherResponse =
+                    voucherGrpcClient.getVoucherByRequestId(request_Id);
+            VoucherDetail voucherDetail = voucherResponse.getVoucherRequest(0);
+
             // Create customer voucher
             CustomerVoucher customerVoucher = new CustomerVoucher();
             customerVoucher.setCustomerId(profile.getId());
-            customerVoucher.setVoucherId(voucherId);
+            customerVoucher.setVoucherId(voucherDetail.getId());
             customerVoucher.setAvailableUsage(voucherDetail.getMaxCollect());
             customerVoucher.setVoucherCode(voucherDetail.getVoucherCode());
             customerVoucher.setNameStore(voucherDetail.getNameStore());
             customerVoucher.setCreatorType(CreatorType.SYSTEM);
             customerVoucher.setStatus(CustomerVoucherStatus.AVAILABLE);
             customerVoucher.setObtainedAt(java.time.LocalDateTime.now());
-            
+
             customerVoucherRepository.save(customerVoucher);
-            
+
             // Update customer mission status
             customerMission.setStatus(CustomerMissionStatus.CLAIMED);
             customerMissionRepository.save(customerMission);
-            
-            log.info("Claimed voucher reward - customerId: {}, missionId: {}, voucherId: {}, voucherCode: {}", 
-                    profile.getId(), customerMission.getMissionId(), voucherId, voucherDetail.getVoucherCode());
-            
+
+            log.info("Claimed voucher reward - customerId: {}, missionId: {}, voucherId: {}, voucherCode: {}",
+                    profile.getId(), customerMission.getMissionId(), voucherDetail.getId(), voucherDetail.getVoucherCode());
+
             return ClaimMissionRewardResponse.builder()
                     .rewardType("VOUCHER")
                     .rewardValue(voucherDetail.getVoucherName())
                     .message("Successfully claimed voucher: " + voucherDetail.getVoucherName())
                     .build();
-                    
+
         } catch (NumberFormatException ex) {
             throw BaseException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .errorCode("INVALID_VOUCHER_ID")
-                    .description("Invalid voucher ID: " + rewardValue)
+                    .description("Invalid voucher ID: ")
                     .build();
         }
     }
@@ -248,4 +253,4 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
             log.error("Failed to serialize loyalty point event: {}", ex.getMessage());
         }
     }
-    }
+}

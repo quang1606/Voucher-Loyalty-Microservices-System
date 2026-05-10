@@ -46,4 +46,6 @@ public interface VoucherRepository extends JpaRepository<VoucherDetailEntity, Lo
     List<ProjectionStatus> countStatusByRequestIds(List<String> requestIds);
 
     int countByRequestId(String requestId);
+
+    List<VoucherDetailEntity> findByRequestId(String requestId);
 }

@@ -268,9 +268,10 @@ public class VoucherServiceImpl implements VoucherService {
     if (!isPartner) {
       validateSystemFields(request);
     }
-
-    VoucherRequestStrategy strategy = strategyFactory.getStrategy(request.getDiscountType());
-    strategy.validateRequest(request);
+    if(request.getVoucherPurpose()!= null && request.getVoucherPurpose().equals(VoucherPurpose.REWARD)) {
+      VoucherRequestStrategy strategy = strategyFactory.getStrategy(request.getDiscountType());
+      strategy.validateRequest(request);
+    }
 
     String username = authorizationService.getName();
     String userId = isPartner ? authorizationService.getUserId() : null;
@@ -493,6 +494,12 @@ public class VoucherServiceImpl implements VoucherService {
             .errorCode("VOUCHER_REQUEST_NOT_FOUND")
             .description("Voucher request not found with requestId: " + requestId)
             .build());
+  }
+
+  @Override
+  public List<VoucherDetailEntity> getVouchersByRequestId(String requestId) {
+    log.info("Getting vouchers by requestId: {}", requestId);
+    return voucherRepository.findByRequestId(requestId);
   }
 
 
