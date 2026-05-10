@@ -62,7 +62,7 @@ private final VoucherRepository voucherRepository;
           .description("Invalid percent voucher detail id: " + detail.getId())
           .build();
     }
-    detail.setStatus(VoucherStatus.ACTIVE);
+    detail.setStatus(VoucherStatus.APPROVED);
   }
 
   @Override

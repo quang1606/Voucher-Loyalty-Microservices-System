@@ -131,7 +131,8 @@ public class MissionGrpcClient {
 
   public SearchMissionResponse searchMissions(Long partnerId,
       com.example.voucherservice.constant.RewardType rewardType,
-      com.example.voucherservice.constant.TaskStatus taskStatus, Pageable pageable) {
+      com.example.voucherservice.constant.TaskStatus taskStatus,
+      com.example.voucherservice.constant.MissionStatus missionStatus, Pageable pageable) {
 
     SearchMissionRequest.Builder builder = SearchMissionRequest.newBuilder()
         .setRequestInfo(grpcUtils.builderRequestInfo())
@@ -148,6 +149,9 @@ public class MissionGrpcClient {
     }
     if (taskStatus != null) {
       builder.setTaskStatus(TaskStatus.valueOf(taskStatus.name()));
+    }
+    if (missionStatus != null) {
+      builder.setMissionStatus(vn.com.grpc.loyalty.entity.MissionStatus.valueOf(missionStatus.name()));
     }
 
     SearchMissionRequest request = builder.build();

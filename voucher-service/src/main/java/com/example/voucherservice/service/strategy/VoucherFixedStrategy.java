@@ -52,7 +52,7 @@ public class VoucherFixedStrategy extends VoucherRequestStrategy {
   @Override
   public void processApprovalDetail(VoucherDetailEntity detail) {
     detail.setMaxDiscount(detail.getDiscountValue());
-    detail.setStatus(VoucherStatus.ACTIVE);
+    detail.setStatus(VoucherStatus.APPROVED);
   }
 
   @Override

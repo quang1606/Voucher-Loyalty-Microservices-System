@@ -1,5 +1,6 @@
 package com.example.loyaltyservice.service.specification;
 
+import com.example.loyaltyservice.constant.MissionStatus;
 import com.example.loyaltyservice.constant.RewardType;
 import com.example.loyaltyservice.constant.TaskStatus;
 import com.example.loyaltyservice.entity.MissionEntity;
@@ -27,6 +28,12 @@ public class MissionSpecification {
       spec = spec.and(statusEquals(TaskStatus.valueOf(request.getTaskStatus().name())));
     }
 
+    if (request.getMissionStatusValue() > 0
+        && request.getMissionStatus() != vn.com.grpc.loyalty.entity.MissionStatus.UNRECOGNIZED) {
+      String name = request.getMissionStatus().name();
+      spec = spec.and(missionStatusEquals(MissionStatus.valueOf(name)));
+    }
+
     return spec;
   }
 
@@ -40,5 +47,9 @@ public class MissionSpecification {
 
   private Specification<MissionEntity> statusEquals(TaskStatus status) {
     return (root, query, cb) -> cb.equal(root.get("status"), status);
+  }
+
+  private Specification<MissionEntity> missionStatusEquals(MissionStatus missionStatus) {
+    return (root, query, cb) -> cb.equal(root.get("missionStatus"), missionStatus);
   }
 }

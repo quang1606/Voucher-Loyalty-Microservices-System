@@ -1,9 +1,8 @@
 package com.example.voucherservice.constant;
 
-public enum VoucherStatus {
+public enum MissionStatus {
     INACTIVE,
     APPROVED,
     ACTIVE,
-    EXPIRED,
-    OUT_OF_STOCK
+    EXPIRED
 }

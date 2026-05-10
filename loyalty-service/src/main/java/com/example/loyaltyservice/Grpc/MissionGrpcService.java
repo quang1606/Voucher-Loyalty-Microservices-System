@@ -65,6 +65,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                 .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
                 .setRequestId(entity.getRequestId())
+                .setMissionStatus(MissionStatus.valueOf(entity.getMissionStatus().name()))
                 .build();
 
             responseBuilder
@@ -106,7 +107,8 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                 .setStartDate(entity.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
-                .setRequestId(entity.getRequestId());
+                .setRequestId(entity.getRequestId())
+                .setMissionStatus(MissionStatus.valueOf( entity.getMissionStatus().name()));
             log.info("gRPC getMissionById response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC getMissionById BaseException - missionId: {}, errorCode: {}, message: {}",
@@ -150,6 +152,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                     .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                     .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
                     .setRequestId(entity.getRequestId())
+                    .setMissionStatus(MissionStatus.valueOf(entity.getMissionStatus().name()))
                     .build();
                 responseBuilder.addMissions(missionInfo);
             }

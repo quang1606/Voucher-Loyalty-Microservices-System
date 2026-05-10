@@ -32,6 +32,14 @@ enum TaskStatus {
   FINISH = 7;
 }
 
+enum MissionStatus {
+  MISSION_STATUS_UNSPECIFIED = 0;
+  INACTIVE = 1;
+  APPROVED = 2;
+  ACTIVE = 3;
+  EXPIRED = 4;
+}
+
 message CreateMissionRequestGrpc {
   base.RequestInfo requestInfo = 1;
   string mission_name = 2;
@@ -69,6 +77,7 @@ message GetMissionByIdResponse {
   int64 end_date = 10;
   TaskStatus task_status = 11;
   string request_id = 12;
+  MissionStatus mission_status = 13;
 }
 
 message SearchMissionRequest {
@@ -77,6 +86,7 @@ message SearchMissionRequest {
   RewardType reward_type = 3;
   TaskStatus task_status = 4;
   Pageable pageable = 5;
+  MissionStatus mission_status = 6;
 }
 message Pageable {
   int32 page = 1;
@@ -103,6 +113,7 @@ message MissionInfo {
   int64 end_date = 10;
   TaskStatus task_status = 11;
   string request_id = 12;
+  MissionStatus mission_status = 13;
 }
 
 message UpdateMissionStatusRequest {

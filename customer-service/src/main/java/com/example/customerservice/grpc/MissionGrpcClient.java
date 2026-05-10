@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import vn.com.grpc.loyalty.entity.GetMissionByIdRequest;
 import vn.com.grpc.loyalty.entity.GetMissionByIdResponse;
+import vn.com.grpc.loyalty.entity.MissionStatus;
 import vn.com.grpc.loyalty.entity.Pageable;
 import vn.com.grpc.loyalty.entity.SearchMissionRequest;
 import vn.com.grpc.loyalty.entity.SearchMissionResponse;
@@ -29,7 +30,7 @@ public class MissionGrpcClient {
     public SearchMissionResponse getMissions(int page, int size) {
         SearchMissionRequest request = SearchMissionRequest.newBuilder()
                 .setRequestInfo(grpcUtils.builderRequestInfo())
-                .setTaskStatus(TaskStatus.FINISH) // Mặc định FINISH
+                .setMissionStatus(MissionStatus.ACTIVE)
                 .setPageable(Pageable.newBuilder()
                         .setPage(page)
                         .setSize(size)

@@ -194,7 +194,7 @@ public class MissionServiceImpl implements MissionService {
 
   @Override
   public MissionResponse searchMissions(String nameStore, RewardType rewardType,
-      TaskStatus taskStatus, Pageable pageable) {
+      TaskStatus taskStatus, MissionStatus missionStatus, Pageable pageable) {
 
     if (authorizationService.isCheckerRole()) {
       List<String> allowedStatuses = List.of(
@@ -221,7 +221,7 @@ public class MissionServiceImpl implements MissionService {
     }
 
     SearchMissionResponse response = missionGrpcClient.searchMissions(
-        partnerId, rewardType, taskStatus, pageable);
+        partnerId, rewardType, taskStatus, missionStatus, pageable);
 
     return MissionMapper.toMissionResponse(response, pageable.getPageNumber(), pageable.getPageSize());
   }

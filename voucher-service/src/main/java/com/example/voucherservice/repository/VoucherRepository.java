@@ -7,6 +7,7 @@ import com.example.voucherservice.constant.VoucherStatus;
 import com.example.voucherservice.dto.projection.ProjectionStatus;
 import com.example.voucherservice.dto.projection.ProjectionTotalVoucher;
 import com.example.voucherservice.entity.VoucherDetailEntity;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -48,4 +49,10 @@ public interface VoucherRepository extends JpaRepository<VoucherDetailEntity, Lo
     int countByRequestId(String requestId);
 
     List<VoucherDetailEntity> findByRequestId(String requestId);
+
+    List<VoucherDetailEntity> findByStatusAndStartDateLessThanEqualAndIdGreaterThanOrderByIdAsc(
+            VoucherStatus status, LocalDateTime startDate, Long id, Pageable pageable);
+
+    List<VoucherDetailEntity> findByStatusAndEndDateLessThanAndIdGreaterThanOrderByIdAsc(
+            VoucherStatus status, LocalDateTime endDate, Long id, Pageable pageable);
 }

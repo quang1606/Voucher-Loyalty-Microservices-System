@@ -1,5 +1,6 @@
 package com.example.voucherservice.service;
 
+import com.example.voucherservice.constant.MissionStatus;
 import com.example.voucherservice.constant.RewardType;
 import com.example.voucherservice.constant.TaskStatus;
 import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
@@ -18,7 +19,7 @@ public interface MissionService {
 
   void confirmMission(Long id, ConfirmVoucherRequest request);
 
-  MissionResponse searchMissions(String nameStore, RewardType rewardType, TaskStatus taskStatus, Pageable pageable);
+  MissionResponse searchMissions(String nameStore, RewardType rewardType, TaskStatus taskStatus, MissionStatus missionStatus, Pageable pageable);
 
   MissionDetailResponse getMissionDetail(Long missionId);
 }

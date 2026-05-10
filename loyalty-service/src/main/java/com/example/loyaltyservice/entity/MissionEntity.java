@@ -1,5 +1,6 @@
 package com.example.loyaltyservice.entity;
 
+import com.example.loyaltyservice.constant.MissionStatus;
 import com.example.loyaltyservice.constant.RewardType;
 import com.example.loyaltyservice.constant.TargetType;
 import com.example.loyaltyservice.constant.TaskStatus;
@@ -71,6 +72,10 @@ public class MissionEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private TaskStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "mission_status")
+    private MissionStatus missionStatus = MissionStatus.INACTIVE;
 
     @CreationTimestamp
     @Column(name = "created_date", updatable = false)

@@ -1,6 +1,7 @@
 package com.example.loyaltyservice.service.impl;
 
 import com.example.common.BaseException;
+import com.example.loyaltyservice.constant.MissionStatus;
 import com.example.loyaltyservice.constant.RewardType;
 import com.example.loyaltyservice.constant.TargetType;
 import com.example.loyaltyservice.constant.TaskStatus;
@@ -104,6 +105,7 @@ public class MissionServiceImpl implements MissionService {
         MissionEntity entity = getMissionById(missionId);
         if (status.equalsIgnoreCase(TaskStatus.APPROVED.name())) {
             entity.setStatus(TaskStatus.FINISH);
+            entity.setMissionStatus(MissionStatus.APPROVED);
         }
         entity.setStatus(TaskStatus.valueOf(status));
         MissionEntity saved = missionRepository.save(entity);

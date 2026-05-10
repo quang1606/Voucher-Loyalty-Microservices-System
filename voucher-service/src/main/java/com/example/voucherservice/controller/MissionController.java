@@ -2,6 +2,7 @@ package com.example.voucherservice.controller;
 
 import com.example.common.BaseErrorCode;
 import com.example.common.BaseResponse;
+import com.example.voucherservice.constant.MissionStatus;
 import com.example.voucherservice.constant.RewardType;
 import com.example.voucherservice.constant.TaskStatus;
 import com.example.voucherservice.dto.request.ConfirmVoucherRequest;
@@ -77,9 +78,10 @@ public class MissionController {
       @RequestParam(required = false) String nameStore,
       @RequestParam(required = false) RewardType rewardType,
       @RequestParam(required = false) TaskStatus taskStatus,
+      @RequestParam(required = false) MissionStatus missionStatus,
       @PageableDefault(size = 20) Pageable pageable) {
 
-    MissionResponse result = missionService.searchMissions(nameStore, rewardType, taskStatus, pageable);
+    MissionResponse result = missionService.searchMissions(nameStore, rewardType, taskStatus, missionStatus, pageable);
 
     return ResponseEntity.ok(BaseResponse.<MissionResponse>builder()
         .status(BaseErrorCode.SUCCESS.getErrorNumCode())
