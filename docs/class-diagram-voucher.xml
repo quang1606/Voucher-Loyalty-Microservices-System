@@ -1,0 +1,101 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Class Diagram - Voucher Service" id="class-voucher">
+    <mxGraphModel dx="1400" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1" value="Voucher Service - Class Diagram" style="text;html=1;fontSize=16;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="400" y="10" width="300" height="30" as="geometry" />
+        </mxCell>
+        <!-- VoucherRequestEntity -->
+        <mxCell id="10" value="&lt;&lt;Entity&gt;&gt;&#xa;VoucherRequestEntity" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="280" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="10a" value="- id: Long «PK»&#xa;- requestId: String «unique»&#xa;- requestMode: RequestMode&#xa;- creatorType: CreatorType&#xa;- voucherPurpose: VoucherPurpose&#xa;- fileName: String&#xa;- status: RequestStatus&#xa;- reason: String&#xa;- createdTime: LocalDateTime&#xa;- createdBy: String&#xa;- updatedTime: LocalDateTime&#xa;- updatedBy: String&#xa;- confirmedTime: LocalDateTime&#xa;- confirmedBy: String&#xa;- storeName: String" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="10">
+          <mxGeometry y="40" width="280" height="270" as="geometry" />
+        </mxCell>
+        <!-- VoucherDetailEntity -->
+        <mxCell id="11" value="&lt;&lt;Entity&gt;&gt;&#xa;VoucherDetailEntity" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="50" width="280" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="11a" value="- id: Long «PK»&#xa;- voucherCode: String «unique»&#xa;- requestId: String «FK»&#xa;- voucherName: String&#xa;- description: String&#xa;- customerTier: CustomerTier&#xa;- discountType: DiscountType&#xa;- discountValue: BigDecimal&#xa;- maxDiscount: BigDecimal&#xa;- minOrderValue: BigDecimal&#xa;- totalStock: Integer&#xa;- availableStock: Integer&#xa;- requestStatus: RequestStatus&#xa;- maxCollect: Integer&#xa;- startDate: LocalDateTime&#xa;- endDate: LocalDateTime&#xa;- status: VoucherStatus&#xa;- errorMessage: String&#xa;- createdAt: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="11">
+          <mxGeometry y="40" width="280" height="350" as="geometry" />
+        </mxCell>
+        <!-- AuditLogEntity -->
+        <mxCell id="12" value="&lt;&lt;Entity&gt;&gt;&#xa;AuditLogEntity" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="720" y="50" width="240" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="12a" value="- id: Long «PK»&#xa;- userId: String&#xa;- userRole: String&#xa;- action: String&#xa;- resource: String&#xa;- success: Boolean&#xa;- errorMessage: String&#xa;- createdAt: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="12">
+          <mxGeometry y="40" width="240" height="170" as="geometry" />
+        </mxCell>
+        <!-- MockInvoiceEntity -->
+        <mxCell id="13" value="&lt;&lt;Entity&gt;&gt;&#xa;MockInvoiceEntity" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="720" y="300" width="240" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="13a" value="- id: Long «PK»&#xa;- title: String&#xa;- nameStore: String&#xa;- amount: BigDecimal&#xa;- createdAt: LocalDateTime&#xa;- updatedAt: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="13">
+          <mxGeometry y="40" width="240" height="130" as="geometry" />
+        </mxCell>
+        <!-- Enums -->
+        <mxCell id="30" value="&lt;&lt;enum&gt;&gt; RequestStatus" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="500" width="160" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="30a" value="DRAFT&#xa;INIT&#xa;CANCELLED&#xa;PENDING_APPROVE&#xa;APPROVED&#xa;REJECTED&#xa;PROCESSING&#xa;FAILED&#xa;FINISH&#xa;SUCCESS" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="30">
+          <mxGeometry y="25" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="&lt;&lt;enum&gt;&gt; DiscountType" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="220" y="500" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="31a" value="FIXED&#xa;PERCENT" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="31">
+          <mxGeometry y="25" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="&lt;&lt;enum&gt;&gt; VoucherStatus" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="220" y="590" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="32a" value="ACTIVE&#xa;INACTIVE&#xa;EXPIRED" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="32">
+          <mxGeometry y="25" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="&lt;&lt;enum&gt;&gt; CustomerTier" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="380" y="500" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="33a" value="ALL&#xa;SILVER&#xa;GOLD&#xa;PLATINUM&#xa;DIAMOND" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="33">
+          <mxGeometry y="25" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="&lt;&lt;enum&gt;&gt; VoucherPurpose" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="540" y="500" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="34a" value="REWARD&#xa;HUNT" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="34">
+          <mxGeometry y="25" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="35" value="&lt;&lt;enum&gt;&gt; CreatorType" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="540" y="590" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="35a" value="PARTNER&#xa;SYSTEM" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="35">
+          <mxGeometry y="25" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="36" value="&lt;&lt;enum&gt;&gt; RequestMode" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="710" y="500" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="36a" value="SINGLE&#xa;EXCEL" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="36">
+          <mxGeometry y="25" width="140" height="40" as="geometry" />
+        </mxCell>
+        <!-- Relationship: VoucherRequest 1──* VoucherDetail -->
+        <mxCell id="r1" value="" style="endArrow=diamondThin;endFill=1;startArrow=none;exitX=1;exitY=0.5;entryX=0;entryY=0.3;" edge="1" source="10" target="11" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r1a" value="1" style="edgeLabel;align=right;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry x="-0.8" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="r1b" value="*" style="edgeLabel;align=left;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry x="0.8" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <!-- Services -->
+        <mxCell id="40" value="&lt;&lt;Service&gt;&gt;&#xa;VoucherService" style="swimlane;fontStyle=1;align=center;startSize=35;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="720" y="600" width="240" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="40a" value="+ createVoucher(request)&#xa;+ createVoucherByExcel(request)&#xa;+ submitVoucher(id)&#xa;+ confirmVoucher(id, request)&#xa;+ cancelVoucher(id)&#xa;+ getVouchers(filters, pageable)&#xa;+ getAllVoucherDetails(filters)" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="40">
+          <mxGeometry y="35" width="240" height="140" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

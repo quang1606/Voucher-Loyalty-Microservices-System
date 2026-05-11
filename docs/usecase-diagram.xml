@@ -1,0 +1,101 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Use Case - Voucher Service" id="usecase">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- System Boundary -->
+        <mxCell id="2" value="Voucher Service System" style="shape=umlFrame;whiteSpace=wrap;html=1;width=180;height=25;boundedLbl=1;verticalAlign=top;align=left;spacingLeft=5;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="750" height="780" as="geometry" />
+        </mxCell>
+        <!-- Actors -->
+        <mxCell id="10" value="Maker" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="200" width="30" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="Checker" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="500" width="30" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="Partner" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="200" width="30" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="Customer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="500" width="30" height="55" as="geometry" />
+        </mxCell>
+        <!-- Use Cases -->
+        <mxCell id="20" value="Tạo voucher đơn lẻ" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="60" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="Tạo voucher hàng loạt&#xa;(Excel)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="130" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="Tạo nhiệm vụ&#xa;(Mission)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="200" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="Gửi phê duyệt&#xa;(Submit)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="280" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="Hủy yêu cầu&#xa;(Cancel)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="350" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="Xem danh sách&#xa;voucher requests" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="130" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="26" value="Xem chi tiết&#xa;voucher" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="200" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="Phê duyệt voucher&#xa;(Approve)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="470" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="Từ chối voucher&#xa;(Reject)" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="540" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="Xem Audit Log" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="610" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="Phê duyệt mission" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="470" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="40" value="Xem voucher&#xa;khả dụng" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="560" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="41" value="Thu thập voucher" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="630" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="42" value="Sử dụng voucher&#xa;khi thanh toán" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="700" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="43" value="Tham gia nhiệm vụ&#xa;và nhận thưởng" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="770" width="160" height="50" as="geometry" />
+        </mxCell>
+        <!-- Connections: Maker -->
+        <mxCell id="50" style="endArrow=none;" edge="1" source="10" target="20" parent="1" />
+        <mxCell id="51" style="endArrow=none;" edge="1" source="10" target="21" parent="1" />
+        <mxCell id="52" style="endArrow=none;" edge="1" source="10" target="22" parent="1" />
+        <mxCell id="53" style="endArrow=none;" edge="1" source="10" target="23" parent="1" />
+        <mxCell id="54" style="endArrow=none;" edge="1" source="10" target="24" parent="1" />
+        <mxCell id="55" style="endArrow=none;" edge="1" source="10" target="25" parent="1" />
+        <mxCell id="56" style="endArrow=none;" edge="1" source="10" target="26" parent="1" />
+        <!-- Connections: Checker -->
+        <mxCell id="60" style="endArrow=none;" edge="1" source="11" target="30" parent="1" />
+        <mxCell id="61" style="endArrow=none;" edge="1" source="11" target="31" parent="1" />
+        <mxCell id="62" style="endArrow=none;" edge="1" source="11" target="32" parent="1" />
+        <mxCell id="63" style="endArrow=none;" edge="1" source="11" target="33" parent="1" />
+        <mxCell id="64" style="endArrow=none;" edge="1" source="11" target="25" parent="1" />
+        <mxCell id="65" style="endArrow=none;" edge="1" source="11" target="26" parent="1" />
+        <!-- Connections: Partner -->
+        <mxCell id="70" style="endArrow=none;" edge="1" source="12" target="20" parent="1" />
+        <mxCell id="71" style="endArrow=none;" edge="1" source="12" target="21" parent="1" />
+        <mxCell id="72" style="endArrow=none;" edge="1" source="12" target="22" parent="1" />
+        <mxCell id="73" style="endArrow=none;" edge="1" source="12" target="23" parent="1" />
+        <mxCell id="74" style="endArrow=none;" edge="1" source="12" target="24" parent="1" />
+        <mxCell id="75" style="endArrow=none;" edge="1" source="12" target="25" parent="1" />
+        <mxCell id="76" style="endArrow=none;" edge="1" source="12" target="26" parent="1" />
+        <!-- Connections: Customer -->
+        <mxCell id="80" style="endArrow=none;" edge="1" source="13" target="40" parent="1" />
+        <mxCell id="81" style="endArrow=none;" edge="1" source="13" target="41" parent="1" />
+        <mxCell id="82" style="endArrow=none;" edge="1" source="13" target="42" parent="1" />
+        <mxCell id="83" style="endArrow=none;" edge="1" source="13" target="43" parent="1" />
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

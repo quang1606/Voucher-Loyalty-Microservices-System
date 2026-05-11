@@ -1,0 +1,158 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Sequence - Voucher Create &amp; Approve" id="seq1">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- Lifelines -->
+        <mxCell id="L1" value=":Maker/Partner" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="60" y="30" width="120" height="830" as="geometry" />
+        </mxCell>
+        <mxCell id="L2" value=":VoucherController" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="260" y="30" width="130" height="830" as="geometry" />
+        </mxCell>
+        <mxCell id="L3" value=":VoucherService" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="460" y="30" width="130" height="830" as="geometry" />
+        </mxCell>
+        <mxCell id="L4" value=":IdentityService&#xa;(gRPC)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="660" y="30" width="130" height="830" as="geometry" />
+        </mxCell>
+        <mxCell id="L5" value=":Database" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="860" y="30" width="100" height="830" as="geometry" />
+        </mxCell>
+        <mxCell id="L6" value=":Checker" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;collapsible=0;recursiveResize=0;outlineConnect=0;size=40;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="30" width="100" height="830" as="geometry" />
+        </mxCell>
+        <!-- PHASE 1: CREATE -->
+        <mxCell id="n1" value="Tạo Voucher" style="text;html=1;align=left;fontStyle=1;fontSize=11;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="60" y="78" width="100" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="m1" value="1. POST /api/v1/vouchers" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="120" y="110" as="sourcePoint" />
+            <mxPoint x="325" y="110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2" value="2. createVoucher(request)" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="135" as="sourcePoint" />
+            <mxPoint x="525" y="135" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m3" value="3. getNameStore(userId) [gRPC]" style="html=1;verticalAlign=bottom;endArrow=block;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="160" as="sourcePoint" />
+            <mxPoint x="725" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m3r" value="storeName" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="725" y="180" as="sourcePoint" />
+            <mxPoint x="525" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m4" value="4. save(Request + Detail)" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="205" as="sourcePoint" />
+            <mxPoint x="910" y="205" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m4r" value="OK (INIT, INACTIVE)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="225" as="sourcePoint" />
+            <mxPoint x="525" y="225" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m5" value="5. 200 OK" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="250" as="sourcePoint" />
+            <mxPoint x="120" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <!-- PHASE 2: SUBMIT -->
+        <mxCell id="n2" value="Submit (Gửi duyệt)" style="text;html=1;align=left;fontStyle=1;fontSize=11;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="60" y="275" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="m10" value="6. PUT /vouchers/{id}/submit" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="120" y="305" as="sourcePoint" />
+            <mxPoint x="325" y="305" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m11" value="7. submitVoucher(id)" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="330" as="sourcePoint" />
+            <mxPoint x="525" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m12" value="8. find &amp; validate status=INIT" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="355" as="sourcePoint" />
+            <mxPoint x="910" y="355" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m13" value="9. update → PENDING_APPROVE" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="380" as="sourcePoint" />
+            <mxPoint x="910" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m14" value="10. 200 OK" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="405" as="sourcePoint" />
+            <mxPoint x="120" y="405" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <!-- PHASE 3: CONFIRM -->
+        <mxCell id="n3" value="Confirm (Phê duyệt)" style="text;html=1;align=left;fontStyle=1;fontSize=11;fillColor=#fff2cc;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="430" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="m20" value="11. PUT /vouchers/{id}/confirm&#xa;{action: APPROVED}" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1110" y="460" as="sourcePoint" />
+            <mxPoint x="325" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m21" value="12. confirmVoucher(id, APPROVED)" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="485" as="sourcePoint" />
+            <mxPoint x="525" y="485" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m22" value="13. validate PENDING_APPROVE" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="510" as="sourcePoint" />
+            <mxPoint x="910" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m23" value="14. update request → APPROVED" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="535" as="sourcePoint" />
+            <mxPoint x="910" y="535" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <!-- Loop -->
+        <mxCell id="loop1" value="loop [batch 100]" style="shape=umlFrame;whiteSpace=wrap;html=1;width=100;height=18;boundedLbl=1;verticalAlign=top;align=left;spacingLeft=5;fillColor=#f5f5f5;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="555" width="440" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="m24" value="15. batch: INIT→PROCESSING→ACTIVE" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="580" as="sourcePoint" />
+            <mxPoint x="910" y="580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m25" value="16. update request → FINISH" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="620" as="sourcePoint" />
+            <mxPoint x="910" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m26" value="17. 200 OK" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="645" as="sourcePoint" />
+            <mxPoint x="1110" y="645" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>

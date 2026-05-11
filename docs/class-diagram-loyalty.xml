@@ -1,0 +1,84 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Class Diagram - Loyalty Service" id="class-loyalty">
+    <mxGraphModel dx="1200" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1" value="Loyalty Service - Class Diagram" style="text;html=1;fontSize=16;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="300" height="30" as="geometry" />
+        </mxCell>
+        <!-- MissionEntity -->
+        <mxCell id="10" value="&lt;&lt;Entity&gt;&gt;&#xa;MissionEntity" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="280" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="10a" value="- id: Long «PK»&#xa;- requestId: String&#xa;- name: String&#xa;- description: String&#xa;- targetValue: BigDecimal&#xa;- targetType: TargetType&#xa;- partnerId: Long&#xa;- rewardType: RewardType&#xa;- rewardValue: String&#xa;- startDate: LocalDateTime&#xa;- endDate: LocalDateTime&#xa;- status: TaskStatus&#xa;- missionStatus: MissionStatus&#xa;- createdDate: LocalDateTime&#xa;- updatedDate: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="10">
+          <mxGeometry y="40" width="280" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="10b" value="" style="line;strokeWidth=1;fillColor=none;" vertex="1" parent="10">
+          <mxGeometry y="310" width="280" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="10c" value="+ isActive(): boolean&#xa;+ isExpired(): boolean" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="10">
+          <mxGeometry y="318" width="280" height="40" as="geometry" />
+        </mxCell>
+        <!-- CustomerEntity -->
+        <mxCell id="11" value="&lt;&lt;Entity&gt;&gt;&#xa;CustomerEntity" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="400" y="50" width="260" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="11a" value="- customerId: Long «PK»&#xa;- totalPoints: Long&#xa;- currentTier: CustomerTier&#xa;- updatedAt: LocalDateTime&#xa;- createdAt: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="11">
+          <mxGeometry y="40" width="260" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="11b" value="" style="line;strokeWidth=1;fillColor=none;" vertex="1" parent="11">
+          <mxGeometry y="140" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="11c" value="+ addPoints(points): void&#xa;+ upgradeTier(): void" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="11">
+          <mxGeometry y="148" width="260" height="40" as="geometry" />
+        </mxCell>
+        <!-- Enums -->
+        <mxCell id="20" value="&lt;&lt;enum&gt;&gt; TargetType" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="460" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="20a" value="AMOUNT&#xa;COUNT" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="20">
+          <mxGeometry y="25" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="&lt;&lt;enum&gt;&gt; RewardType" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="200" y="460" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="21a" value="POINT&#xa;VOUCHER" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="21">
+          <mxGeometry y="25" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="&lt;&lt;enum&gt;&gt; TaskStatus" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="360" y="460" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="22a" value="INIT&#xa;CANCELLED&#xa;PENDING_APPROVE&#xa;APPROVED&#xa;REJECTED&#xa;FAILED&#xa;FINISH" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="22">
+          <mxGeometry y="25" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="&lt;&lt;enum&gt;&gt; MissionStatus" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="540" y="460" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="23a" value="ACTIVE&#xa;INACTIVE" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="23">
+          <mxGeometry y="25" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="&lt;&lt;enum&gt;&gt; CustomerTier" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="700" y="460" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="24a" value="SILVER&#xa;GOLD&#xa;PLATINUM&#xa;DIAMOND" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="24">
+          <mxGeometry y="25" width="140" height="80" as="geometry" />
+        </mxCell>
+        <!-- Relationship: CustomerEntity participates in MissionEntity -->
+        <mxCell id="r1" value="" style="endArrow=none;startArrow=none;dashed=1;strokeColor=#666666;" edge="1" source="11" target="10" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r1l" value="tham gia" style="edgeLabel;align=center;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <!-- gRPC Service -->
+        <mxCell id="40" value="&lt;&lt;gRPC Service&gt;&gt;&#xa;MissionGrpcService" style="swimlane;fontStyle=1;align=center;startSize=35;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="720" y="60" width="260" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="40a" value="+ createMission(request)&#xa;+ getMissionById(id)&#xa;+ updateMissionStatus(id, status)&#xa;+ searchMissions(filters)&#xa;+ updateMissionProgress(event)" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="40">
+          <mxGeometry y="35" width="260" height="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

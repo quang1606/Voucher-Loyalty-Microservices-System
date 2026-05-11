@@ -1,0 +1,146 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Class Diagram - Customer Service" id="class-customer">
+    <mxGraphModel dx="1400" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1" value="Customer Service - Class Diagram" style="text;html=1;fontSize=16;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="400" y="10" width="300" height="30" as="geometry" />
+        </mxCell>
+        <!-- CustomerProfile -->
+        <mxCell id="10" value="&lt;&lt;Entity&gt;&gt;&#xa;CustomerProfile" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="260" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="10a" value="- id: Long «PK»&#xa;- userId: UUID «unique»&#xa;- fullName: String&#xa;- balance: BigDecimal&#xa;- totalPoints: Integer&#xa;- tier: CustomerTier&#xa;- status: CustomerStatus&#xa;- createdAt: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="10">
+          <mxGeometry y="40" width="260" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="10b" value="" style="line;strokeWidth=1;fillColor=none;" vertex="1" parent="10">
+          <mxGeometry y="190" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="10c" value="+ getProfile(customerId)" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="10">
+          <mxGeometry y="198" width="260" height="30" as="geometry" />
+        </mxCell>
+        <!-- CustomerVoucher -->
+        <mxCell id="11" value="&lt;&lt;Entity&gt;&gt;&#xa;CustomerVoucher" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="360" y="50" width="260" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="11a" value="- id: Long «PK»&#xa;- customerId: Long «FK»&#xa;- voucherId: Long «FK»&#xa;- availableUsage: Integer&#xa;- voucherCode: String «unique»&#xa;- nameStore: String&#xa;- creatorType: CreatorType&#xa;- status: CustomerVoucherStatus&#xa;- obtainedAt: LocalDateTime&#xa;- usedAt: LocalDateTime&#xa;- expiredAt: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="11">
+          <mxGeometry y="40" width="260" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="11b" value="" style="line;strokeWidth=1;fillColor=none;" vertex="1" parent="11">
+          <mxGeometry y="240" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="11c" value="+ collect(customerId, voucherId)&#xa;+ useVoucher(id)" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="11">
+          <mxGeometry y="248" width="260" height="40" as="geometry" />
+        </mxCell>
+        <!-- CustomerMission -->
+        <mxCell id="12" value="&lt;&lt;Entity&gt;&gt;&#xa;CustomerMission" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="680" y="50" width="260" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="12a" value="- id: Long «PK»&#xa;- customerId: Long «FK»&#xa;- missionId: Long «FK»&#xa;- currentProgress: Integer&#xa;- targetValue: Integer&#xa;- status: CustomerMissionStatus&#xa;- startedAt: LocalDateTime&#xa;- updatedAt: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="12">
+          <mxGeometry y="40" width="260" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="12b" value="" style="line;strokeWidth=1;fillColor=none;" vertex="1" parent="12">
+          <mxGeometry y="190" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="12c" value="+ updateProgress(amount)&#xa;+ claimReward(missionId)" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="12">
+          <mxGeometry y="198" width="260" height="40" as="geometry" />
+        </mxCell>
+        <!-- Transaction -->
+        <mxCell id="13" value="&lt;&lt;Entity&gt;&gt;&#xa;Transaction" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="50" width="260" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="13a" value="- id: Long «PK»&#xa;- transactionId: String «unique»&#xa;- customerId: Long «FK»&#xa;- invoiceId: Long&#xa;- voucherId: Long&#xa;- voucherCode: String&#xa;- originalAmount: BigDecimal&#xa;- discountAmount: BigDecimal&#xa;- finalAmount: BigDecimal&#xa;- pointsEarned: Integer&#xa;- status: TransactionStatus&#xa;- createdAt: LocalDateTime" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="13">
+          <mxGeometry y="40" width="260" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="13b" value="" style="line;strokeWidth=1;fillColor=none;" vertex="1" parent="13">
+          <mxGeometry y="260" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="13c" value="+ processPayment(request)" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="13">
+          <mxGeometry y="268" width="260" height="30" as="geometry" />
+        </mxCell>
+        <!-- Enums -->
+        <mxCell id="30" value="&lt;&lt;enum&gt;&gt; CustomerTier" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="380" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="30a" value="ALL&#xa;SILVER&#xa;GOLD&#xa;PLATINUM&#xa;DIAMOND" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="30">
+          <mxGeometry y="25" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="&lt;&lt;enum&gt;&gt; CustomerStatus" style="swimlane;fontStyle=1;align=center;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="200" y="380" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="31a" value="ACTIVE&#xa;LOCKED" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="31">
+          <mxGeometry y="25" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="&lt;&lt;enum&gt;&gt;&#xa;CustomerVoucherStatus" style="swimlane;fontStyle=1;align=center;startSize=35;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="370" y="380" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="32a" value="AVAILABLE&#xa;USED&#xa;EXPIRED" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="32">
+          <mxGeometry y="35" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="&lt;&lt;enum&gt;&gt;&#xa;CustomerMissionStatus" style="swimlane;fontStyle=1;align=center;startSize=35;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="560" y="380" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="33a" value="IN_PROGRESS&#xa;COMPLETED&#xa;CLAIMED" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="33">
+          <mxGeometry y="35" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="&lt;&lt;enum&gt;&gt;&#xa;TransactionStatus" style="swimlane;fontStyle=1;align=center;startSize=35;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="750" y="380" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="34a" value="PENDING&#xa;SUCCESS&#xa;FAILED" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="34">
+          <mxGeometry y="35" width="150" height="50" as="geometry" />
+        </mxCell>
+        <!-- Relationships -->
+        <!-- CustomerProfile 1──* CustomerVoucher -->
+        <mxCell id="r1" value="" style="endArrow=none;startArrow=diamondThin;startFill=1;" edge="1" source="10" target="11" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r1a" value="1" style="edgeLabel;align=right;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry x="-0.7" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="r1b" value="*" style="edgeLabel;align=left;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry x="0.7" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <!-- CustomerProfile 1──* CustomerMission -->
+        <mxCell id="r2" value="" style="endArrow=none;startArrow=diamondThin;startFill=1;" edge="1" source="10" target="12" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2a" value="1" style="edgeLabel;align=right;" vertex="1" connectable="0" parent="r2">
+          <mxGeometry x="-0.7" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="r2b" value="*" style="edgeLabel;align=left;" vertex="1" connectable="0" parent="r2">
+          <mxGeometry x="0.7" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <!-- CustomerProfile 1──* Transaction -->
+        <mxCell id="r3" value="" style="endArrow=none;startArrow=diamondThin;startFill=1;" edge="1" source="10" target="13" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3a" value="1" style="edgeLabel;align=right;" vertex="1" connectable="0" parent="r3">
+          <mxGeometry x="-0.7" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="r3b" value="*" style="edgeLabel;align=left;" vertex="1" connectable="0" parent="r3">
+          <mxGeometry x="0.7" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <!-- Kafka Events -->
+        <mxCell id="50" value="&lt;&lt;Kafka Event&gt;&gt;&#xa;LoyaltyPointEvent" style="swimlane;fontStyle=1;align=center;startSize=35;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="40" y="540" width="220" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="50a" value="- customerId: Long&#xa;- amount: BigDecimal&#xa;- storeName: String&#xa;- transactionId: String" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="50">
+          <mxGeometry y="35" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="51" value="&lt;&lt;Kafka Event&gt;&gt;&#xa;TierUpgradeEvent" style="swimlane;fontStyle=1;align=center;startSize=35;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="280" y="540" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="51a" value="- customerId: Long&#xa;- newTier: CustomerTier&#xa;- totalPoints: Long" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="51">
+          <mxGeometry y="35" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="52" value="&lt;&lt;Kafka Event&gt;&gt;&#xa;VoucherUsedEvent" style="swimlane;fontStyle=1;align=center;startSize=35;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="500" y="540" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="52a" value="- customerId: Long&#xa;- voucherId: Long&#xa;- voucherCode: String" style="text;align=left;verticalAlign=top;spacingLeft=4;" vertex="1" parent="52">
+          <mxGeometry y="35" width="200" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
