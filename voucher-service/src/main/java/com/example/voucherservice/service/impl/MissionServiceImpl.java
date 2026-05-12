@@ -250,7 +250,12 @@ public class MissionServiceImpl implements MissionService {
   @Override
   public MissionStatsResponse getMissionStats() {
     try {
-      SearchMissionResponse response = missionGrpcClient.getMissionStats();
+      Long partnerId = null;
+      if (authorizationService.isPartner()) {
+        partnerId = identityGrpcClient.getPartner(authorizationService.getUserId()).getId();
+      }
+
+      SearchMissionResponse response = missionGrpcClient.getMissionStats(partnerId);
       
       long totalMissions = response.getTotalElements();
       

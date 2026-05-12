@@ -26,6 +26,14 @@ public interface VoucherRequestRepository extends JpaRepository<VoucherRequestEn
            "HAVING COUNT(v) > 0")
     List<VoucherMonthlyStatsProjection> getApprovedVouchersByMonth(Integer year);
 
+    @Query("SELECT MONTH(v.confirmedTime) as month, COUNT(v) as total " +
+           "FROM VoucherRequestEntity v " +
+           "WHERE v.status = 'APPROVED' AND YEAR(v.confirmedTime) = :year " +
+           "AND v.storeName = :storeName " +
+           "GROUP BY MONTH(v.confirmedTime) " +
+           "HAVING COUNT(v) > 0")
+    List<VoucherMonthlyStatsProjection> getApprovedVouchersByMonthAndStore(Integer year, String storeName);
+
     long countByStatus(RequestStatus status);
 
     @Query("SELECT COUNT(v) FROM VoucherRequestEntity v WHERE v.status IN ('APPROVED', 'REJECTED', 'FAILED', 'FINISH')")
@@ -33,4 +41,13 @@ public interface VoucherRequestRepository extends JpaRepository<VoucherRequestEn
 
     @Query("SELECT COUNT(v) FROM VoucherRequestEntity v WHERE v.status NOT IN ('APPROVED', 'REJECTED', 'FAILED', 'FINISH')")
     long countIncompleteRequests();
+
+    @Query("SELECT COUNT(v) FROM VoucherRequestEntity v WHERE v.storeName = :storeName")
+    long countByStoreName(String storeName);
+
+    @Query("SELECT COUNT(v) FROM VoucherRequestEntity v WHERE v.status IN ('APPROVED', 'REJECTED', 'FAILED', 'FINISH') AND v.storeName = :storeName")
+    long countCompletedRequestsByStore(String storeName);
+
+    @Query("SELECT COUNT(v) FROM VoucherRequestEntity v WHERE v.status NOT IN ('APPROVED', 'REJECTED', 'FAILED', 'FINISH') AND v.storeName = :storeName")
+    long countIncompleteRequestsByStore(String storeName);
 }

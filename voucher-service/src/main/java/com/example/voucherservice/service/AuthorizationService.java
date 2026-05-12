@@ -49,6 +49,10 @@ public class AuthorizationService {
     public boolean isPartner() {
         return hasRole("PARTNER");
     }
+    public boolean isMaker(){
+        return hasRole("MAKER");
+    }
+
 
     public boolean hasRole(String role) {
         if (role == null) {

@@ -151,7 +151,8 @@ public class MissionGrpcClient {
       builder.setTaskStatus(TaskStatus.valueOf(taskStatus.name()));
     }
     if (missionStatus != null) {
-      builder.setMissionStatus(vn.com.grpc.loyalty.entity.MissionStatus.valueOf(missionStatus.name()));
+      String grpcMissionStatusName = "APPROVED".equals(missionStatus.name()) ? "MS_APPROVED" : missionStatus.name();
+      builder.setMissionStatus(vn.com.grpc.loyalty.entity.MissionStatus.valueOf(grpcMissionStatusName));
     }
 
     SearchMissionRequest request = builder.build();
@@ -185,14 +186,19 @@ public class MissionGrpcClient {
     }
   }
 
-  public SearchMissionResponse getMissionStats() {
-    SearchMissionRequest request = SearchMissionRequest.newBuilder()
+  public SearchMissionResponse getMissionStats(Long partnerId) {
+    SearchMissionRequest.Builder builder = SearchMissionRequest.newBuilder()
         .setRequestInfo(grpcUtils.builderRequestInfo())
         .setPageable(
             vn.com.grpc.loyalty.entity.Pageable.newBuilder()
                 .setPage(0)
-                .setSize(Integer.MAX_VALUE).build())
-        .build();
+                .setSize(Integer.MAX_VALUE).build());
+
+    if (partnerId != null && partnerId > 0) {
+      builder.setPartnerId(partnerId);
+    }
+
+    SearchMissionRequest request = builder.build();
 
     log.info("gRPC getMissionStats request: {}", request);
 

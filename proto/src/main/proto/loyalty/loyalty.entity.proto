@@ -35,7 +35,7 @@ enum TaskStatus {
 enum MissionStatus {
   MISSION_STATUS_UNSPECIFIED = 0;
   INACTIVE = 1;
-  APPROVED = 2;
+  MS_APPROVED = 2;
   ACTIVE = 3;
   EXPIRED = 4;
 }

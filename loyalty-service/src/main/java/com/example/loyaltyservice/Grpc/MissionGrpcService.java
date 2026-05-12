@@ -21,6 +21,14 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
 
     private final MissionService missionService;
 
+    private MissionStatus toGrpcMissionStatus(com.example.loyaltyservice.constant.MissionStatus status) {
+        String name = status.name();
+        if ("APPROVED".equals(name)) {
+            return MissionStatus.MS_APPROVED;
+        }
+        return MissionStatus.valueOf(name);
+    }
+
     @Override
     public void createMission(CreateMissionRequestGrpc request,
         StreamObserver<CreateMissionResponseGrpc> responseObserver) {
@@ -65,7 +73,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                 .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
                 .setRequestId(entity.getRequestId())
-                .setMissionStatus(MissionStatus.valueOf(entity.getMissionStatus().name()))
+                .setMissionStatus(toGrpcMissionStatus(entity.getMissionStatus()))
                 .build();
 
             responseBuilder
@@ -108,7 +116,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                 .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
                 .setRequestId(entity.getRequestId())
-                .setMissionStatus(MissionStatus.valueOf( entity.getMissionStatus().name()));
+                .setMissionStatus(toGrpcMissionStatus( entity.getMissionStatus()));
             log.info("gRPC getMissionById response: {}", responseBuilder.build());
         } catch (BaseException e) {
             log.error("gRPC getMissionById BaseException - missionId: {}, errorCode: {}, message: {}",
@@ -152,7 +160,7 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
                     .setEndDate(entity.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                     .setTaskStatus(TaskStatus.valueOf(entity.getStatus().name()))
                     .setRequestId(entity.getRequestId())
-                    .setMissionStatus(MissionStatus.valueOf(entity.getMissionStatus().name()))
+                    .setMissionStatus(toGrpcMissionStatus(entity.getMissionStatus()))
                     .build();
                 responseBuilder.addMissions(missionInfo);
             }

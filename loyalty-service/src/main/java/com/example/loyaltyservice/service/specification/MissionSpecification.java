@@ -30,7 +30,7 @@ public class MissionSpecification {
 
     if (request.getMissionStatusValue() > 0
         && request.getMissionStatus() != vn.com.grpc.loyalty.entity.MissionStatus.UNRECOGNIZED) {
-      String name = request.getMissionStatus().name();
+      String name = request.getMissionStatus().name().replaceFirst("^MS_", "");
       spec = spec.and(missionStatusEquals(MissionStatus.valueOf(name)));
     }
 
