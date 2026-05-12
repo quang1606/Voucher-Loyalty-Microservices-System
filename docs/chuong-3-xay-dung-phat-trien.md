@@ -1,8 +1,8 @@
-# CHƯƠNG 3: XÂY DỰNG VÀ PHÁT TRIỂN ỨNG DỤNG
+﻿CHƯƠNG 3: XÂY DỰNG VÀ PHÁT TRIỂN ỨNG DỤNG
 
-## 3.1. Tổng quan sản phẩm
+3.1. Tổng quan sản phẩm
 
-### 3.1.1. Giới thiệu hệ thống
+3.1.1. Giới thiệu hệ thống
 
 Hệ thống "Quản lý Voucher và Chương trình Khách hàng Thân thiết" là một nền tảng backend hoàn chỉnh được xây dựng theo kiến trúc Microservices, nhằm giải quyết bài toán quản lý voucher giảm giá, chương trình tích điểm, phân hạng khách hàng, và gamification (nhiệm vụ) cho các doanh nghiệp thương mại điện tử và bán lẻ.
 
@@ -620,3 +620,10 @@ Hệ thống sử dụng cơ chế xử lý lỗi thống nhất qua module `com
 ```
 
 Điều này giúp frontend xử lý response một cách nhất quán, không cần xử lý riêng cho từng API.
+
+
+3.4. Kết luận chương
+
+Chương 3 đã trình bày chi tiết quá trình xây dựng và phát triển ứng dụng, bao gồm: tổng quan kiến trúc hệ thống microservices với 5 service chính, lý do lựa chọn từng công nghệ (Java 17, Spring Boot 3.4, PostgreSQL, Redis, Kafka, gRPC, Kong, Keycloak, Prometheus/Grafana, ELK Stack, Docker), và chi tiết triển khai backend với các API endpoints, design patterns, luồng giao tiếp giữa các service, cơ chế bảo mật, và xử lý lỗi.
+
+Hệ thống đã được triển khai thành công với Docker Compose, tất cả 15+ container hoạt động ổn định, đáp ứng đầy đủ các yêu cầu chức năng và phi chức năng đã đề ra ở Chương 1.
