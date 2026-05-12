@@ -7,7 +7,9 @@ import com.example.customerservice.constant.CustomerVoucherStatus;
 import com.example.customerservice.dto.event.LoyaltyPointEvent;
 import com.example.customerservice.dto.request.ClaimMissionRewardResponse;
 import com.example.customerservice.dto.request.KafkaRequest;
+import com.example.customerservice.dto.response.AvailableVoucherResponse;
 import com.example.customerservice.dto.response.MissionResponse;
+import com.example.customerservice.dto.response.VoucherRequestDetail;
 import com.example.customerservice.entity.CustomerMission;
 import com.example.customerservice.entity.CustomerProfile;
 import com.example.customerservice.entity.CustomerVoucher;
@@ -20,6 +22,7 @@ import com.example.customerservice.service.AuthorizationService;
 import com.example.customerservice.service.CustomerMissionService;
 import com.example.customerservice.service.KafkaService;
 import com.example.customerservice.service.LeaderboardService;
+import com.example.customerservice.utils.TimestampUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +75,13 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
         List<MissionResponse.MissionInfo> missionInfos = grpcResponse.getMissionsList().stream()
                 .map(grpcMission -> {
                     CustomerMission customerMission = missionProgressMap.get(grpcMission.getMissionId());
+                    
+                    // Get voucher detail if reward type is VOUCHER
+                    AvailableVoucherResponse voucherDetail = null;
+                    if ("VOUCHER".equals(grpcMission.getRewardType().name()) && 
+                        grpcMission.getRequestId() != null && !grpcMission.getRequestId().isEmpty()) {
+                        voucherDetail = getVoucherDetailByRequestId(grpcMission.getRequestId());
+                    }
 
                     return MissionResponse.MissionInfo.builder()
                             .missionId(grpcMission.getMissionId())
@@ -87,6 +97,7 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
                             .taskStatus(grpcMission.getTaskStatus().name())
                             .currentProgress(customerMission != null ? customerMission.getCurrentProgress() : 0)
                             .status(customerMission != null ? customerMission.getStatus() : CustomerMissionStatus.IN_PROGRESS)
+                            .voucherDetail(voucherDetail)
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -252,5 +263,43 @@ public class CustomerMissionServiceImpl implements CustomerMissionService {
         } catch (JsonProcessingException ex) {
             log.error("Failed to serialize loyalty point event: {}", ex.getMessage());
         }
+    }
+
+    private AvailableVoucherResponse getVoucherDetailByRequestId(String requestId) {
+        try {
+            GetVoucherByRequestIdResponse voucherResponse = voucherGrpcClient.getVoucherByRequestId(requestId);
+            
+            if (voucherResponse.getVoucherRequestCount() > 0) {
+                VoucherDetail voucherDetail = voucherResponse.getVoucherRequest(0);
+                return mapToAvailableVoucherResponse(voucherDetail);
+            }
+            
+            return null;
+        } catch (Exception e) {
+            log.warn("Failed to get voucher detail for requestId: {}, error: {}", requestId, e.getMessage());
+            return null;
+        }
+    }
+
+    private AvailableVoucherResponse mapToAvailableVoucherResponse(VoucherDetail voucherDetail) {
+        return AvailableVoucherResponse.builder()
+                .id(voucherDetail.getId())
+                .voucherCode(voucherDetail.getVoucherCode())
+                .voucherName(voucherDetail.getVoucherName())
+                .description(voucherDetail.getDescription())
+                .customerTier(voucherDetail.getCustomerTier())
+                .discountType(voucherDetail.getDiscountType().name())
+                .discountValue(voucherDetail.getDiscountValue())
+                .maxDiscount(voucherDetail.getMaxDiscount())
+                .minOrderValue(voucherDetail.getMinOrderValue())
+                .totalStock(voucherDetail.getTotalStock())
+                .availableStock(voucherDetail.getAvailableStock())
+                .maxCollect(voucherDetail.getMaxCollect())
+                .startDate(TimestampUtils.convertMillisToString(voucherDetail.getStartDate()))
+                .endDate(TimestampUtils.convertMillisToString(voucherDetail.getEndDate()))
+                .status("ACTIVE") // Default status for mission vouchers
+                .createdAt(TimestampUtils.convertMillisToString(voucherDetail.getCreatedAt()))
+                .collected(false) // Default to false for mission vouchers
+                .build();
     }
 }

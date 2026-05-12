@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 public interface CustomerVoucherService {
     AvailableVoucherListResponse getAvailableVouchersWithCollectedStatus(Long customerId, int page, int size);
-    CustomerVoucherListResponse getCustomerVouchers(Long customerId, Long voucherId, 
+    AvailableVoucherListResponse getCustomerVouchers(Long customerId, Long voucherId, 
                                                    CustomerVoucherStatus status,
                                                   Pageable pageable);
     void collectVoucher(Long customerId, Long voucherId);

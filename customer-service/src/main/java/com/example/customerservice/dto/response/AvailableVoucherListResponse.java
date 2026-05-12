@@ -15,4 +15,6 @@ public class AvailableVoucherListResponse {
     private List<AvailableVoucherResponse> data;
     private int totalElements;
     private int totalPages;
+    private int currentPage;
+    private int pageSize;
 }

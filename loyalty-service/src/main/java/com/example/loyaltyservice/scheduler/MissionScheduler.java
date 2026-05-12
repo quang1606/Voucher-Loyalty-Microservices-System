@@ -28,7 +28,6 @@ public class MissionScheduler {
         log.info("=== Mission Status Scheduler START ===");
         activateMissions();
         expireMissions();
-        deleteExpiredMissions();
         log.info("=== Mission Status Scheduler END ===");
     }
 
@@ -94,11 +93,5 @@ public class MissionScheduler {
         log.info("Expiration completed - total: {}", totalProcessed);
     }
 
-    @Transactional
-    public void deleteExpiredMissions() {
-        log.info("--- Deleting expired missions (older than 1 day) ---");
-        LocalDateTime oneDayAgo = LocalDate.now().minusDays(1).atStartOfDay();
-        missionRepository.deleteAllByMissionStatusAndEndDateLessThan(MissionStatus.EXPIRED, oneDayAgo);
-        log.info("Delete expired missions completed");
-    }
+
 }

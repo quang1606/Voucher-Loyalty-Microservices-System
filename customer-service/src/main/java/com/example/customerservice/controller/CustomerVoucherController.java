@@ -54,7 +54,7 @@ public class CustomerVoucherController {
 
     @GetMapping("/list")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<BaseResponse<CustomerVoucherListResponse>> getCustomerVouchers(
+    public ResponseEntity<BaseResponse<AvailableVoucherListResponse>> getCustomerVouchers(
             @RequestParam(required = false) Long customerId,
             @RequestParam(required = false) Long voucherId,
             @RequestParam(required = false) CustomerVoucherStatus status,
@@ -67,10 +67,10 @@ public class CustomerVoucherController {
             ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortParts[0]));
 
-        CustomerVoucherListResponse response = customerVoucherService.getCustomerVouchers(
+        AvailableVoucherListResponse response = customerVoucherService.getCustomerVouchers(
                 customerId, voucherId, status, pageable);
 
-        return ResponseEntity.ok(BaseResponse.<CustomerVoucherListResponse>builder()
+        return ResponseEntity.ok(BaseResponse.<AvailableVoucherListResponse>builder()
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())
                 .code(BaseErrorCode.SUCCESS.getErrorCode())
                 .message(BaseErrorCode.SUCCESS.getErrorDescription())

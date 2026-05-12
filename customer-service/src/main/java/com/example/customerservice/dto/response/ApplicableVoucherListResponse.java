@@ -14,4 +14,7 @@ import java.util.List;
 public class ApplicableVoucherListResponse {
     private List<ApplicableVoucherResponse> data;
     private int totalElements;
+    private int totalPages;
+    private int currentPage;
+    private int pageSize;
 }

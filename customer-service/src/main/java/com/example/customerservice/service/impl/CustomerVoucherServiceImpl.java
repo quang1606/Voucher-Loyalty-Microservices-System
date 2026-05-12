@@ -16,6 +16,7 @@ import com.example.customerservice.repository.CustomerProfileRepository;
 import com.example.customerservice.repository.CustomerVoucherRepository;
 import com.example.customerservice.service.AuthorizationService;
 import com.example.customerservice.service.CustomerVoucherService;
+import com.example.customerservice.utils.TimestampUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -66,6 +67,8 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
                 .data(vouchers)
                 .totalElements(grpcResponse.getTotalElements())
                 .totalPages(grpcResponse.getTotalPages())
+                .currentPage(page)
+                .pageSize(size)
                 .build();
     }
 
@@ -84,16 +87,17 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
                 .totalStock(v.getTotalStock())
                 .availableStock(v.getAvailableStock())
                 .maxCollect(v.getMaxCollect())
-                .startDate(v.getStartDate())
-                .endDate(v.getEndDate())
+                .startDate(TimestampUtils.convertMillisToString(v.getStartDate()))
+                .endDate(TimestampUtils.convertMillisToString(v.getEndDate()))
                 .status(v.getStatus())
-                .createdAt(v.getCreatedAt())
+                .createdAt(TimestampUtils.convertMillisToString(v.getCreatedAt()))
                 .collected(isCollected)
                 .build();
+
     }
 
     @Override
-    public CustomerVoucherListResponse getCustomerVouchers(Long customerId, Long voucherId, 
+    public AvailableVoucherListResponse getCustomerVouchers(Long customerId, Long voucherId, 
                                                          CustomerVoucherStatus status,
                                                          Pageable pageable) {
         log.info("Getting customer vouchers - customerId: {}, voucherId: {}, status: {}, page: {}, size: {}",
@@ -104,8 +108,44 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
 
         log.info("Found {} customer vouchers", voucherPage.getTotalElements());
 
-        return CustomerVoucherListResponse.builder()
-                .data(CustomerVoucherMapper.toResponseList(voucherPage.getContent()))
+        // Fetch voucher details via gRPC
+        List<AvailableVoucherResponse> voucherResponses = new ArrayList<>();
+        for (CustomerVoucher cv : voucherPage.getContent()) {
+            try {
+                vn.com.grpc.voucher.entity.GetVoucherByIdResponse grpcResponse =
+                        voucherGrpcClient.getVoucherById(cv.getVoucherId());
+                vn.com.grpc.voucher.entity.VoucherDetail detail = grpcResponse.getVoucher();
+
+                AvailableVoucherResponse voucherResponse = AvailableVoucherResponse.builder()
+                        .id(cv.getVoucherId())
+                        .voucherCode(cv.getVoucherCode())
+                        .voucherStatus(cv.getStatus())
+                        .availableUsage(cv.getAvailableUsage())
+                        .voucherName(detail.getVoucherName())
+                        .description(detail.getDescription())
+                        .customerTier(detail.getCustomerTier())
+                        .discountType(detail.getDiscountType().name())
+                        .discountValue(detail.getDiscountValue())
+                        .maxDiscount(detail.getMaxDiscount())
+                        .minOrderValue(detail.getMinOrderValue())
+                        .totalStock(detail.getTotalStock())
+                        .availableStock(detail.getAvailableStock())
+                        .maxCollect(detail.getMaxCollect())
+                        .startDate(TimestampUtils.convertMillisToString(detail.getStartDate()))
+                        .endDate(TimestampUtils.convertMillisToString(detail.getEndDate()))
+                        .status(detail.getStatus())
+                        .createdAt(TimestampUtils.convertMillisToString(detail.getCreatedAt()))
+                        .collected(true) // Always true for customer's collected vouchers
+                        .build();
+
+                voucherResponses.add(voucherResponse);
+            } catch (Exception e) {
+                log.warn("Failed to get voucher detail for voucherId: {}, skip", cv.getVoucherId());
+            }
+        }
+
+        return AvailableVoucherListResponse.builder()
+                .data(voucherResponses)
                 .totalElements((int) voucherPage.getTotalElements())
                 .totalPages(voucherPage.getTotalPages())
                 .currentPage(voucherPage.getNumber())
@@ -155,6 +195,7 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
         customerVoucher.setNameStore(voucherDetail.getNameStore());
         customerVoucher.setCreatorType(CreatorType.valueOf(voucherDetail.getCreatorType().name()));
         customerVoucher.setStatus(CustomerVoucherStatus.AVAILABLE);
+        customerVoucher.setExpiredAt(TimestampUtils.convertMillisToLocalDateTime(voucherDetail.getEndDate()));
         customerVoucher.setObtainedAt(java.time.LocalDateTime.now());
         
         customerVoucherRepository.save(customerVoucher);
@@ -221,6 +262,9 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
         return ApplicableVoucherListResponse.builder()
                 .data(results)
                 .totalElements(results.size())
+                .totalPages(1)
+                .currentPage(0)
+                .pageSize(results.size())
                 .build();
     }
 

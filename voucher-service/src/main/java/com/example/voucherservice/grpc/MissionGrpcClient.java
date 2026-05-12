@@ -185,6 +185,45 @@ public class MissionGrpcClient {
     }
   }
 
+  public SearchMissionResponse getMissionStats() {
+    SearchMissionRequest request = SearchMissionRequest.newBuilder()
+        .setRequestInfo(grpcUtils.builderRequestInfo())
+        .setPageable(
+            vn.com.grpc.loyalty.entity.Pageable.newBuilder()
+                .setPage(0)
+                .setSize(Integer.MAX_VALUE).build())
+        .build();
+
+    log.info("gRPC getMissionStats request: {}", request);
+
+    try {
+      SearchMissionResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
+          .searchMission(request);
+      if (!"success".equalsIgnoreCase(response.getResponseInfo().getErrorCode())) {
+        throw BaseException.builder()
+            .httpStatus(HttpStatus.BAD_REQUEST)
+            .errorCode(response.getResponseInfo().getErrorCode())
+            .description(response.getResponseInfo().getMessage())
+            .build();
+      }
+      log.info("gRPC getMissionStats response: {}", response);
+      return response;
+    } catch (BaseException e) {
+      throw BaseException.builder()
+          .httpStatus(e.getHttpStatus())
+          .errorCode(e.getErrorCode())
+          .description(e.getDescription())
+          .build();
+    } catch (Exception e) {
+      log.error("gRPC getMissionStats Exception - error: {}", e.getMessage(), e);
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .errorCode("GRPC_ERROR")
+          .description("Failed to get mission statistics")
+          .build();
+    }
+  }
+
   public UpdateMissionStatusResponse updateMissionStatus(Long missionId, com.example.voucherservice.constant.RequestStatus status) {
     UpdateMissionStatusRequest request = UpdateMissionStatusRequest.newBuilder()
         .setRequestInfo(grpcUtils.builderRequestInfo())

@@ -38,5 +38,6 @@ public class MissionResponse {
         private Integer currentProgress;
         private CustomerMissionStatus status;
         private VoucherRequestDetail voucherRequest;
+        private AvailableVoucherResponse voucherDetail;
     }
 }

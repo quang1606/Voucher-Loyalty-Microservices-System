@@ -1,8 +1,65 @@
-# Customer Service - API Documentation cho Frontend
+# Customer Service & Identity Service - API Documentation
 
-> **Base URL:** `http://localhost:8084`
+## Giới thiệu
+
+### Tổng quan hệ thống
+
+Hệ thống **Voucher & Loyalty Platform** là một nền tảng microservices phục vụ chương trình khách hàng thân thiết, bao gồm các chức năng chính:
+
+- **Quản lý tài khoản:** Đăng ký, đăng nhập, quản lý thông tin cá nhân khách hàng
+- **Voucher:** Thu thập, quản lý và sử dụng voucher giảm giá từ hệ thống hoặc đối tác
+- **Nhiệm vụ (Missions):** Hoàn thành nhiệm vụ chi tiêu/mua hàng để nhận thưởng điểm hoặc voucher
+- **Tích điểm Loyalty:** Tự động tích điểm khi thanh toán, nâng hạng thành viên
+- **Bảng xếp hạng:** Xếp hạng khách hàng theo tổng điểm tích lũy
+- **Thanh toán:** Xử lý thanh toán hóa đơn kết hợp áp dụng voucher
+
+### Kiến trúc
+
+Hệ thống gồm các service chính:
+
+| Service            | Port | Mô tả                                      |
+|--------------------|------|---------------------------------------------|
+| API Gateway (Kong) | 8000 | Điểm vào duy nhất, routing & CORS          |
+| Identity Service   | 8081 | Xác thực, phân quyền (Keycloak)            |
+| Customer Service   | 8084 | Quản lý khách hàng, voucher, mission, payment |
+| Voucher Service    | 8082 | Quản lý voucher gốc, mission gốc           |
+| Loyalty Service    | 8083 | Tích điểm, nâng hạng                       |
+
+### Routing qua API Gateway
+
+| Prefix          | Service          |
+|-----------------|------------------|
+| `/api/identity` | Identity Service |
+| `/api/customers`| Customer Service |
+| `/api/vouchers` | Voucher Service  |
+
+### Xác thực & Phân quyền
+
+- Sử dụng **OAuth2 / Keycloak** với JWT token
+- Sau khi đăng nhập, client nhận `accessToken` (Bearer) và `refreshToken`
+- Gắn header `Authorization: Bearer <accessToken>` cho mọi request cần xác thực
+- Khi `accessToken` hết hạn → gọi API refresh để lấy token mới
+- Role `CUSTOMER` được gán tự động khi đăng ký qua API register
+
+### Đối tượng sử dụng tài liệu
+
+Tài liệu này dành cho **Frontend Developer** để tích hợp giao diện người dùng (Customer App) với backend, bao gồm:
+- Tất cả endpoint cần thiết cho luồng người dùng cuối (end-user)
+- Chi tiết request/response format
+- Mã lỗi và cách xử lý
+- Flow tích hợp gợi ý
+
+---
+
+## Thông tin kết nối
+
+> **Base URL qua Gateway:** `http://localhost:8000`
 >
-> **Authentication:** Tất cả API đều yêu cầu header `Authorization: Bearer <accessToken>` (lấy từ Identity Service login)
+> **Identity Service trực tiếp:** `http://localhost:8081`
+>
+> **Customer Service trực tiếp:** `http://localhost:8084`
+>
+> **Authentication:** Header `Authorization: Bearer <accessToken>` (lấy từ Identity Service login)
 >
 > **Role yêu cầu:** `CUSTOMER` (trừ khi ghi chú khác)
 

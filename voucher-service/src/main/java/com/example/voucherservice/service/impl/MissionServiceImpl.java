@@ -7,6 +7,7 @@ import com.example.voucherservice.dto.request.CreateMissionRequest;
 import com.example.voucherservice.dto.response.MissionDetailResponse;
 import com.example.voucherservice.dto.response.MissionResponse;
 import com.example.voucherservice.dto.response.MissionResponseDetail;
+import com.example.voucherservice.dto.response.MissionStatsResponse;
 import com.example.voucherservice.dto.response.VoucherDetailResponse;
 import com.example.voucherservice.entity.VoucherRequestEntity;
 import com.example.voucherservice.grpc.IdentityGrpcClient;
@@ -244,6 +245,35 @@ public class MissionServiceImpl implements MissionService {
         .mission(missionDetail)
         .voucherDetail(voucherDetail)
         .build();
+  }
+
+  @Override
+  public MissionStatsResponse getMissionStats() {
+    try {
+      SearchMissionResponse response = missionGrpcClient.getMissionStats();
+      
+      long totalMissions = response.getTotalElements();
+      
+      long completedMissions = response.getMissionsList().stream()
+          .mapToLong(mission -> {
+            String taskStatus = mission.getTaskStatus().name();
+            return (taskStatus.equals("APPROVED") || taskStatus.equals("REJECTED") || 
+                    taskStatus.equals("FAILED") || taskStatus.equals("FINISH") || 
+                    taskStatus.equals("CANCELLED")) ? 1 : 0;
+          })
+          .sum();
+      
+      long incompleteMissions = totalMissions - completedMissions;
+      
+      return new MissionStatsResponse(totalMissions, completedMissions, incompleteMissions);
+    } catch (Exception e) {
+      log.error("Get mission stats Exception - error: {}", e.getMessage(), e);
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .errorCode("GET_MISSION_STATS_ERROR")
+          .description("Failed to get mission statistics")
+          .build();
+    }
   }
 
   private MissionResponse emptyMissionResponse(Pageable pageable) {

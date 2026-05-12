@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,4 +37,11 @@ public interface CustomerVoucherRepository extends JpaRepository<CustomerVoucher
     List<CustomerVoucher> findAvailableByCustomerAndStore(@Param("customerId") Long customerId,
                                                          @Param("nameStore") String nameStore,
                                                          @Param("systemType") CreatorType systemType);
+
+    @Query("SELECT cv FROM CustomerVoucher cv WHERE cv.status = :status " +
+           "AND cv.expiredAt <= :now AND cv.id > :nextId ORDER BY cv.id ASC")
+    List<CustomerVoucher> findExpiredVouchers(@Param("status") CustomerVoucherStatus status,
+                                             @Param("now") LocalDateTime now,
+                                             @Param("nextId") Long nextId,
+                                             Pageable pageable);
 }

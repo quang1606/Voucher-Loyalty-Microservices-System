@@ -1,5 +1,6 @@
 package com.example.customerservice.dto.response;
 
+import com.example.customerservice.constant.CustomerVoucherStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AvailableVoucherResponse {
     private Long id;
+    private CustomerVoucherStatus voucherStatus;
+    private int availableUsage;
     private String voucherCode;
     private String voucherName;
     private String description;
@@ -22,9 +25,9 @@ public class AvailableVoucherResponse {
     private Integer totalStock;
     private Integer availableStock;
     private Integer maxCollect;
-    private Long startDate;
-    private Long endDate;
+    private String startDate;
+    private String endDate;
     private String status;
-    private Long createdAt;
+    private String createdAt;
     private boolean collected;
 }
