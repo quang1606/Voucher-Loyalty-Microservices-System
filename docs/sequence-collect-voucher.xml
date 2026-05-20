@@ -137,6 +137,19 @@
             <mxPoint x="1150" y="770" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <!-- 14b. Check Redis stock -->
+        <mxCell id="msg14b" value="14b: getVoucherStockFromRedis(voucherCode)&#xa;key: voucher:{code}:stock → check availableStock > 0" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="810" as="sourcePoint" />
+            <mxPoint x="1150" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg14br" value="stock value (Redis)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1150" y="830" as="sourcePoint" />
+            <mxPoint x="515" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <!-- 15. VoucherService → Database: save CustomerVoucher -->
         <mxCell id="msg15" value="15: save CustomerVoucher(customerId, voucherId,&#xa;voucherCode, availableUsage=maxCollect, status=AVAILABLE)" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#333333;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">

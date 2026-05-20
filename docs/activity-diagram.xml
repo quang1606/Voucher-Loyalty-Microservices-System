@@ -65,8 +65,11 @@
         <mxCell id="b9" value="Kích hoạt voucher&#xa;INACTIVE → ACTIVE&#xa;(batch 100 records)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;" vertex="1" parent="sw2">
           <mxGeometry x="60" y="860" width="200" height="50" as="geometry" />
         </mxCell>
+        <mxCell id="b9b" value="saveVoucherToRedis()&#xa;key: voucher:{code}:stock&#xa;= availableStock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="sw2">
+          <mxGeometry x="60" y="920" width="200" height="50" as="geometry" />
+        </mxCell>
         <mxCell id="b10" value="Cập nhật request&#xa;status = FINISH" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw2">
-          <mxGeometry x="60" y="930" width="200" height="40" as="geometry" />
+          <mxGeometry x="60" y="980" width="200" height="40" as="geometry" />
         </mxCell>
         <mxCell id="b11" value="Reject VoucherDetail&#xa;Ghi lý do từ chối&#xa;status = REJECTED" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;" vertex="1" parent="sw2">
           <mxGeometry x="60" y="990" width="200" height="50" as="geometry" />

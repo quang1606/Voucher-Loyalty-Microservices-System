@@ -46,6 +46,19 @@
             <mxPoint x="790" y="240" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <!-- 3b. Check Redis stock -->
+        <mxCell id="msg3b" value="3b: getVoucherStockFromRedis(voucherCode)&#xa;key: voucher:{code}:stock" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="270" as="sourcePoint" />
+            <mxPoint x="1010" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg3br" value="availableStock (from Redis)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1010" y="290" as="sourcePoint" />
+            <mxPoint x="560" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <!-- 4. Database → PaymentService: voucher data -->
         <mxCell id="msg4" value="4: CustomerVoucher (status=AVAILABLE, availableUsage=2)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#666666;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
@@ -94,6 +107,13 @@
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="560" y="590" as="sourcePoint" />
             <mxPoint x="1010" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <!-- 9b. Reduce Redis stock -->
+        <mxCell id="msg9b" value="9b: reduceVoucherStockInRedis(voucherCode)&#xa;DECREMENT voucher:{code}:stock" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="620" as="sourcePoint" />
+            <mxPoint x="1010" y="620" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <!-- 10. PaymentService → Kafka: voucher-used-topic -->

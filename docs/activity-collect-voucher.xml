@@ -44,6 +44,9 @@
         <mxCell id="b3" value="Gọi gRPC getVoucherById" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw2">
           <mxGeometry x="40" y="620" width="200" height="40" as="geometry" />
         </mxCell>
+        <mxCell id="b3b" value="Check stock từ Redis&#xa;key: voucher:{code}:stock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="sw2">
+          <mxGeometry x="40" y="680" width="200" height="50" as="geometry" />
+        </mxCell>
         <mxCell id="b4" value="" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;" vertex="1" parent="sw2">
           <mxGeometry x="110" y="740" width="60" height="60" as="geometry" />
         </mxCell>

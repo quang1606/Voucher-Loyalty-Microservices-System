@@ -159,28 +159,31 @@
             <mxPoint x="525" y="660" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m25" value="17. update request status → FINISH" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+        <mxCell id="m25" value="17. saveVoucherToRedis(voucherCode, stock)&#xa;    key: voucher:{code}:stock = availableStock" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#b85450;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="525" y="700" as="sourcePoint" />
             <mxPoint x="910" y="700" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m25r" value="saved" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;" edge="1" parent="1">
+        <mxCell id="m25note" value="Redis" style="shape=note;whiteSpace=wrap;html=1;size=10;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="920" y="690" width="50" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="m26" value="18. update request status → FINISH" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="910" y="720" as="sourcePoint" />
-            <mxPoint x="525" y="720" as="targetPoint" />
+            <mxPoint x="525" y="730" as="sourcePoint" />
+            <mxPoint x="910" y="730" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m26" value="18. saveAuditLog(CONFIRM_VOUCHER)" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
+        <mxCell id="m27" value="19. saveAuditLog(CONFIRM_VOUCHER)" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="525" y="745" as="sourcePoint" />
-            <mxPoint x="910" y="745" as="targetPoint" />
+            <mxPoint x="525" y="760" as="sourcePoint" />
+            <mxPoint x="910" y="760" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m27" value="19. 200 OK (status=FINISH)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;" edge="1" parent="1">
+        <mxCell id="m28" value="20. 200 OK (status=FINISH)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="325" y="775" as="sourcePoint" />
-            <mxPoint x="1110" y="775" as="targetPoint" />
+            <mxPoint x="325" y="790" as="sourcePoint" />
+            <mxPoint x="1110" y="790" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>

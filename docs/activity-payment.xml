@@ -32,6 +32,9 @@
         <mxCell id="b1" value="Tìm CustomerVoucher" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw2">
           <mxGeometry x="40" y="250" width="200" height="40" as="geometry" />
         </mxCell>
+        <mxCell id="b1b" value="Check stock từ Redis&#xa;key: voucher:{code}:stock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="sw2">
+          <mxGeometry x="40" y="310" width="200" height="50" as="geometry" />
+        </mxCell>
         <mxCell id="b2" value="" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;" vertex="1" parent="sw2">
           <mxGeometry x="110" y="380" width="60" height="60" as="geometry" />
         </mxCell>
@@ -69,6 +72,9 @@
         <!-- Kafka actions -->
         <mxCell id="d1" value="Publish loyalty-point-topic" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw4">
           <mxGeometry x="40" y="710" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d1b" value="DECREMENT Redis&#xa;voucher:{code}:stock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="sw2">
+          <mxGeometry x="40" y="720" width="200" height="50" as="geometry" />
         </mxCell>
         <mxCell id="d2" value="Publish voucher-used-topic" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw4">
           <mxGeometry x="40" y="770" width="200" height="40" as="geometry" />
