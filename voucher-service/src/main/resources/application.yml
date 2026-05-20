@@ -13,10 +13,6 @@ grpc:
       address: static://${LOYALTY_GRPC_HOST:localhost}:${LOYALTY_GRPC_PORT:9093}
       negotiation-type: plaintext
 
-logging:
-  level:
-    root: INFO
-    com.example.voucherservice: INFO
 
 spring:
   application:

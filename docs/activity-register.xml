@@ -1,0 +1,129 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Activity - Register" id="activity-register">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- Swimlanes -->
+        <mxCell id="sw1" value="Client" style="shape=swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="280" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="sw2" value="Identity Service" style="shape=swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="280" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="sw3" value="Keycloak" style="shape=swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="20" width="280" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="sw4" value="Customer Service (gRPC)" style="shape=swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="860" y="20" width="280" height="800" as="geometry" />
+        </mxCell>
+        <!-- START -->
+        <mxCell id="s" value="" style="ellipse;fillColor=#000000;" vertex="1" parent="sw1">
+          <mxGeometry x="125" y="50" width="30" height="30" as="geometry" />
+        </mxCell>
+        <!-- Client actions -->
+        <mxCell id="a1" value="Nhập thông tin đăng ký" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw1">
+          <mxGeometry x="40" y="110" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" value="Gửi POST /api/v1/auth/register" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw1">
+          <mxGeometry x="40" y="180" width="200" height="40" as="geometry" />
+        </mxCell>
+        <!-- Identity Service actions -->
+        <mxCell id="b1" value="" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;" vertex="1" parent="sw2">
+          <mxGeometry x="110" y="170" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b1l" value="Kiểm tra email&#xa;tồn tại?" style="text;align=center;" vertex="1" parent="sw2">
+          <mxGeometry x="175" y="180" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" value="Trả lỗi CONFLICT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;" vertex="1" parent="sw2">
+          <mxGeometry x="10" y="270" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="end_conflict" value="" style="ellipse;fillColor=#000000;strokeColor=#000000;strokeWidth=3;" vertex="1" parent="sw2">
+          <mxGeometry x="55" y="340" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" value="Lưu User vào DB&#xa;(role=CUSTOMER)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw2">
+          <mxGeometry x="40" y="480" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" value="Trả về 201 {id: userId}" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw2">
+          <mxGeometry x="40" y="680" width="200" height="40" as="geometry" />
+        </mxCell>
+        <!-- Keycloak actions -->
+        <mxCell id="c1" value="Tạo user trên Keycloak" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw3">
+          <mxGeometry x="40" y="270" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" value="" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;" vertex="1" parent="sw3">
+          <mxGeometry x="110" y="340" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="c2l" value="Tạo thành công?" style="text;align=center;" vertex="1" parent="sw3">
+          <mxGeometry x="175" y="355" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" value="Trả lỗi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;" vertex="1" parent="sw3">
+          <mxGeometry x="10" y="420" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="end_kc" value="" style="ellipse;fillColor=#000000;strokeColor=#000000;strokeWidth=3;" vertex="1" parent="sw3">
+          <mxGeometry x="30" y="490" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="Trả userId" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw3">
+          <mxGeometry x="40" y="430" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="Gán role CUSTOMER" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw3">
+          <mxGeometry x="40" y="600" width="200" height="40" as="geometry" />
+        </mxCell>
+        <!-- Customer Service actions -->
+        <mxCell id="d1" value="Tạo CustomerProfile (gRPC)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sw4">
+          <mxGeometry x="40" y="540" width="200" height="40" as="geometry" />
+        </mxCell>
+        <!-- END -->
+        <mxCell id="end1" value="" style="ellipse;fillColor=#000000;strokeColor=#000000;strokeWidth=3;" vertex="1" parent="sw2">
+          <mxGeometry x="125" y="750" width="30" height="30" as="geometry" />
+        </mxCell>
+        <!-- ARROWS -->
+        <mxCell id="f1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="s" target="a1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a1" target="a2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="a2" target="b1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" value="Có" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#b85450;dashed=1;" edge="1" parent="1" source="b1" target="b2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b2" target="end_conflict">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f6" value="Không" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b1" target="c1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="c1" target="c2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f8" value="Không" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#b85450;dashed=1;" edge="1" parent="1" source="c2" target="c3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="c3" target="end_kc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f10" value="Có" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="c2" target="c4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f11" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="c4" target="b3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b3" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="d1" target="c5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="c5" target="b4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f15" style="edgeStyle=orthogonalEdgeStyle;rounded=1;" edge="1" parent="1" source="b4" target="end1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
