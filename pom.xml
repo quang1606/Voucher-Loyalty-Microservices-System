@@ -23,7 +23,6 @@
         <module>voucher-service</module>
         <module>loyalty-service</module>
         <module>customer-service</module>
-        <module>notification-service</module>
     </modules>
 
     <properties>

@@ -79,7 +79,7 @@ public class MissionController {
       @RequestParam(required = false) RewardType rewardType,
       @RequestParam(required = false) TaskStatus taskStatus,
       @RequestParam(required = false) MissionStatus missionStatus,
-      @PageableDefault(size = 20) Pageable pageable) {
+      @PageableDefault(size = 15) Pageable pageable) {
 
     MissionResponse result = missionService.searchMissions(nameStore, rewardType, taskStatus, missionStatus, pageable);
 

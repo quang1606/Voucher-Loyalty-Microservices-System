@@ -130,47 +130,119 @@
           <mxGeometry x="700" y="1120" width="150" height="50" as="geometry" />
         </mxCell>
         <!-- Connections: Admin -->
-        <mxCell id="E1" style="endArrow=none;" edge="1" source="A1" target="UC1" parent="1" />
-        <mxCell id="E2" style="endArrow=none;" edge="1" source="A1" target="UC2" parent="1" />
-        <mxCell id="E3" style="endArrow=none;" edge="1" source="A1" target="UC3" parent="1" />
-        <mxCell id="E4" style="endArrow=none;" edge="1" source="A1" target="UC4" parent="1" />
+        <mxCell id="E1" style="endArrow=none;" edge="1" source="A1" target="UC1" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E2" style="endArrow=none;" edge="1" source="A1" target="UC2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E3" style="endArrow=none;" edge="1" source="A1" target="UC3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E4" style="endArrow=none;" edge="1" source="A1" target="UC4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <!-- Connections: Maker -->
-        <mxCell id="E10" style="endArrow=none;" edge="1" source="A2" target="UC10" parent="1" />
-        <mxCell id="E11" style="endArrow=none;" edge="1" source="A2" target="UC11" parent="1" />
-        <mxCell id="E12" style="endArrow=none;" edge="1" source="A2" target="UC12" parent="1" />
-        <mxCell id="E13" style="endArrow=none;" edge="1" source="A2" target="UC13" parent="1" />
-        <mxCell id="E14" style="endArrow=none;" edge="1" source="A2" target="UC14" parent="1" />
-        <mxCell id="E15" style="endArrow=none;" edge="1" source="A2" target="UC15" parent="1" />
-        <mxCell id="E16" style="endArrow=none;" edge="1" source="A2" target="UC16" parent="1" />
+        <mxCell id="E10" style="endArrow=none;" edge="1" source="A2" target="UC10" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E11" style="endArrow=none;" edge="1" source="A2" target="UC11" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E12" style="endArrow=none;" edge="1" source="A2" target="UC12" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E13" style="endArrow=none;" edge="1" source="A2" target="UC13" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E14" style="endArrow=none;" edge="1" source="A2" target="UC14" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E15" style="endArrow=none;" edge="1" source="A2" target="UC15" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E16" style="endArrow=none;" edge="1" source="A2" target="UC16" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <!-- Connections: Checker -->
-        <mxCell id="E20" style="endArrow=none;" edge="1" source="A3" target="UC20" parent="1" />
-        <mxCell id="E21" style="endArrow=none;" edge="1" source="A3" target="UC21" parent="1" />
-        <mxCell id="E22" style="endArrow=none;" edge="1" source="A3" target="UC22" parent="1" />
-        <mxCell id="E23" style="endArrow=none;" edge="1" source="A3" target="UC23" parent="1" />
-        <mxCell id="E24" style="endArrow=none;" edge="1" source="A3" target="UC24" parent="1" />
+        <mxCell id="E20" style="endArrow=none;" edge="1" source="A3" target="UC20" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E21" style="endArrow=none;" edge="1" source="A3" target="UC21" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E22" style="endArrow=none;" edge="1" source="A3" target="UC22" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E23" style="endArrow=none;" edge="1" source="A3" target="UC23" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E24" style="endArrow=none;" edge="1" source="A3" target="UC24" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <!-- Connections: Partner -->
-        <mxCell id="E40" style="endArrow=none;" edge="1" source="A4" target="UC40" parent="1" />
-        <mxCell id="E41" style="endArrow=none;" edge="1" source="A4" target="UC41" parent="1" />
-        <mxCell id="E42" style="endArrow=none;" edge="1" source="A4" target="UC42" parent="1" />
-        <mxCell id="E43" style="endArrow=none;" edge="1" source="A4" target="UC43" parent="1" />
-        <mxCell id="E44" style="endArrow=none;" edge="1" source="A4" target="UC44" parent="1" />
-        <mxCell id="E45" style="endArrow=none;" edge="1" source="A4" target="UC45" parent="1" />
+        <mxCell id="E40" style="endArrow=none;" edge="1" source="A4" target="UC40" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E41" style="endArrow=none;" edge="1" source="A4" target="UC41" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E42" style="endArrow=none;" edge="1" source="A4" target="UC42" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E43" style="endArrow=none;" edge="1" source="A4" target="UC43" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E44" style="endArrow=none;" edge="1" source="A4" target="UC44" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E45" style="endArrow=none;" edge="1" source="A4" target="UC45" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <!-- Connections: Customer -->
-        <mxCell id="E30" style="endArrow=none;" edge="1" source="A5" target="UC30" parent="1" />
-        <mxCell id="E31" style="endArrow=none;" edge="1" source="A5" target="UC31" parent="1" />
-        <mxCell id="E32" style="endArrow=none;" edge="1" source="A5" target="UC32" parent="1" />
-        <mxCell id="E33" style="endArrow=none;" edge="1" source="A5" target="UC33" parent="1" />
-        <mxCell id="E34" style="endArrow=none;" edge="1" source="A5" target="UC34" parent="1" />
-        <mxCell id="E35" style="endArrow=none;" edge="1" source="A5" target="UC35" parent="1" />
-        <mxCell id="E36" style="endArrow=none;" edge="1" source="A5" target="UC36" parent="1" />
-        <mxCell id="E37" style="endArrow=none;" edge="1" source="A5" target="UC37" parent="1" />
+        <mxCell id="E30" style="endArrow=none;" edge="1" source="A5" target="UC30" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E31" style="endArrow=none;" edge="1" source="A5" target="UC31" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E32" style="endArrow=none;" edge="1" source="A5" target="UC32" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E33" style="endArrow=none;" edge="1" source="A5" target="UC33" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E34" style="endArrow=none;" edge="1" source="A5" target="UC34" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E35" style="endArrow=none;" edge="1" source="A5" target="UC35" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E36" style="endArrow=none;" edge="1" source="A5" target="UC36" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E37" style="endArrow=none;" edge="1" source="A5" target="UC37" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <!-- All actors connect to Login/Register -->
-        <mxCell id="E50" style="endArrow=none;dashed=1;" edge="1" source="A5" target="UC50" parent="1" />
-        <mxCell id="E51" style="endArrow=none;dashed=1;" edge="1" source="A5" target="UC51" parent="1" />
-        <mxCell id="E52" style="endArrow=none;dashed=1;" edge="1" source="A2" target="UC50" parent="1" />
-        <mxCell id="E53" style="endArrow=none;dashed=1;" edge="1" source="A3" target="UC50" parent="1" />
-        <mxCell id="E54" style="endArrow=none;dashed=1;" edge="1" source="A4" target="UC50" parent="1" />
-        <mxCell id="E55" style="endArrow=none;dashed=1;" edge="1" source="A1" target="UC50" parent="1" />
+        <mxCell id="E50" style="endArrow=none;dashed=1;" edge="1" source="A5" target="UC50" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E51" style="endArrow=none;dashed=1;" edge="1" source="A5" target="UC51" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E52" style="endArrow=none;dashed=1;" edge="1" source="A2" target="UC50" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E53" style="endArrow=none;dashed=1;" edge="1" source="A3" target="UC50" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E54" style="endArrow=none;dashed=1;" edge="1" source="A4" target="UC50" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E55" style="endArrow=none;dashed=1;" edge="1" source="A1" target="UC50" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

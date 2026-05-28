@@ -272,7 +272,8 @@ public class CustomerVoucherServiceImpl implements CustomerVoucherService {
         try {
             String key = String.format("voucher:%s:stock", voucherCode);
             Object value = redisTemplate.opsForValue().get(key);
-            return value != null ? (Integer) value : null;
+            if (value == null) return null;
+            return Integer.parseInt(value.toString());
         } catch (Exception ex) {
             log.warn("Failed to get voucher stock from Redis for code {}: {}", voucherCode, ex.getMessage());
             return null;

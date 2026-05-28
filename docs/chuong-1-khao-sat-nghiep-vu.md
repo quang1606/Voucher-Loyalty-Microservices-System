@@ -1,3 +1,53 @@
+<!--
+QUY ĐỊNH TRÌNH BÀY ĐỒ ÁN (áp dụng khi chuyển sang Word)
+==========================================================
+- Lề trên: 2,5 cm | Lề dưới: 2,5 cm | Lề trái: 3 cm | Lề phải: 2 cm
+- Font chữ: Times New Roman | Cỡ chữ nội dung: 13pt | Unicode
+- Giãn dòng: 1.2 lines | Căn lề đoạn văn: Justify | Thụt đầu dòng: 1 cm
+- Heading 1 (Chương): 18pt, Bold, Center, Before 0pt, After 12pt, bắt đầu trang mới
+- Heading 2 (Mục): 16pt, Bold, Left, Before 6pt, After 6pt, không thụt đầu dòng
+- Heading 3 (Tiểu mục): 14pt, Bold, Left, Before 6pt, After 6pt, không thụt đầu dòng
+- Tên bảng: đặt phía trên bảng
+- Tên hình: đặt phía dưới hình
+- Đánh số bảng/hình gắn với số chương (VD: Hình 1.4, Bảng 3.1)
+-->
+
+# DANH MỤC TỪ VIẾT TẮT
+
+| STT | Từ viết tắt | Tiếng Anh | Giải nghĩa |
+|-----|-------------|-----------|-------------|
+| 1 | API | Application Programming Interface | Giao diện lập trình ứng dụng |
+| 2 | REST | Representational State Transfer | Kiến trúc truyền tải dữ liệu qua HTTP |
+| 3 | gRPC | Google Remote Procedure Call | Giao thức gọi thủ tục từ xa hiệu năng cao |
+| 4 | JWT | JSON Web Token | Chuẩn mã hóa thông tin xác thực dạng JSON |
+| 5 | OAuth2 | Open Authorization 2.0 | Giao thức ủy quyền mở phiên bản 2.0 |
+| 6 | OIDC | OpenID Connect | Giao thức xác thực dựa trên OAuth2 |
+| 7 | RBAC | Role-Based Access Control | Kiểm soát truy cập dựa trên vai trò |
+| 8 | SSO | Single Sign-On | Đăng nhập một lần cho nhiều hệ thống |
+| 9 | IAM | Identity and Access Management | Quản lý danh tính và truy cập |
+| 10 | ACID | Atomicity, Consistency, Isolation, Durability | Tính nguyên tử, nhất quán, cô lập, bền vững |
+| 11 | JVM | Java Virtual Machine | Máy ảo Java |
+| 12 | JIT | Just-In-Time Compilation | Biên dịch tức thời |
+| 13 | LTS | Long-Term Support | Hỗ trợ dài hạn |
+| 14 | ORM | Object-Relational Mapping | Ánh xạ đối tượng - quan hệ |
+| 15 | JPA | Java Persistence API | API lưu trữ dữ liệu Java |
+| 16 | DTO | Data Transfer Object | Đối tượng truyền tải dữ liệu |
+| 17 | BFF | Backend-For-Frontend | Backend phục vụ riêng cho Frontend |
+| 18 | UI | User Interface | Giao diện người dùng |
+| 19 | UML | Unified Modeling Language | Ngôn ngữ mô hình hóa thống nhất |
+| 20 | ELK | Elasticsearch, Logstash, Kibana | Bộ công cụ logging tập trung |
+| 21 | CORS | Cross-Origin Resource Sharing | Chia sẻ tài nguyên giữa các nguồn gốc khác nhau |
+| 22 | TTL | Time-To-Live | Thời gian sống (của cache/token) |
+| 23 | CRUD | Create, Read, Update, Delete | Tạo, Đọc, Cập nhật, Xóa |
+| 24 | CI/CD | Continuous Integration / Continuous Deployment | Tích hợp liên tục / Triển khai liên tục |
+| 25 | OLTP | Online Transaction Processing | Xử lý giao dịch trực tuyến |
+| 26 | OLAP | Online Analytical Processing | Xử lý phân tích trực tuyến |
+| 27 | CSS | Cascading Style Sheets | Ngôn ngữ định dạng giao diện web |
+| 28 | DOM | Document Object Model | Mô hình đối tượng tài liệu |
+| 29 | F&B | Food and Beverage | Thực phẩm và đồ uống |
+
+---
+
 # PHẦN MỞ ĐẦU
 
 ## 1. Lý do chọn đề tài
@@ -6,7 +56,7 @@ Trong bối cảnh thương mại điện tử và bán lẻ tại Việt Nam ph
 
 Bên cạnh đó, xu hướng phát triển phần mềm hiện đại đòi hỏi các hệ thống phải đáp ứng được khả năng mở rộng (scalability), tính sẵn sàng cao (high availability), và khả năng tích hợp linh hoạt với các hệ thống bên ngoài. Kiến trúc Microservices cùng các công nghệ như Apache Kafka, gRPC, Redis Cache đã trở thành tiêu chuẩn trong việc xây dựng các hệ thống phân tán quy mô lớn.
 
-Xuất phát từ những nhu cầu thực tiễn trên, nhóm quyết định chọn đề tài **"Xây dựng hệ thống quản lý Voucher và Chương trình Khách hàng Thân thiết theo kiến trúc Microservices"** nhằm:
+Xuất phát từ những nhu cầu thực tiễn trên, nhóm quyết định chọn đề tài "Xây dựng hệ thống quản lý Voucher và Chương trình Khách hàng Thân thiết theo kiến trúc Microservices" nhằm:
 
 - Nghiên cứu và áp dụng kiến trúc Microservices vào bài toán thực tế trong lĩnh vực thương mại điện tử.
 - Xây dựng một hệ thống backend hoàn chỉnh có khả năng quản lý vòng đời voucher, tích điểm, phân hạng khách hàng, và gamification (nhiệm vụ).
@@ -26,136 +76,125 @@ Xuất phát từ những nhu cầu thực tiễn trên, nhóm quyết định c
 
 ### 2.2. Phạm vi
 
-- Hệ thống tập trung vào phần backend (API), không bao gồm giao diện người dùng (frontend).
-- Hỗ trợ 4 vai trò người dùng: Maker, Checker, Partner, và Customer.
+- Hệ thống bao gồm phần backend (API) và giao diện quản trị (frontend admin).
+- Hỗ trợ 5 vai trò người dùng: Admin, Maker, Checker, Partner, và Customer.
 - Các chức năng chính: quản lý voucher (tạo, phê duyệt, phân phối), quản lý nhiệm vụ (mission), tích điểm và phân hạng khách hàng, thanh toán và áp dụng voucher, bảng xếp hạng (leaderboard).
 
 ## 3. Phương pháp nghiên cứu
 
-- **Khảo sát thực tế**: Nghiên cứu các hệ thống loyalty và voucher đang hoạt động (Shopee Rewards, MoMo, The Coffee House, Starbucks Rewards, Smile.io) để rút ra các nghiệp vụ cốt lõi và bài học kinh nghiệm.
-- **Phân tích hướng đối tượng**: Sử dụng UML (Use Case Diagram, Class Diagram, Sequence Diagram, Activity Diagram) để mô hình hóa hệ thống.
-- **Thiết kế kiến trúc**: Áp dụng các design pattern phổ biến trong Microservices (API Gateway, Event-Driven Architecture, Database per Service, gRPC cho inter-service communication).
-- **Phát triển Agile**: Xây dựng hệ thống theo từng module, kiểm thử liên tục, và triển khai bằng Docker Compose.
+- Khảo sát thực tế: Nghiên cứu các hệ thống loyalty và voucher đang hoạt động (Shopee Rewards, MoMo, The Coffee House, Starbucks Rewards, Smile.io) để rút ra các nghiệp vụ cốt lõi và bài học kinh nghiệm.
+- Phân tích hướng đối tượng: Sử dụng UML (Use Case Diagram, Class Diagram, Sequence Diagram, Activity Diagram) để mô hình hóa hệ thống.
+- Thiết kế kiến trúc: Áp dụng các design pattern phổ biến trong Microservices (API Gateway, Event-Driven Architecture, Database per Service, gRPC cho inter-service communication).
+- Phát triển Agile: Xây dựng hệ thống theo từng module, kiểm thử liên tục, và triển khai bằng Docker Compose.
 
 ## 4. Cấu trúc đồ án
 
 Đồ án được tổ chức thành 3 chương chính:
 
-**Chương 1: Khảo sát nghiệp vụ bài toán**
-Trình bày kết quả khảo sát các hệ thống quản lý voucher và chương trình khách hàng thân thiết tại Việt Nam (Shopee, MoMo, The Coffee House) và quốc tế (Starbucks Rewards, Smile.io). Từ đó xác định các nghiệp vụ cốt lõi, ưu nhược điểm của từng hệ thống, và đề xuất hướng phát triển cho đồ án.
+Chương 1: Khảo sát nghiệp vụ bài toán — Trình bày kết quả khảo sát các hệ thống quản lý voucher và chương trình khách hàng thân thiết tại Việt Nam và quốc tế. Từ đó xác định các nghiệp vụ cốt lõi, ưu nhược điểm của từng hệ thống, và đề xuất hướng phát triển cho đồ án.
 
-**Chương 2: Phân tích thiết kế hệ thống**
-Xác định các đối tượng người dùng (Maker, Checker, Partner, Customer), phân tích yêu cầu chức năng và phi chức năng. Thiết kế kiến trúc tổng quan hệ thống Microservices, thiết kế cơ sở dữ liệu, thiết kế API, và mô hình hóa bằng các sơ đồ UML (Use Case, Class Diagram, Sequence Diagram, Activity Diagram).
+Chương 2: Phân tích thiết kế hệ thống — Xác định các đối tượng người dùng, phân tích yêu cầu chức năng và phi chức năng. Thiết kế kiến trúc tổng quan hệ thống Microservices, thiết kế cơ sở dữ liệu, thiết kế API, và mô hình hóa bằng các sơ đồ UML.
 
-**Chương 3: Xây dựng và phát triển ứng dụng**
-Trình bày chi tiết quá trình cài đặt và triển khai hệ thống: công nghệ sử dụng, cấu trúc mã nguồn từng service, cách thức giao tiếp giữa các service (gRPC, Kafka), cơ chế bảo mật, caching, logging, monitoring, và containerization bằng Docker. Kèm theo kết quả demo và đánh giá hệ thống.
+Chương 3: Xây dựng và phát triển ứng dụng — Trình bày chi tiết quá trình cài đặt và triển khai hệ thống: công nghệ sử dụng, cấu trúc mã nguồn từng service, cách thức giao tiếp giữa các service, cơ chế bảo mật, caching, logging, monitoring, containerization, và giao diện người dùng.
 
-CHƯƠNG 1: KHẢO SÁT NGHIỆP VỤ BÀI TOÁN
 
-1.1. Khảo sát nghiệp vụ thực tế
+---
 
-1.1.1. Bối cảnh và đặt vấn đề
+# CHƯƠNG 1: KHẢO SÁT NGHIỆP VỤ BÀI TOÁN
+
+## 1.1. Khảo sát nghiệp vụ thực tế
+
+### 1.1.1. Bối cảnh và đặt vấn đề
 
 Trong bối cảnh cạnh tranh ngày càng gay gắt của thị trường thương mại điện tử và bán lẻ, việc giữ chân khách hàng trở thành yếu tố sống còn đối với doanh nghiệp. Theo xu hướng hiện nay, các doanh nghiệp không chỉ cạnh tranh về giá cả và chất lượng sản phẩm mà còn phải xây dựng mối quan hệ lâu dài với khách hàng thông qua các chương trình khách hàng thân thiết (loyalty program), hệ thống voucher giảm giá, và các hoạt động gamification nhằm tăng tương tác.
 
 Nhóm đã tiến hành khảo sát các hệ thống quản lý voucher và chương trình khách hàng thân thiết đang hoạt động trên thị trường Việt Nam và quốc tế để hiểu rõ nghiệp vụ thực tế, từ đó xác định hướng phát triển cho đồ án.
 
-1.1.2. Khảo sát các hệ thống tại Việt Nam
+### 1.1.2. Khảo sát các hệ thống tại Việt Nam
 
-a) Shopee Rewards (Shopee)
+#### a) Shopee Rewards (Shopee)
 
-Shopee Rewards là chương trình khách hàng thân thiết của sàn thương mại điện tử Shopee, hoạt động dựa trên mức chi tiêu và số đơn hàng của người dùng. Hệ thống phân hạng khách hàng thành 4 cấp: Classic, Silver, Gold, Platinum. Mỗi hạng được hưởng các quyền lợi khác nhau bao gồm voucher sinh nhật, voucher miễn phí vận chuyển, voucher giảm giá độc quyền, và ưu tiên hỗ trợ khách hàng cho hạng Platinum. Hạng thành viên được đánh giá lại mỗi 6 tháng dựa trên số đơn hàng hoàn thành.
+Shopee Rewards là chương trình khách hàng thân thiết của sàn thương mại điện tử Shopee, hoạt động dựa trên mức chi tiêu và số đơn hàng của người dùng. Hệ thống phân hạng khách hàng thành 4 cấp: Classic, Silver, Gold, Platinum. Mỗi hạng được hưởng các quyền lợi khác nhau bao gồm voucher sinh nhật, voucher miễn phí vận chuyển, voucher giảm giá độc quyền, và ưu tiên hỗ trợ khách hàng cho hạng Platinum. Hạng thành viên được đánh giá lại mỗi 6 tháng dựa trên số đơn hàng hoàn thành [1].
 
 Ưu điểm: Tích hợp chặt chẽ với hệ sinh thái Shopee, tự động nâng hạng, voucher đa dạng.
 
 Hạn chế: Chỉ áp dụng trong hệ sinh thái Shopee, thiếu yếu tố gamification sâu (mission, leaderboard).
 
-b) MoMo (M_Service)
+#### b) MoMo (M_Service)
 
-MoMo là ví điện tử phổ biến nhất Việt Nam với hơn 23 triệu người dùng hoạt động, được chấp nhận tại hơn 80% cửa hàng F&B và 70% siêu thị. MoMo tích hợp chương trình tích điểm thưởng khi thanh toán, hệ thống voucher giảm giá từ đối tác, và các mini-game gamification (lắc xì, vòng quay may mắn). MoMo cũng cung cấp API phân phối voucher cho đối tác (Voucher Distribution API) cho phép doanh nghiệp tích hợp hệ thống voucher vào quy trình thanh toán.
+MoMo là ví điện tử phổ biến nhất Việt Nam với hơn 23 triệu người dùng hoạt động, được chấp nhận tại hơn 80% cửa hàng F&B và 70% siêu thị. MoMo tích hợp chương trình tích điểm thưởng khi thanh toán, hệ thống voucher giảm giá từ đối tác, và các mini-game gamification (lắc xì, vòng quay may mắn). MoMo cũng cung cấp API phân phối voucher cho đối tác (Voucher Distribution API) cho phép doanh nghiệp tích hợp hệ thống voucher vào quy trình thanh toán [2].
 
 Ưu điểm: Hệ sinh thái rộng, tích hợp thanh toán trực tiếp, gamification hấp dẫn.
 
 Hạn chế: Chương trình loyalty chưa có hệ thống phân hạng rõ ràng, voucher chủ yếu do đối tác cung cấp chứ không có quy trình phê duyệt nội bộ.
 
-c) The Coffee House App
+#### c) The Coffee House App
 
-Ứng dụng The Coffee House xây dựng chương trình thành viên với hệ thống tích điểm (BEAN) trên mỗi giao dịch, phân hạng thành viên, và các nhiệm vụ (mission) thú vị để nhận quà tặng miễn phí. Ứng dụng có khoảng 500.000 người dùng, sử dụng dữ liệu khách hàng để cá nhân hóa trải nghiệm và theo dõi hành trình mua sắm.
+Ứng dụng The Coffee House xây dựng chương trình thành viên với hệ thống tích điểm (BEAN) trên mỗi giao dịch, phân hạng thành viên, và các nhiệm vụ (mission) thú vị để nhận quà tặng miễn phí. Ứng dụng có khoảng 500.000 người dùng, sử dụng dữ liệu khách hàng để cá nhân hóa trải nghiệm và theo dõi hành trình mua sắm [3].
 
 Ưu điểm: Kết hợp tốt giữa loyalty và gamification (mission), giao diện thân thiện, tích hợp đặt hàng.
 
 Hạn chế: Chỉ áp dụng cho chuỗi The Coffee House, không có cơ chế cho đối tác bên ngoài tham gia, thiếu quy trình phê duyệt voucher nhiều bước.
 
-1.1.3. Khảo sát các hệ thống quốc tế
+### 1.1.3. Khảo sát các hệ thống quốc tế
 
-a) Starbucks Rewards
+#### a) Starbucks Rewards
 
-Starbucks Rewards là một trong những chương trình loyalty thành công nhất thế giới với hơn 30 triệu thành viên sử dụng ứng dụng di động. Năm 2026, Starbucks đã tái cấu trúc chương trình với 3 hạng: Green, Gold và Reserve, mỗi hạng cung cấp quyền lợi cá nhân hóa ngày càng cao. Hệ thống tích Stars (điểm) trên mỗi giao dịch, cho phép đổi thưởng đồ uống miễn phí, và tích hợp sâu với ứng dụng di động (đặt hàng, thanh toán, theo dõi thưởng).
+Starbucks Rewards là một trong những chương trình loyalty thành công nhất thế giới với hơn 30 triệu thành viên sử dụng ứng dụng di động. Hệ thống tích Stars (điểm) trên mỗi giao dịch, cho phép đổi thưởng đồ uống miễn phí, và tích hợp sâu với ứng dụng di động (đặt hàng, thanh toán, theo dõi thưởng) [4].
 
 Ưu điểm: Cá nhân hóa cao, tích hợp mobile app mượt mà, phân hạng rõ ràng, gamification qua challenges.
 
 Hạn chế: Hệ thống đóng (chỉ cho Starbucks), chi phí phát triển và vận hành rất lớn.
 
-b) Smile.io
+#### b) Smile.io
 
-Smile.io là nền tảng loyalty dành cho thương mại điện tử (chủ yếu Shopify), cung cấp giải pháp tích điểm, phân hạng VIP, và chương trình giới thiệu (referral). Nền tảng nổi bật với khả năng thiết lập nhanh, giao diện đơn giản, và tích hợp tốt với các công cụ e-commerce phổ biến.
+Smile.io là nền tảng loyalty dành cho thương mại điện tử (chủ yếu Shopify), cung cấp giải pháp tích điểm, phân hạng VIP, và chương trình giới thiệu (referral) [5].
 
 Ưu điểm: Dễ triển khai, hỗ trợ nhiều nền tảng e-commerce, có hệ thống VIP tiers.
 
 Hạn chế: Thiếu gamification sâu (không có mission/leaderboard), khả năng tùy chỉnh hạn chế ở gói miễn phí, không có quy trình phê duyệt voucher.
 
-c) LoyaltyLion
+#### c) Voucherify
 
-LoyaltyLion là nền tảng loyalty hướng đến doanh nghiệp cần kiểm soát chi tiết hơn, cung cấp hệ thống điểm thưởng với nhiều quy tắc tích điểm (mua hàng, đánh giá, theo dõi mạng xã hội), phân hạng VIP, referral, và phân tích dữ liệu nâng cao. LoyaltyLion hỗ trợ phân khúc khách hàng và chiến dịch email tự động.
-
-Ưu điểm: Tùy chỉnh sâu, phân tích dữ liệu mạnh, hỗ trợ nhiều hành vi tích điểm.
-
-Hạn chế: Phức tạp trong cấu hình, chi phí cao, thiếu gamification dạng mission, không có cơ chế phê duyệt voucher nội bộ.
-
-d) Voucherify
-
-Voucherify là nền tảng API-first chuyên về quản lý voucher, coupon, và chương trình khuyến mãi cho doanh nghiệp lớn. Hệ thống hỗ trợ tạo voucher hàng loạt, quy tắc phân phối phức tạp, và tích hợp qua API với bất kỳ hệ thống nào.
+Voucherify là nền tảng API-first chuyên về quản lý voucher, coupon, và chương trình khuyến mãi cho doanh nghiệp lớn. Hệ thống hỗ trợ tạo voucher hàng loạt, quy tắc phân phối phức tạp, và tích hợp qua API với bất kỳ hệ thống nào [6].
 
 Ưu điểm: API-first linh hoạt, hỗ trợ quy mô lớn, logic phân phối voucher phức tạp.
 
-Hạn chế: Yêu cầu kỹ thuật cao để tích hợp, chi phí enterprise, không có giao diện người dùng cuối (chỉ là backend engine).
+Hạn chế: Yêu cầu kỹ thuật cao để tích hợp, chi phí enterprise, không có giao diện người dùng cuối.
 
-1.1.4. Bảng so sánh tổng hợp
+### 1.1.4. Bảng so sánh tổng hợp
 
 Bảng 1.1: So sánh tính năng giữa các hệ thống khảo sát
 
-| Tính năng | Shopee Rewards | MoMo | The Coffee House | Starbucks Rewards | Smile.io | LoyaltyLion | Đồ án |
-|---|---|---|---|---|---|---|---|
-| Phân hạng khách hàng | Có | Không | Có | Có | Có | Có | Có |
-| Tích điểm thưởng | Có | Có | Có | Có | Có | Có | Có |
-| Voucher giảm giá | Có | Có | Có | Có | Có | Có | Có |
-| Quy trình phê duyệt (Maker/Checker) | Không | Không | Không | Không | Không | Không | Có |
-| Mission/Gamification | Không | Có | Có | Có | Không | Không | Có |
-| Bảng xếp hạng (Leaderboard) | Không | Không | Không | Không | Không | Không | Có |
-| Đối tác tạo voucher/mission | Không | Có | Không | Không | Không | Không | Có |
-| Thanh toán tích hợp | Có | Có | Có | Có | Không | Không | Có |
-| Audit Log | N/A | N/A | N/A | N/A | Không | Có | Có |
+| Tính năng | Shopee | MoMo | The Coffee House | Starbucks | Smile.io | Đồ án |
+|---|---|---|---|---|---|---|
+| Phân hạng khách hàng | Có | Không | Có | Có | Có | Có |
+| Tích điểm thưởng | Có | Có | Có | Có | Có | Có |
+| Voucher giảm giá | Có | Có | Có | Có | Có | Có |
+| Quy trình phê duyệt (Maker/Checker) | Không | Không | Không | Không | Không | Có |
+| Mission/Gamification | Không | Có | Có | Có | Không | Có |
+| Bảng xếp hạng (Leaderboard) | Không | Không | Không | Không | Không | Có |
+| Đối tác tạo voucher/mission | Không | Có | Không | Không | Không | Có |
+| Thanh toán tích hợp | Có | Có | Có | Có | Không | Có |
+| Audit Log | N/A | N/A | N/A | N/A | Không | Có |
 
-1.1.5. Nhận xét và khoảng trống
+### 1.1.5. Nhận xét và khoảng trống
 
-Qua khảo sát, nhóm nhận thấy các khoảng trống (gap) mà các hệ thống hiện tại trên thị trường chưa giải quyết đồng bộ:
+Qua khảo sát, nhóm nhận thấy các khoảng trống mà các hệ thống hiện tại chưa giải quyết đồng bộ:
 
 Thứ nhất, thiếu quy trình phê duyệt voucher nhiều bước. Hầu hết các hệ thống không có cơ chế Maker/Checker để kiểm soát việc phát hành voucher, dẫn đến rủi ro phát hành sai hoặc lạm dụng.
 
 Thứ hai, thiếu sự kết hợp đồng bộ giữa loyalty, voucher, mission và leaderboard. Các hệ thống thường chỉ mạnh ở 1-2 khía cạnh, chưa có giải pháp tích hợp đầy đủ cả 4 yếu tố trong một nền tảng.
 
-Thứ ba, thiếu cơ chế cho đối tác (Partner) tham gia tạo voucher và mission. Phần lớn hệ thống chỉ cho phép admin nội bộ quản lý, chưa mở rộng cho đối tác bên ngoài.
+Thứ ba, thiếu cơ chế cho đối tác (Partner) tham gia tạo voucher và mission.
 
-Thứ tư, thiếu hệ thống giám sát và audit log. Ít hệ thống cung cấp nhật ký kiểm toán chi tiết cho mọi thao tác liên quan đến voucher và mission.
+Thứ tư, thiếu hệ thống giám sát và audit log chi tiết cho mọi thao tác liên quan đến voucher và mission.
 
-Đây chính là cơ sở để nhóm xây dựng hệ thống "Quản lý Voucher và Chương trình Khách hàng Thân thiết" với đầy đủ các tính năng trên.
+Đây chính là cơ sở để nhóm xây dựng hệ thống với đầy đủ các tính năng trên.
 
+## 1.2. Khảo sát nhu cầu người dùng
 
-1.2. Khảo sát nhu cầu người dùng
-
-1.2.1. Xác định đối tượng người dùng
-
-Dựa trên khảo sát các hệ thống thực tế, nhóm xác định hệ thống cần phục vụ 5 nhóm người dùng chính:
+### 1.2.1. Xác định đối tượng người dùng
 
 Bảng 1.2: Các đối tượng người dùng của hệ thống
 
@@ -165,11 +204,11 @@ Bảng 1.2: Các đối tượng người dùng của hệ thống
 | 2 | Quản trị viên (Admin) | Quản lý toàn hệ thống | Quản lý tài khoản, phân quyền, giám sát hoạt động |
 | 3 | Người tạo (Maker) | Tạo nội dung | Tạo voucher, tạo nhiệm vụ, gửi yêu cầu phê duyệt |
 | 4 | Người duyệt (Checker) | Phê duyệt nội dung | Xem xét và phê duyệt/từ chối yêu cầu từ Maker |
-| 5 | Đối tác (Partner/Merchant) | Nhà cung cấp dịch vụ | Tạo voucher và nhiệm vụ cho cửa hàng của mình |
+| 5 | Đối tác (Partner) | Nhà cung cấp dịch vụ | Tạo voucher và nhiệm vụ cho cửa hàng của mình |
 
-1.2.2. Nhu cầu của khách hàng (Customer)
+### 1.2.2. Nhu cầu của khách hàng (Customer)
 
-Qua khảo sát hành vi người dùng trên các ứng dụng Shopee, MoMo, The Coffee House, nhóm tổng hợp các nhu cầu chính của nhóm khách hàng:
+Qua khảo sát hành vi người dùng trên các ứng dụng Shopee, MoMo, The Coffee House, nhóm tổng hợp các nhu cầu chính:
 
 - Xem thông tin cá nhân: hạng thành viên, điểm tích lũy, số dư tài khoản.
 - Duyệt và thu thập voucher giảm giá phù hợp với hạng thành viên.
@@ -180,16 +219,13 @@ Qua khảo sát hành vi người dùng trên các ứng dụng Shopee, MoMo, Th
 - So sánh thứ hạng với khách hàng khác qua bảng xếp hạng.
 - Được nâng hạng tự động khi đạt đủ điểm tích lũy.
 
-1.2.3. Nhu cầu của Maker và Checker
-
-Học hỏi từ quy trình phê duyệt trong các hệ thống ngân hàng và doanh nghiệp lớn, nhóm xác định nhu cầu của hai vai trò này:
+### 1.2.3. Nhu cầu của Maker và Checker
 
 Đối với Maker (Người tạo):
 - Tạo voucher đơn lẻ hoặc hàng loạt thông qua upload file Excel.
 - Tạo nhiệm vụ với cấu hình linh hoạt (mục tiêu, phần thưởng, thời hạn).
 - Gửi yêu cầu phê duyệt đến Checker.
 - Theo dõi trạng thái yêu cầu đã gửi.
-- Hủy yêu cầu khi chưa gửi duyệt.
 
 Đối với Checker (Người duyệt):
 - Xem danh sách yêu cầu chờ duyệt.
@@ -197,544 +233,744 @@ Học hỏi từ quy trình phê duyệt trong các hệ thống ngân hàng và
 - Phê duyệt hoặc từ chối kèm lý do.
 - Xem lịch sử phê duyệt thông qua audit log.
 
-1.2.4. Nhu cầu của đối tác (Partner)
-
-Tham khảo mô hình MoMo cho phép đối tác phân phối voucher, nhóm xác định các nhu cầu:
+### 1.2.4. Nhu cầu của đối tác (Partner)
 
 - Tạo voucher riêng cho cửa hàng của mình.
-- Tạo nhiệm vụ gắn với thương hiệu (ví dụ: "Mua 3 lần tại Coffee House nhận voucher 100k").
+- Tạo nhiệm vụ gắn với thương hiệu.
 - Theo dõi số lượng voucher đã phát hành và sử dụng.
 - Gửi yêu cầu phê duyệt trước khi voucher/mission được kích hoạt.
-- Chỉ xem và quản lý dữ liệu của chính cửa hàng mình.
 
-1.2.5. Nhu cầu của quản trị viên (Admin)
+### 1.2.5. Nhu cầu của quản trị viên (Admin)
 
 - Quản lý toàn bộ tài khoản người dùng và phân quyền.
 - Tạo tài khoản cho Maker, Checker, Partner.
 - Giám sát hoạt động hệ thống qua dashboard.
 - Xem audit log để kiểm tra mọi thao tác.
-- Khóa/mở khóa tài khoản khi cần thiết.
 
+## 1.3. Phân tích yêu cầu hệ thống
 
-1.3. Phân tích yêu cầu hệ thống
+### 1.3.1. Yêu cầu chức năng
 
-1.3.1. Yêu cầu chức năng
+Dựa trên kết quả khảo sát, nhóm xác định các yêu cầu chức năng phân chia theo module:
 
-Dựa trên kết quả khảo sát nghiệp vụ và nhu cầu người dùng ở mục 1.1 và 1.2, nhóm xác định các yêu cầu chức năng được phân chia theo module như sau:
+Module 1 – Xác thực và Phân quyền (Identity Service): Đăng ký, đăng nhập, refresh token, phân quyền theo vai trò (ADMIN, CUSTOMER, MAKER, CHECKER, PARTNER), quản lý hồ sơ người dùng, quản lý tài khoản hệ thống.
 
-Module 1: Xác thực và Phân quyền (Identity Service)
-- Đăng ký tài khoản khách hàng mới.
-- Đăng nhập và nhận JWT access token + refresh token.
-- Làm mới token (refresh token) khi access token hết hạn.
-- Phân quyền theo vai trò: ADMIN, CUSTOMER, MAKER, CHECKER, PARTNER.
-- Quản lý hồ sơ người dùng (xem, cập nhật thông tin, đổi mật khẩu).
-- Quản lý tài khoản hệ thống (tạo, cập nhật, khóa, reset mật khẩu).
-- Quản lý vai trò và quyền truy cập.
+Module 2 – Quản lý Voucher (Voucher Service): Tạo voucher đơn lẻ và hàng loạt (Excel), quy trình phê duyệt nhiều bước (INIT → PENDING_APPROVE → APPROVED/REJECTED), hỗ trợ giảm giá cố định (FIXED) và phần trăm (PERCENT), quản lý kho voucher, phân loại theo hạng khách hàng, ghi audit log.
 
-Module 2: Quản lý Voucher (Voucher Service)
-- Tạo voucher đơn lẻ với đầy đủ thông tin (tên, mô tả, loại giảm giá, giá trị, thời hạn, đối tượng áp dụng theo hạng).
-- Tạo voucher hàng loạt qua upload file Excel.
-- Quy trình phê duyệt nhiều bước: INIT → PENDING_APPROVE → APPROVED/REJECTED.
-- Hỗ trợ hai loại giảm giá: cố định (FIXED) và phần trăm (PERCENT).
-- Quản lý kho voucher (tổng số lượng, số lượng còn lại, giới hạn thu thập mỗi khách hàng).
-- Phân loại voucher theo hạng khách hàng (ALL, SILVER, GOLD, PLATINUM, DIAMOND).
-- Phân loại mục đích voucher: REWARD (thưởng từ mission) và HUNT (khách hàng tự thu thập).
-- Tự động hết hạn voucher theo thời gian cấu hình.
-- Ghi nhật ký kiểm toán (audit log) cho mọi thao tác.
-- Hủy yêu cầu voucher khi chưa gửi duyệt.
+Module 3 – Quản lý Nhiệm vụ và Loyalty (Loyalty Service): Tạo nhiệm vụ theo mục tiêu chi tiêu hoặc số lần mua, cấu hình phần thưởng (điểm hoặc voucher), tính điểm tự động khi thanh toán, nâng hạng khách hàng tự động.
 
-Module 3: Quản lý Nhiệm vụ và Loyalty (Loyalty Service)
-- Tạo nhiệm vụ với mục tiêu: theo số tiền chi tiêu (AMOUNT) hoặc số lần mua hàng (COUNT).
-- Cấu hình phần thưởng nhiệm vụ: điểm (POINT) hoặc voucher (VOUCHER).
-- Quy trình phê duyệt nhiệm vụ tương tự voucher (INIT → PENDING_APPROVE → APPROVED/REJECTED).
-- Tính điểm thưởng tự động khi khách hàng thanh toán (1 điểm / 1.000 VND chi tiêu).
-- Nâng hạng khách hàng tự động dựa trên tổng điểm tích lũy.
-- Cập nhật tiến độ nhiệm vụ khi khách hàng thực hiện giao dịch.
+Module 4 – Dịch vụ Khách hàng (Customer Service): Xem hồ sơ cá nhân, duyệt và thu thập voucher, xem voucher áp dụng được cho đơn hàng, xem nhiệm vụ và tiến độ, nhận thưởng, thanh toán, bảng xếp hạng.
 
-Module 4: Dịch vụ Khách hàng (Customer Service)
-- Xem hồ sơ cá nhân (hạng thành viên, điểm tích lũy, số dư).
-- Duyệt danh sách voucher khả dụng (lọc theo hạng thành viên hiện tại).
-- Thu thập voucher vào kho cá nhân.
-- Xem danh sách voucher đã thu thập với trạng thái (khả dụng, đã dùng, hết hạn).
-- Xem voucher áp dụng được cho đơn hàng cụ thể (gợi ý thông minh dựa trên giá trị đơn hàng và cửa hàng).
-- Xem danh sách nhiệm vụ đang hoạt động và tiến độ hoàn thành.
-- Nhận thưởng khi hoàn thành nhiệm vụ (điểm hoặc voucher).
-- Thanh toán đơn hàng với áp dụng voucher giảm giá.
-- Xem bảng xếp hạng (leaderboard) so sánh với khách hàng khác.
+Module 5 – Thông báo (Notification Service): Gửi thông báo khi nâng hạng, nhận voucher thưởng, hoàn thành nhiệm vụ.
 
-Module 5: Thông báo (Notification Service)
-- Gửi thông báo khi khách hàng được nâng hạng thành viên.
-- Thông báo khi nhận voucher thưởng từ nhiệm vụ.
-- Thông báo khi nhiệm vụ hoàn thành.
-- Thông báo khi có voucher mới phù hợp với hạng.
-
-1.3.2. Yêu cầu phi chức năng
+### 1.3.2. Yêu cầu phi chức năng
 
 Bảng 1.3: Yêu cầu phi chức năng của hệ thống
 
-| STT | Yêu cầu | Mô tả chi tiết | Giải pháp đề xuất |
+| STT | Yêu cầu | Mô tả | Giải pháp |
 |---|---|---|---|
-| 1 | Hiệu năng | Hệ thống phải xử lý được nhiều giao dịch đồng thời, thời gian phản hồi API dưới 500ms | Kiến trúc Microservices, Redis cache, Kafka xử lý bất đồng bộ |
-| 2 | Khả năng mở rộng | Có thể scale từng module độc lập khi lượng người dùng và giao dịch tăng | Docker container, mỗi service triển khai và scale riêng biệt |
-| 3 | Bảo mật | Xác thực an toàn theo chuẩn công nghiệp, phân quyền chặt chẽ theo vai trò | Keycloak (OAuth2/OIDC), JWT token, Kong API Gateway |
-| 4 | Độ tin cậy | Không mất dữ liệu giao dịch, hệ thống luôn sẵn sàng phục vụ | Kafka đảm bảo message delivery, PostgreSQL ACID, health check tự động |
-| 5 | Giám sát | Theo dõi hiệu năng real-time, phát hiện và cảnh báo lỗi sớm | Prometheus + Grafana (metrics), ELK Stack (logging tập trung) |
-| 6 | Bảo trì | Dễ bảo trì, sửa lỗi và phát triển thêm tính năng mới | Tách biệt service, gRPC contract rõ ràng, audit log đầy đủ |
+| 1 | Hiệu năng | Thời gian phản hồi API dưới 500ms | Microservices, Redis cache, Kafka bất đồng bộ |
+| 2 | Khả năng mở rộng | Scale từng module độc lập | Docker container, service riêng biệt |
+| 3 | Bảo mật | Xác thực chuẩn công nghiệp, phân quyền chặt chẽ | Keycloak (OAuth2/OIDC), JWT, Kong Gateway |
+| 4 | Độ tin cậy | Không mất dữ liệu giao dịch | Kafka message delivery, PostgreSQL ACID |
+| 5 | Giám sát | Theo dõi hiệu năng real-time | Prometheus + Grafana, ELK Stack |
+| 6 | Bảo trì | Dễ bảo trì và phát triển thêm | Tách biệt service, gRPC contract, audit log |
+
+## 1.4. Kết luận chương
 
-1.4. Kết luận chương
+Qua quá trình khảo sát nghiệp vụ thực tế trên các hệ thống tại Việt Nam (Shopee Rewards, MoMo, The Coffee House) và quốc tế (Starbucks Rewards, Smile.io, Voucherify), nhóm đã xác định được các khoảng trống mà hệ thống hiện tại chưa giải quyết đồng bộ. Đặc biệt, việc kết hợp quy trình phê duyệt Maker/Checker, hệ thống loyalty đa hạng, gamification qua mission, bảng xếp hạng, và cơ chế cho đối tác tham gia trong một nền tảng duy nhất là điểm khác biệt chính của đồ án.
 
-Qua quá trình khảo sát nghiệp vụ thực tế trên các hệ thống tại Việt Nam (Shopee Rewards, MoMo, The Coffee House) và quốc tế (Starbucks Rewards, Smile.io, LoyaltyLion, Voucherify), nhóm đã xác định được các khoảng trống mà hệ thống hiện tại chưa giải quyết đồng bộ. Đặc biệt, việc kết hợp quy trình phê duyệt Maker/Checker, hệ thống loyalty đa hạng, gamification qua mission, bảng xếp hạng, và cơ chế cho đối tác tham gia trong một nền tảng duy nhất là điểm khác biệt chính của đồ án.
+Dựa trên khảo sát nhu cầu của 5 nhóm người dùng, nhóm đã xác định đầy đủ các yêu cầu chức năng và phi chức năng làm cơ sở cho việc phân tích thiết kế ở Chương 2 và xây dựng phát triển ở Chương 3.
+# CHƯƠNG 2. PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
 
-Dựa trên khảo sát nhu cầu của 5 nhóm người dùng (Customer, Admin, Maker, Checker, Partner), nhóm đã xác định đầy đủ các yêu cầu chức năng và phi chức năng làm cơ sở cho việc phân tích thiết kế ở Chương 2 và xây dựng phát triển ở Chương 3.
-CHƯƠNG 2: PHÂN TÍCH THIẾT KẾ HỆ THỐNG
+## 2.1. Phân tích yêu cầu
 
-2.1. Xác định các đối tượng người dùng
+### 2.1.1. Định hướng phân tích
 
-Hệ thống Voucher-Service được xây dựng phục vụ quy trình phân phối voucher với các đối tượng người dùng sau:
+Hệ thống được phân tích dựa trên kết quả khảo sát nghiệp vụ ở Chương 1, hướng đến xây dựng một nền tảng quản lý voucher và chương trình khách hàng thân thiết theo kiến trúc Microservices. Hệ thống cần đáp ứng:
 
-2.1.1. Maker (Người tạo)
+- Quy trình phê duyệt nhiều bước (Maker/Checker) cho việc phát hành voucher và nhiệm vụ.
+- Tích hợp đa vai trò: Admin, Maker, Checker, Partner, Customer.
+- Giao tiếp giữa các service qua gRPC (đồng bộ) và Apache Kafka (bất đồng bộ).
+- Bảo mật theo chuẩn OAuth2/OIDC với Keycloak.
+- Khả năng mở rộng và giám sát hệ thống.
 
-Vai trò: Tạo yêu cầu phát hành voucher và nhiệm vụ (mission).
+### 2.1.2. Yêu cầu chức năng
 
-Quyền hạn:
-- Tạo voucher đơn lẻ (nhập thông tin trực tiếp).
-- Tạo voucher hàng loạt (upload file Excel).
-- Tạo nhiệm vụ (mission) kèm cấu hình phần thưởng.
-- Gửi yêu cầu phê duyệt (Submit).
-- Hủy yêu cầu khi chưa gửi duyệt (Cancel).
-- Xem danh sách và chi tiết voucher/mission đã tạo.
+Bảng 2.1: Yêu cầu chức năng theo module
 
-2.1.2. Checker (Người duyệt)
+| STT | Module | Chức năng | Mô tả |
+|-----|--------|-----------|-------|
+| 1 | Identity Service | Đăng ký tài khoản | Customer tự đăng ký, Admin tạo tài khoản cho Maker/Checker/Partner |
+| 2 | Identity Service | Đăng nhập | Xác thực qua Keycloak, trả JWT token |
+| 3 | Identity Service | Refresh token | Làm mới access token khi hết hạn |
+| 4 | Identity Service | Quản lý profile | Xem, cập nhật thông tin cá nhân, đổi mật khẩu |
+| 5 | Identity Service | Quản lý system users | CRUD tài khoản hệ thống (Admin) |
+| 6 | Identity Service | Quản lý roles | CRUD vai trò và phân quyền (Admin) |
+| 7 | Voucher Service | Tạo voucher đơn lẻ | Maker/Partner nhập thông tin voucher trực tiếp |
+| 8 | Voucher Service | Tạo voucher hàng loạt | Upload file Excel chứa danh sách voucher |
+| 9 | Voucher Service | Gửi phê duyệt (Submit) | Chuyển trạng thái INIT → PENDING_APPROVE |
+| 10 | Voucher Service | Phê duyệt/Từ chối | Checker approve hoặc reject kèm lý do |
+| 11 | Voucher Service | Hủy yêu cầu (Cancel) | Maker/Partner hủy khi chưa gửi duyệt |
+| 12 | Voucher Service | Tạo nhiệm vụ (Mission) | Cấu hình mục tiêu, phần thưởng, thời hạn |
+| 13 | Voucher Service | Ghi audit log | Tự động ghi nhật ký mọi thao tác |
+| 14 | Customer Service | Xem voucher khả dụng | Danh sách voucher theo hạng thành viên |
+| 15 | Customer Service | Thu thập voucher | Lưu voucher vào kho cá nhân |
+| 16 | Customer Service | Thanh toán | Áp dụng voucher, tính giảm giá, tích điểm |
+| 17 | Customer Service | Xem nhiệm vụ | Danh sách mission và tiến độ |
+| 18 | Customer Service | Nhận thưởng | Claim reward khi hoàn thành mission |
+| 19 | Customer Service | Bảng xếp hạng | Top khách hàng theo điểm tích lũy |
+| 20 | Loyalty Service | Tích điểm | Tự động tính điểm khi thanh toán (1 point/1.000 VND) |
+| 21 | Loyalty Service | Nâng hạng | Tự động nâng tier khi đạt ngưỡng điểm |
+| 22 | Loyalty Service | Cập nhật mission | Cập nhật tiến độ nhiệm vụ khi có giao dịch |
 
-Vai trò: Xem xét và phê duyệt hoặc từ chối các yêu cầu từ Maker/Partner.
+### 2.1.3. Yêu cầu phi chức năng
 
-Quyền hạn:
-- Xem danh sách yêu cầu ở trạng thái chờ duyệt (PENDING_APPROVE).
-- Phê duyệt yêu cầu (APPROVED) giúp voucher được kích hoạt.
-- Từ chối yêu cầu (REJECTED) kèm lý do.
-- Xem audit log các thao tác trong hệ thống.
-- Chỉ thấy các yêu cầu ở trạng thái: PENDING_APPROVE, APPROVED, REJECTED, FINISH.
+Bảng 2.2: Yêu cầu phi chức năng
 
-2.1.3. Partner (Đối tác)
+| STT | Yêu cầu | Chỉ tiêu | Giải pháp kỹ thuật |
+|-----|----------|-----------|-------------------|
+| 1 | Hiệu năng | Response time < 500ms | Redis cache, gRPC binary protocol |
+| 2 | Khả năng mở rộng | Scale từng service độc lập | Docker container, Kafka consumer group |
+| 3 | Bảo mật | Chuẩn OAuth2/OIDC | Keycloak, JWT, Kong API Gateway |
+| 4 | Độ tin cậy | Không mất message | Kafka durability, PostgreSQL ACID |
+| 5 | Giám sát | Real-time monitoring | Prometheus + Grafana, ELK Stack |
+| 6 | Bảo trì | Loose coupling | Database per Service, gRPC contract |
 
-Vai trò: Nhà cung cấp dịch vụ/cửa hàng tạo voucher và nhiệm vụ riêng cho thương hiệu.
+### 2.1.4. Ràng buộc nghiệp vụ
 
-Quyền hạn:
-- Tạo voucher cho cửa hàng của mình (tự động gán storeName).
-- Tạo nhiệm vụ gắn với thương hiệu.
-- Gửi yêu cầu phê duyệt và hủy yêu cầu.
-- Chỉ xem được voucher/mission do mình tạo.
-- Voucher của Partner luôn có customerTier = ALL (áp dụng cho tất cả khách hàng).
+Bảng 2.3: Ràng buộc nghiệp vụ
 
-2.1.4. Customer (Khách hàng)
+| STT | Ràng buộc | Mô tả |
+|-----|-----------|-------|
+| 1 | Phân quyền dữ liệu | Partner chỉ xem voucher/mission do mình tạo |
+| 2 | Voucher theo hạng | Voucher Partner luôn customerTier = ALL; Voucher System có thể chỉ định hạng cụ thể |
+| 3 | Voucher REWARD | Voucher thưởng từ mission không được Submit/Cancel thủ công |
+| 4 | Batch processing | Xử lý VoucherDetail theo batch 100 records khi approve/reject |
+| 5 | Giới hạn thu thập | Mỗi customer thu thập voucher tối đa = maxCollect |
+| 6 | Điều kiện áp dụng | Voucher chỉ áp dụng khi orderAmount >= minOrderValue và còn hạn |
+| 7 | Nâng hạng tự động | SILVER (0), GOLD (1.000), PLATINUM (5.000), DIAMOND (10.000 điểm) |
 
-Vai trò: Người dùng cuối, sử dụng voucher và tham gia nhiệm vụ.
+## 2.2. Phân tích tác nhân và biểu đồ Use Case
 
-Quyền hạn (thông qua Customer-Service):
-- Xem danh sách voucher khả dụng theo hạng thành viên.
-- Thu thập voucher vào kho cá nhân.
-- Sử dụng voucher khi thanh toán.
-- Tham gia nhiệm vụ và nhận thưởng khi hoàn thành.
+### 2.2.1. Xác định tác nhân
 
+Bảng 2.4: Danh sách tác nhân hệ thống
 
-2.2. Quy trình, luồng nghiệp vụ phân phối Voucher
+| STT | Tác nhân | Vai trò | Phạm vi tương tác |
+|-----|----------|---------|-------------------|
+| 1 | Admin | Quản trị hệ thống | Identity Service (quản lý user, role), Voucher Service (audit log, mock invoice) |
+| 2 | Maker | Tạo nội dung | Voucher Service (tạo voucher, mission, submit, cancel) |
+| 3 | Checker | Phê duyệt | Voucher Service (approve, reject, xem audit log) |
+| 4 | Partner | Đối tác | Voucher Service (tạo voucher/mission cho cửa hàng riêng) |
+| 5 | Customer | Người dùng cuối | Customer Service (thu thập voucher, thanh toán, mission, leaderboard) |
 
-2.2.1. Tổng quan luồng trạng thái Voucher
+### 2.2.2. Biểu đồ Use Case tổng quát
 
-Hình 2.1: Sơ đồ chuyển trạng thái của Voucher Request
+<!-- Chèn sơ đồ từ file: docs/usecase-diagram.xml -->
 
-INIT --> (Submit) --> PENDING_APPROVE --> (Approve) --> APPROVED --> (Processing) --> FINISH
-INIT --> (Cancel) --> CANCELLED
-PENDING_APPROVE --> (Reject) --> REJECTED
+Hình 2.1: Biểu đồ Use Case tổng quát hệ thống
 
-2.2.2. Luồng tạo Voucher đơn lẻ (Single Mode)
+### 2.2.3. Biểu đồ Use Case chi tiết theo nhóm chức năng
 
-Actor: Maker hoặc Partner.
+Nhóm 1 – Xác thực và Quản lý Profile:
 
-Mô tả: Người dùng nhập thông tin voucher trực tiếp qua form, hệ thống tạo một yêu cầu (VoucherRequest) và một chi tiết voucher (VoucherDetail) tương ứng.
+<!-- Chèn sơ đồ từ file: docs/usecase-identity.xml -->
 
-Các bước thực hiện:
+Hình 2.2: Biểu đồ Use Case – Xác thực và Quản lý Profile
 
-Bước 1: Maker/Partner gửi request tạo voucher với thông tin: tên, mô tả, loại giảm giá (FIXED/PERCENT), giá trị giảm, giá trị đơn hàng tối thiểu, số lượng, thời hạn, hạng khách hàng áp dụng.
+Bao gồm: Đăng nhập (verify qua Keycloak, trả JWT), Đăng ký (tạo user Keycloak + gRPC tạo CustomerProfile), Refresh Token, Xem/Cập nhật Profile, Đổi mật khẩu.
 
-Bước 2: Hệ thống validate dữ liệu đầu vào. Nếu là Partner: tự động gán customerTier = ALL, creatorType = PARTNER, lấy storeName qua gRPC từ Identity Service. Nếu là System (Maker): yêu cầu phải có customerTier, creatorType = SYSTEM.
+Nhóm 2 – Quản trị hệ thống (Admin):
 
-Bước 3: Hệ thống tạo requestId tự động theo format VOUCHER_{timestamp}.
+<!-- Chèn sơ đồ từ file: docs/usecase-admin.xml -->
 
-Bước 4: Lưu VoucherRequest với status = INIT, requestMode = SINGLE.
+Hình 2.3: Biểu đồ Use Case – Quản trị hệ thống
 
-Bước 5: Lưu VoucherDetail với requestStatus = INIT, voucherStatus = INACTIVE, availableStock = totalStock.
+Bao gồm: Quản lý tài khoản hệ thống (include: tạo Maker/Checker, tạo Partner; extend: reset mật khẩu/khóa tài khoản), Quản lý vai trò và phân quyền, Quản lý hóa đơn mẫu, Xem Audit Log, Xem Dashboard thống kê.
 
-Bước 6: Mã voucher (voucherCode) được tự động sinh theo format VCH-{10 ký tự UUID}.
+Nhóm 3 – Quản lý Voucher và Mission (Maker/Partner):
 
-2.2.3. Luồng tạo Voucher hàng loạt (Excel Mode)
+<!-- Chèn sơ đồ từ file: docs/usecase-voucher-management.xml -->
 
-Actor: Maker hoặc Partner.
+Hình 2.4: Biểu đồ Use Case – Quản lý Voucher và Mission
 
-Mô tả: Người dùng upload file Excel chứa danh sách voucher, hệ thống đọc và tạo nhiều VoucherDetail từ một VoucherRequest.
+Bao gồm: Tạo voucher đơn lẻ (include: validate, gRPC lấy storeName), Tạo voucher hàng loạt (include: parse Excel), Tạo nhiệm vụ (include: tạo voucher REWARD, gRPC createMission), Gửi phê duyệt, Hủy yêu cầu, Xem danh sách, Xem Dashboard. Partner có ràng buộc: customerTier=ALL, creatorType=PARTNER, chỉ xem dữ liệu của mình.
 
-Các bước thực hiện:
+Nhóm 4 – Phê duyệt (Checker):
 
-Bước 1: Maker/Partner upload file Excel (.xlsx) kèm loại giảm giá (discountType) và requestId.
+<!-- Chèn sơ đồ từ file: docs/usecase-checker.xml -->
 
-Bước 2: Hệ thống validate: file không rỗng, discountType hợp lệ, requestId chưa tồn tại với trạng thái active (INIT, PENDING_APPROVE, APPROVED, FINISH).
+Hình 2.5: Biểu đồ Use Case – Phê duyệt Voucher và Mission
 
-Bước 3: Đọc file Excel, parse từng dòng thành đối tượng CreateVoucherExcel.
+Bao gồm: Xem danh sách yêu cầu chờ duyệt, Xem chi tiết, Phê duyệt (include: batch activate 100 records, ghi audit log), Từ chối (include: nhập lý do bắt buộc, ghi audit log), Xem Audit Log.
 
-Bước 4: Lưu VoucherRequest với status = DRAFT, requestMode = EXCEL.
+Nhóm 5 – Dịch vụ Khách hàng (Customer):
 
-Bước 5: Lưu danh sách VoucherDetail theo batch (100 records/batch) để tối ưu hiệu năng.
+<!-- Chèn sơ đồ từ file: docs/usecase-customer.xml -->
 
-Bước 6: Mỗi VoucherDetail có requestStatus = INIT, voucherStatus = INACTIVE.
+Hình 2.6: Biểu đồ Use Case – Dịch vụ Khách hàng
 
-2.2.4. Luồng gửi phê duyệt (Submit)
+Bao gồm: Đăng ký, Đăng nhập, Xem profile (tier, points), Xem voucher khả dụng (theo hạng), Thu thập voucher, Xem kho voucher, Xem voucher áp dụng được, Thanh toán (include: tích điểm tự động → nâng hạng tự động → cập nhật tiến độ mission), Xem nhiệm vụ và tiến độ, Nhận thưởng, Xem bảng xếp hạng.
 
-Actor: Maker hoặc Partner.
 
-Điều kiện tiên quyết: Voucher request đang ở trạng thái INIT.
+### 2.2.4. Đặc tả Use Case
 
-Các bước thực hiện:
+Bảng 2.5: Đặc tả UC05 – Tạo voucher đơn lẻ
 
-Bước 1: Maker/Partner chọn yêu cầu voucher cần gửi duyệt.
+| Mục | Nội dung |
+|-----|----------|
+| Tên Use Case | Tạo voucher đơn lẻ (SINGLE mode) |
+| Tác nhân | Maker, Partner |
+| Mô tả | Người dùng nhập thông tin voucher, hệ thống tạo VoucherRequest và VoucherDetail |
+| Tiền điều kiện | Đã đăng nhập với role MAKER hoặc PARTNER |
+| Luồng chính | 1. Nhập thông tin: tên, mô tả, discountType, discountValue, maxDiscount, minOrderValue, totalStock, startDate, endDate, customerTier. 2. Hệ thống validate dữ liệu. 3. Nếu Partner: gán customerTier=ALL, creatorType=PARTNER, lấy storeName qua gRPC. 4. Tạo requestId (VOUCHER_{timestamp}). 5. Lưu VoucherRequest (status=INIT). 6. Lưu VoucherDetail (voucherStatus=INACTIVE). 7. Trả kết quả thành công. |
+| Luồng ngoại lệ | Validate thất bại → trả lỗi VALIDATION_ERROR. gRPC timeout → trả lỗi INTERNAL_ERROR. |
+| Hậu điều kiện | VoucherRequest ở trạng thái INIT, sẵn sàng Submit |
 
-Bước 2: Hệ thống kiểm tra request tồn tại và đang ở trạng thái INIT, đồng thời request không phải loại REWARD (voucher thưởng từ mission không submit thủ công).
+Bảng 2.6: Đặc tả UC14 – Phê duyệt voucher
 
-Bước 3: Cập nhật trạng thái INIT sang PENDING_APPROVE.
+| Mục | Nội dung |
+|-----|----------|
+| Tên Use Case | Phê duyệt voucher (Approve) |
+| Tác nhân | Checker |
+| Mô tả | Checker xem xét và phê duyệt yêu cầu voucher, kích hoạt voucher cho khách hàng |
+| Tiền điều kiện | Đã đăng nhập với role CHECKER; VoucherRequest ở trạng thái PENDING_APPROVE |
+| Luồng chính | 1. Checker xem chi tiết yêu cầu. 2. Chọn Approve. 3. Hệ thống cập nhật VoucherRequest: status=APPROVED, confirmedBy, confirmedTime. 4. Xử lý VoucherDetail theo batch 100 records: requestStatus=PROCESSING → voucherStatus=ACTIVE. 5. Sau khi xong: VoucherRequest → FINISH. 6. Ghi audit log. |
+| Luồng ngoại lệ | Request không ở PENDING_APPROVE → lỗi BAD_REQUEST. Batch processing thất bại → status=FAILED. |
+| Hậu điều kiện | Voucher ở trạng thái ACTIVE, Customer có thể thu thập |
 
-Bước 4: Ghi nhận người cập nhật (updatedBy).
+Bảng 2.7: Đặc tả UC22 – Thu thập voucher
 
-2.2.5. Luồng phê duyệt (Confirm)
+| Mục | Nội dung |
+|-----|----------|
+| Tên Use Case | Thu thập voucher |
+| Tác nhân | Customer |
+| Mô tả | Customer chọn voucher khả dụng và lưu vào kho cá nhân |
+| Tiền điều kiện | Đã đăng nhập với role CUSTOMER; Voucher ở trạng thái ACTIVE |
+| Luồng chính | 1. Customer xem danh sách voucher khả dụng (theo tier). 2. Chọn voucher muốn thu thập. 3. Hệ thống kiểm tra: chưa collect, còn stock, chưa vượt maxCollect. 4. Tạo CustomerVoucher (status=AVAILABLE). 5. Giảm availableStock của VoucherDetail. 6. Trả thành công. |
+| Luồng ngoại lệ | Đã collect → VOUCHER_ALREADY_COLLECTED. Hết stock → VOUCHER_OUT_OF_STOCK. Vượt maxCollect → MAX_COLLECT_EXCEEDED. |
+| Hậu điều kiện | CustomerVoucher được tạo, availableStock giảm 1 |
 
-Actor: Checker.
+Bảng 2.8: Đặc tả UC24 – Thanh toán với voucher
 
-Điều kiện tiên quyết: Voucher request đang ở trạng thái PENDING_APPROVE.
+| Mục | Nội dung |
+|-----|----------|
+| Tên Use Case | Thanh toán với voucher |
+| Tác nhân | Customer |
+| Mô tả | Customer thanh toán hóa đơn, có thể áp dụng voucher giảm giá |
+| Tiền điều kiện | Đã đăng nhập; Có hóa đơn cần thanh toán |
+| Luồng chính | 1. Chọn hóa đơn. 2. Chọn voucher áp dụng (optional). 3. Hệ thống validate voucher (còn hạn, đủ minOrderValue, còn lượt). 4. Tính discountAmount. 5. Lưu Transaction. 6. Cập nhật CustomerVoucher (giảm availableUsage; nếu=0 → status=USED). 7. Publish LoyaltyPointEvent qua Kafka. 8. Publish VoucherUsedEvent qua Kafka. 9. Trả PaymentResponse. |
+| Luồng ngoại lệ | Voucher hết hạn → VOUCHER_EXPIRED. Đơn hàng < minOrderValue → MIN_ORDER_NOT_MET. Hết lượt → VOUCHER_OUT_OF_STOCK. |
+| Hậu điều kiện | Transaction được lưu, điểm được tích (bất đồng bộ), stock voucher giảm |
 
-Trường hợp 1 - Phê duyệt (APPROVED):
+Bảng 2.9: Đặc tả UC26 – Nhận thưởng nhiệm vụ
 
-Bước 1: Checker xem chi tiết yêu cầu và quyết định phê duyệt.
+| Mục | Nội dung |
+|-----|----------|
+| Tên Use Case | Nhận thưởng nhiệm vụ (Claim Reward) |
+| Tác nhân | Customer |
+| Mô tả | Customer nhận thưởng khi hoàn thành nhiệm vụ |
+| Tiền điều kiện | CustomerMission ở trạng thái COMPLETED |
+| Luồng chính | 1. Customer xem danh sách mission (status=COMPLETED). 2. Bấm "Nhận thưởng". 3. Hệ thống kiểm tra mission đã hoàn thành. 4. Nếu rewardType=POINT: cộng điểm. 5. Nếu rewardType=VOUCHER: tạo CustomerVoucher từ voucher REWARD. 6. Cập nhật CustomerMission status=CLAIMED. 7. Trả ClaimMissionRewardResponse. |
+| Luồng ngoại lệ | Mission chưa hoàn thành → MISSION_NOT_COMPLETED. Đã nhận thưởng → REWARD_ALREADY_CLAIMED. |
+| Hậu điều kiện | Thưởng được phát, CustomerMission status=CLAIMED |
 
-Bước 2: Hệ thống cập nhật VoucherRequest: status = APPROVED, ghi nhận confirmedBy và confirmedTime.
+## 2.3. Biểu đồ hoạt động
 
-Bước 3: Xử lý VoucherDetail theo batch (100 records/batch): cập nhật requestStatus từ INIT sang PROCESSING, kích hoạt voucher (chuyển status sang ACTIVE).
+### 2.3.1. Biểu đồ hoạt động – Đăng ký tài khoản
 
-Bước 4: Sau khi xử lý xong tất cả batch, VoucherRequest chuyển sang FINISH.
+<!-- Chèn sơ đồ từ file: docs/activity-register.xml -->
 
-Bước 5: Voucher sẵn sàng để khách hàng thu thập và sử dụng.
+Hình 2.2: Biểu đồ hoạt động – Đăng ký tài khoản Customer
 
-Trường hợp 2 - Từ chối (REJECTED):
+Luồng: Customer nhập thông tin → Identity Service validate → Tạo user trên Keycloak → Lưu database nội bộ → gRPC tạo CustomerProfile → Trả kết quả.
 
-Bước 1: Checker xem chi tiết và quyết định từ chối, nhập lý do (bắt buộc).
+### 2.3.2. Biểu đồ hoạt động – Đăng nhập
 
-Bước 2: Hệ thống cập nhật VoucherRequest: status = REJECTED, ghi nhận reason, confirmedBy, confirmedTime.
+<!-- Chèn sơ đồ từ file: docs/activity-login.xml -->
 
-Bước 3: Xử lý VoucherDetail theo batch: cập nhật requestStatus từ INIT sang REJECTED.
+Hình 2.3: Biểu đồ hoạt động – Đăng nhập
 
-Bước 4: Voucher không được kích hoạt, khách hàng không thể sử dụng.
+Luồng: Client nhập username/password → POST /auth/login → Identity Service gọi Keycloak verify → Keycloak trả JWT → Client lưu token → Chuyển hướng dashboard.
 
-2.2.6. Luồng hủy yêu cầu (Cancel)
+### 2.3.3. Biểu đồ hoạt động – Tạo tài khoản Partner
 
-Actor: Maker hoặc Partner.
+<!-- Chèn sơ đồ từ file: docs/activity-create-partner.xml -->
 
-Điều kiện tiên quyết: Voucher request đang ở trạng thái INIT (chưa gửi duyệt).
+Hình 2.4: Biểu đồ hoạt động – Tạo tài khoản Partner
 
-Các bước thực hiện:
+Luồng: Admin nhập thông tin Partner → Identity Service validate → Tạo user Keycloak (role=PARTNER) → Lưu bảng users + partner → Trả kết quả.
 
-Bước 1: Maker/Partner chọn hủy yêu cầu.
+### 2.3.4. Biểu đồ hoạt động – Phân phối Voucher (tổng quan)
 
-Bước 2: Hệ thống kiểm tra request đang ở trạng thái INIT và không phải loại REWARD.
+<!-- Chèn sơ đồ từ file: docs/activity-diagram.xml -->
 
-Bước 3: Cập nhật trạng thái từ INIT sang CANCELLED.
+Hình 2.5: Biểu đồ hoạt động – Luồng phân phối Voucher
 
-2.2.7. Luồng tạo và phê duyệt Mission (Nhiệm vụ)
+Luồng: Maker/Partner tạo voucher (INIT) → Submit (PENDING_APPROVE) → Checker xem xét → Approve: kích hoạt batch → FINISH / Reject: REJECTED.
 
-Actor: Maker hoặc Partner (tạo), Checker (duyệt).
+### 2.3.5. Biểu đồ hoạt động – Thu thập Voucher
 
-Mô tả: Mission là nhiệm vụ gamification gắn liền với voucher thưởng. Khi tạo mission, hệ thống đồng thời tạo voucher REWARD tương ứng.
+<!-- Chèn sơ đồ từ file: docs/activity-collect-voucher.xml -->
 
-Các bước thực hiện:
+Hình 2.6: Biểu đồ hoạt động – Thu thập Voucher
 
-Bước 1: Maker/Partner gửi request tạo mission với thông tin: tên, mô tả nhiệm vụ, mục tiêu (targetValue), loại phần thưởng (POINT hoặc VOUCHER), thời gian bắt đầu/kết thúc. Nếu rewardType = VOUCHER thì kèm thông tin voucher thưởng (tên, giảm giá, số lượng).
+Luồng: Customer mở trang voucher → GET /vouchers/available → Lấy tier → gRPC searchVouchers → Kiểm tra collected → Trả danh sách → Customer chọn → POST /collect/{id} → Kiểm tra đã collect? → Kiểm tra stock? → Lưu CustomerVoucher → Trả success.
 
-Bước 2: Hệ thống validate: ngày bắt đầu không được ở quá khứ, ngày kết thúc phải sau ngày bắt đầu, nếu rewardType = POINT thì rewardValue phải là số dương.
+### 2.3.6. Biểu đồ hoạt động – Thanh toán
 
-Bước 3: Tạo VoucherRequest + VoucherDetail với voucherPurpose = REWARD (nếu rewardType = VOUCHER).
+<!-- Chèn sơ đồ từ file: docs/activity-payment.xml -->
 
-Bước 4: Gọi gRPC đến Loyalty Service để tạo mission entity.
+Hình 2.7: Biểu đồ hoạt động – Thanh toán với Voucher
 
-Bước 5: Luồng Submit/Confirm/Cancel tương tự voucher, nhưng đồng bộ trạng thái giữa Voucher Service và Loyalty Service qua gRPC.
+Luồng: Customer chọn hóa đơn + voucher → POST /payments/process → Validate voucher → Tính discount → Lưu Transaction → Cập nhật CustomerVoucher → Publish Kafka events → Trả PaymentResponse.
 
+### 2.3.7. Biểu đồ hoạt động – Quản lý Mission
 
-2.3. Sơ đồ Use Case
+<!-- Chèn sơ đồ từ file: docs/activity-mission-diagram.xml -->
 
-(Xem file: docs/usecase-diagram.xml - Import vào draw.io để xem sơ đồ)
+Hình 2.8: Biểu đồ hoạt động – Tạo và phê duyệt Mission
 
-Hệ thống có 4 actor chính tương tác với các use case:
-- Maker: Tạo voucher, tạo voucher Excel, tạo mission, submit, cancel, xem danh sách.
-- Checker: Phê duyệt voucher, từ chối voucher, phê duyệt mission, xem audit log.
-- Partner: Tương tự Maker nhưng giới hạn trong phạm vi cửa hàng của mình.
-- Customer: Xem voucher khả dụng, thu thập voucher, sử dụng voucher khi thanh toán, tham gia nhiệm vụ và nhận thưởng.
+Luồng: Maker/Partner nhập thông tin mission → Validate → Tạo VoucherRequest (purpose=REWARD) → gRPC createMission → Submit → Checker duyệt → Kích hoạt mission + voucher thưởng.
 
-2.4. Sơ đồ Activity Diagram
+### 2.3.8. Biểu đồ hoạt động – Tạo voucher hàng loạt (Excel)
 
-(Xem file: docs/activity-diagram.xml và docs/activity-mission-diagram.xml - Import vào draw.io để xem sơ đồ)
+<!-- Chèn sơ đồ từ file: docs/activity-create-voucher-excel.xml -->
 
-Sơ đồ Activity mô tả luồng hoạt động chính của hệ thống theo swimlane cho từng actor:
-- Luồng phân phối Voucher: Maker/Partner tạo → System validate và lưu → Maker submit → System chuyển trạng thái → Checker duyệt/từ chối → System kích hoạt hoặc reject.
-- Luồng quản lý Mission: Maker/Partner tạo → Voucher Service validate và lưu voucher REWARD → Loyalty Service tạo mission qua gRPC → Maker submit → Checker duyệt → System kích hoạt mission + voucher thưởng.
+Hình 2.9: Biểu đồ hoạt động – Tạo voucher hàng loạt (Excel upload)
 
-2.5. Sơ đồ Sequence Diagram
+Luồng: Maker/Partner chọn discountType + nhập requestId + upload file Excel → Voucher Service validate (file không rỗng, requestId chưa tồn tại) → Nếu Partner: gRPC lấy storeName → Đọc file Excel (Apache POI) parse từng dòng → Tạo VoucherRequest (status=DRAFT, mode=EXCEL) → Lưu VoucherDetail theo batch 100 records (voucherStatus=INACTIVE, voucherCode=VCH-{UUID}) → Trả response (requestId, totalCreated).
 
-(Xem file: docs/sequence-diagram.xml và docs/sequence-mission-diagram.xml - Import vào draw.io để xem sơ đồ)
+### 2.3.9. Biểu đồ hoạt động – Nhận thưởng nhiệm vụ
 
-Sơ đồ Sequence mô tả chi tiết tương tác giữa các thành phần theo thời gian:
-- Sequence Voucher: Maker → VoucherController → VoucherService → IdentityService (gRPC) → Database, sau đó Checker → confirm → batch activate.
-- Sequence Mission: Maker → MissionController → MissionService → VoucherService (tạo voucher REWARD) → LoyaltyService (gRPC: createMission) → Database.
+<!-- Chèn sơ đồ từ file: docs/activity-claim-reward.xml -->
 
-2.6. Sơ đồ Class Diagram
+Hình 2.10: Biểu đồ hoạt động – Nhận thưởng nhiệm vụ (Claim Reward)
 
-(Xem file: docs/class-diagram-identity.xml, docs/class-diagram-voucher.xml, docs/class-diagram-loyalty.xml, docs/class-diagram-customer.xml - Import vào draw.io để xem sơ đồ)
+Luồng: Customer xem danh sách mission → Chọn mission (status=COMPLETED) → Bấm "Nhận thưởng" → Customer Service tìm CustomerMission → Kiểm tra status=COMPLETED (nếu không → lỗi MISSION_NOT_COMPLETED) → gRPC getMissionById lấy rewardType → Nếu POINT: cộng điểm vào totalPoints → Nếu VOUCHER: tạo CustomerVoucher (status=AVAILABLE) → Cập nhật CustomerMission status=CLAIMED → Trả ClaimMissionRewardResponse.
 
-Class Diagram được tách riêng cho từng service:
-- Identity Service: User, Partner, các enum Role và PartnerCategory.
-- Voucher Service: VoucherRequestEntity, VoucherDetailEntity, AuditLogEntity, MockInvoiceEntity, các enum RequestStatus, DiscountType, VoucherStatus, CustomerTier, VoucherPurpose, CreatorType, RequestMode.
-- Loyalty Service: MissionEntity, CustomerEntity, các enum TargetType, RewardType, TaskStatus, MissionStatus.
-- Customer Service: CustomerProfile, CustomerVoucher, CustomerMission, Transaction, các enum CustomerVoucherStatus, CustomerMissionStatus, TransactionStatus, và các Kafka Event DTO.
+### 2.3.10. Biểu đồ hoạt động – Nâng hạng thành viên
 
-2.7. Mô tả chi tiết các trạng thái
+<!-- Chèn sơ đồ từ file: docs/activity-tier-upgrade.xml -->
 
-2.7.1. Trạng thái Voucher Request (RequestStatus)
+Hình 2.11: Biểu đồ hoạt động – Nâng hạng tự động
 
-Bảng 2.1: Bảng trạng thái của Voucher Request
+Luồng: Thanh toán thành công → Kafka LoyaltyPointEvent → Loyalty Service tính điểm → Cộng totalPoints → Kiểm tra ngưỡng → Nếu đạt: nâng tier → Kafka TierUpgradeEvent → Customer Service cập nhật profile.
 
-| STT | Trạng thái | Mô tả | Chuyển từ | Chuyển đến | Actor |
-|---|---|---|---|---|---|
-| 1 | DRAFT | Bản nháp (chỉ dùng cho Excel mode) | - | INIT | System |
-| 2 | INIT | Đã tạo, chờ gửi duyệt | DRAFT | PENDING_APPROVE, CANCELLED | Maker/Partner |
-| 3 | PENDING_APPROVE | Đã gửi, chờ Checker duyệt | INIT | APPROVED, REJECTED | Checker |
-| 4 | APPROVED | Đã được phê duyệt | PENDING_APPROVE | PROCESSING | Checker |
-| 5 | REJECTED | Bị từ chối (kèm lý do) | PENDING_APPROVE | - | Checker |
-| 6 | CANCELLED | Đã hủy bởi người tạo | INIT | - | Maker/Partner |
-| 7 | PROCESSING | Đang xử lý kích hoạt voucher | APPROVED | FINISH, FAILED | System |
-| 8 | FINISH | Hoàn tất, voucher đã active | PROCESSING | - | System |
-| 9 | FAILED | Xử lý thất bại | PROCESSING | - | System |
+## 2.4. Biểu đồ trình tự
 
-2.7.2. Trạng thái Voucher Detail (VoucherStatus)
+### 2.4.1. Biểu đồ trình tự – Đăng nhập
 
-Bảng 2.2: Bảng trạng thái của Voucher Detail
+<!-- Chèn sơ đồ từ file: docs/sequence-login.xml -->
 
-| STT | Trạng thái | Mô tả | Điều kiện |
-|---|---|---|---|
-| 1 | INACTIVE | Chưa kích hoạt (mới tạo hoặc chưa được duyệt) | Mặc định khi tạo |
-| 2 | ACTIVE | Đang hoạt động, khách hàng có thể thu thập | Sau khi request được APPROVED |
-| 3 | EXPIRED | Đã hết hạn | Khi endDate nhỏ hơn thời gian hiện tại |
+Hình 2.10: Biểu đồ trình tự – Đăng nhập
 
-2.7.3. Trạng thái Voucher của Customer (CustomerVoucherStatus)
+Thành phần: Client → AuthController → AuthService → Keycloak → Client.
 
-Bảng 2.3: Bảng trạng thái voucher trong kho khách hàng
+### 2.4.2. Biểu đồ trình tự – Đăng ký
 
-| STT | Trạng thái | Mô tả |
+<!-- Chèn sơ đồ từ file: docs/sequence-register.xml -->
+
+Hình 2.11: Biểu đồ trình tự – Đăng ký Customer
+
+Thành phần: Client → AuthController → AuthService → Keycloak → UserRepository → CustomerGrpcClient → CustomerService.
+
+### 2.4.3. Biểu đồ trình tự – Tạo Partner
+
+<!-- Chèn sơ đồ từ file: docs/sequence-create-partner.xml -->
+
+Hình 2.12: Biểu đồ trình tự – Tạo tài khoản Partner
+
+Thành phần: Admin → SystemUserController → SystemUserService → Keycloak → UserRepository → PartnerRepository.
+
+### 2.4.4. Biểu đồ trình tự – Tạo và phê duyệt Voucher
+
+<!-- Chèn sơ đồ từ file: docs/sequence-diagram.xml -->
+
+Hình 2.13: Biểu đồ trình tự – Tạo và phê duyệt Voucher
+
+Thành phần: Maker → VoucherController → VoucherService → IdentityGrpcClient → VoucherRepository → VoucherDetailRepository → AuditLogService.
+
+### 2.4.5. Biểu đồ trình tự – Thu thập Voucher
+
+<!-- Chèn sơ đồ từ file: docs/sequence-collect-voucher.xml -->
+
+Hình 2.14: Biểu đồ trình tự – Thu thập Voucher
+
+Thành phần: Customer → CustomerVoucherController → CustomerVoucherService → VoucherGrpcClient → Redis → CustomerVoucherRepository.
+
+### 2.4.6. Biểu đồ trình tự – Thanh toán
+
+<!-- Chèn sơ đồ từ file: docs/sequence-payment.xml -->
+
+Hình 2.15: Biểu đồ trình tự – Thanh toán
+
+Thành phần: Customer → PaymentController → PaymentService → CustomerVoucherRepository → TransactionRepository → KafkaService.
+
+### 2.4.7. Biểu đồ trình tự – Tạo và phê duyệt Mission
+
+<!-- Chèn sơ đồ từ file: docs/sequence-mission-diagram.xml -->
+
+Hình 2.18: Biểu đồ trình tự – Tạo và phê duyệt Mission
+
+Thành phần: Maker → MissionController → MissionService → VoucherService → MissionGrpcClient → LoyaltyService.
+
+### 2.4.8. Biểu đồ trình tự – Tạo voucher hàng loạt (Excel)
+
+<!-- Chèn sơ đồ từ file: docs/sequence-create-voucher-excel.xml -->
+
+Hình 2.19: Biểu đồ trình tự – Tạo voucher hàng loạt (Excel upload)
+
+Thành phần: Maker/Partner → VoucherController → VoucherService → ExcelReaderHelper (Apache POI) → IdentityGrpcClient (getNameStore) → VoucherRepository (save request) → VoucherDetailRepository (batch saveAll 100 records/batch).
+
+### 2.4.9. Biểu đồ trình tự – Nhận thưởng nhiệm vụ
+
+<!-- Chèn sơ đồ từ file: docs/sequence-claim-reward.xml -->
+
+Hình 2.20: Biểu đồ trình tự – Nhận thưởng nhiệm vụ (Claim Reward)
+
+Thành phần: Customer → CustomerMissionController → CustomerMissionService → CustomerMissionRepository (findByCustomerIdAndMissionId) → MissionGrpcClient (getMissionById) → [POINT] CustomerProfileRepository (updateTotalPoints) / [VOUCHER] CustomerVoucherRepository (save) → CustomerMissionRepository (updateStatus=CLAIMED).
+
+### 2.4.10. Biểu đồ trình tự – Nâng hạng
+
+<!-- Chèn sơ đồ từ file: docs/sequence-tier-upgrade.xml -->
+
+Hình 2.21: Biểu đồ trình tự – Nâng hạng tự động
+
+Thành phần: Kafka (LoyaltyPointEvent) → LoyaltyPointConsumer → UserPointRepository → Kafka (TierUpgradeEvent) → TierUpgradeConsumer → CustomerProfileRepository.
+
+## 2.5. Biểu đồ trạng thái
+
+### 2.5.1. Trạng thái Voucher Request
+
+<!-- Chèn sơ đồ trạng thái hoặc mô tả bằng text -->
+
+Hình 2.18: Biểu đồ trạng thái – Voucher Request
+
+```
+INIT ──(Submit)──► PENDING_APPROVE ──(Approve)──► APPROVED ──(Processing)──► FINISH
+ │                       │
+ │(Cancel)               │(Reject)
+ ▼                       ▼
+CANCELLED              REJECTED
+```
+
+Bảng 2.10: Mô tả trạng thái Voucher Request
+
+| Trạng thái | Mô tả | Chuyển từ | Chuyển đến | Actor |
+|---|---|---|---|---|
+| INIT | Đã tạo, chờ gửi duyệt | – | PENDING_APPROVE, CANCELLED | Maker/Partner |
+| PENDING_APPROVE | Đã gửi, chờ duyệt | INIT | APPROVED, REJECTED | Checker |
+| APPROVED | Đã phê duyệt | PENDING_APPROVE | FINISH | System |
+| REJECTED | Bị từ chối (kèm lý do) | PENDING_APPROVE | – | Checker |
+| CANCELLED | Đã hủy | INIT | – | Maker/Partner |
+| FINISH | Hoàn tất, voucher ACTIVE | APPROVED | – | System |
+
+### 2.5.2. Trạng thái Voucher Detail
+
+Bảng 2.11: Mô tả trạng thái Voucher Detail
+
+| Trạng thái | Mô tả | Điều kiện chuyển |
 |---|---|---|
-| 1 | AVAILABLE | Đã thu thập, có thể sử dụng |
-| 2 | USED | Đã sử dụng hết lượt |
-| 3 | EXPIRED | Đã hết hạn sử dụng |
+| INACTIVE | Chưa kích hoạt | Mặc định khi tạo |
+| ACTIVE | Đang hoạt động, customer có thể thu thập | Sau khi request APPROVED |
+| EXPIRED | Đã hết hạn | endDate < thời gian hiện tại |
 
-2.8. Quy tắc nghiệp vụ quan trọng
+### 2.5.3. Trạng thái Customer Voucher
 
-2.8.1. Phân quyền truy cập dữ liệu
+Bảng 2.12: Mô tả trạng thái Customer Voucher
 
-- Partner chỉ xem được voucher/mission do chính mình tạo (hệ thống filter theo createdBy và storeName).
-- Checker chỉ thấy các yêu cầu ở trạng thái: PENDING_APPROVE, APPROVED, REJECTED, FINISH.
-- Maker thấy tất cả trạng thái của voucher do mình hoặc hệ thống tạo.
+| Trạng thái | Mô tả | Điều kiện chuyển |
+|---|---|---|
+| AVAILABLE | Đã thu thập, có thể sử dụng | Khi customer collect thành công |
+| USED | Đã sử dụng hết lượt | availableUsage = 0 sau thanh toán |
+| EXPIRED | Đã hết hạn | expiredAt < thời gian hiện tại |
 
-2.8.2. Quy tắc voucher theo hạng khách hàng
+### 2.5.4. Trạng thái Customer Mission
 
-- Voucher của Partner luôn có customerTier = ALL (áp dụng cho mọi khách hàng).
-- Voucher của System (Maker) có thể chỉ định hạng cụ thể: SILVER, GOLD, PLATINUM, DIAMOND, hoặc ALL.
-- Khách hàng chỉ thấy voucher phù hợp với hạng của mình hoặc hạng ALL.
+Bảng 2.13: Mô tả trạng thái Customer Mission
 
-2.8.3. Quy tắc voucher REWARD và HUNT
-
-- HUNT: Voucher để khách hàng tự thu thập, phải qua quy trình Submit/Confirm thủ công.
-- REWARD: Voucher thưởng từ mission, không được Submit/Cancel thủ công, chỉ được quản lý qua mission APIs.
-
-2.8.4. Quy tắc xử lý batch
-
-- Khi phê duyệt hoặc từ chối, hệ thống xử lý VoucherDetail theo batch 100 records để tránh timeout và tối ưu bộ nhớ.
-- Mỗi batch được ghi log để theo dõi tiến trình xử lý.
-
-2.8.5. Quy tắc thu thập và sử dụng voucher
-
-- Mỗi khách hàng chỉ thu thập voucher tối đa số lần bằng maxCollect.
-- Khi thu thập: giảm availableStock của VoucherDetail.
-- Khi sử dụng: giảm availableUsage của CustomerVoucher, nếu bằng 0 thì chuyển status = USED.
-- Voucher chỉ áp dụng được khi: orderAmount lớn hơn hoặc bằng minOrderValue, voucher còn hạn, và còn lượt dùng.
-
-2.9. Kết luận chương
-
-Chương 2 đã trình bày chi tiết phân tích thiết kế hệ thống bao gồm: xác định 4 đối tượng người dùng chính (Maker, Checker, Partner, Customer), mô tả đầy đủ các luồng nghiệp vụ phân phối voucher và quản lý mission, thiết kế các sơ đồ UML (Use Case, Activity, Sequence, Class Diagram), định nghĩa các trạng thái và quy tắc nghiệp vụ. Kết quả phân tích thiết kế này là cơ sở để triển khai xây dựng hệ thống ở Chương 3.
-CHƯƠNG 3: XÂY DỰNG VÀ PHÁT TRIỂN ỨNG DỤNG
-
-3.1. Tổng quan sản phẩm
-
-3.1.1. Giới thiệu hệ thống
-
-Hệ thống "Quản lý Voucher và Chương trình Khách hàng Thân thiết" là một nền tảng backend hoàn chỉnh được xây dựng theo kiến trúc Microservices, nhằm giải quyết bài toán quản lý voucher giảm giá, chương trình tích điểm, phân hạng khách hàng, và gamification (nhiệm vụ) cho các doanh nghiệp thương mại điện tử và bán lẻ.
-
-Hệ thống được thiết kế với mục tiêu:
-- Tách biệt các nghiệp vụ thành các service độc lập, dễ bảo trì và mở rộng.
-- Hỗ trợ quy trình phê duyệt nhiều bước (Maker/Checker) đảm bảo kiểm soát chất lượng.
-- Xử lý bất đồng bộ cho các tác vụ không yêu cầu phản hồi tức thì (tích điểm, thông báo).
-- Đảm bảo hiệu năng cao khi số lượng voucher và giao dịch tăng lên.
-
-### 3.1.2. Kiến trúc tổng quan hệ thống
-
-Hệ thống bao gồm 5 service ứng dụng chính, được hỗ trợ bởi các thành phần hạ tầng (infrastructure):
-
-**Các service ứng dụng:**
-- Identity Service: Xác thực và quản lý người dùng.
-- Voucher Service: Quản lý vòng đời voucher và nhiệm vụ.
-- Customer Service: Phục vụ khách hàng cuối (thu thập voucher, thanh toán).
-- Loyalty Service: Quản lý điểm thưởng và nhiệm vụ nội bộ.
-- Notification Service: Xử lý thông báo sự kiện.
-
-**Các thành phần hạ tầng:**
-- Kong API Gateway: Điểm vào duy nhất cho client.
-- PostgreSQL: Cơ sở dữ liệu quan hệ.
-- Redis: Cache và session.
-- Apache Kafka: Message broker cho giao tiếp bất đồng bộ.
-- Keycloak: Máy chủ xác thực OAuth2/OIDC.
-- ELK Stack: Logging tập trung.
-- Prometheus + Grafana: Giám sát hiệu năng.
+| Trạng thái | Mô tả | Điều kiện chuyển |
+|---|---|---|
+| IN_PROGRESS | Đang thực hiện | Khi customer tham gia mission |
+| COMPLETED | Đã hoàn thành, chờ nhận thưởng | currentProgress >= targetValue |
+| CLAIMED | Đã nhận thưởng | Sau khi claim reward thành công |
 
 
-### 3.1.3. Sơ đồ kiến trúc triển khai
+## 2.6. Thiết kế cơ sở dữ liệu
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         Docker Compose                               │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌────────────┐     ┌────────────┐     ┌─────────────────────┐      │
-│  │   Kong      │     │  Keycloak  │     │ Kafka + Zookeeper   │      │
-│  │  Gateway    │     │  (OAuth2)  │     │ (Event Streaming)   │      │
-│  │  :8000      │     │  :8180     │     │ :9092               │      │
-│  └──────┬─────┘     └────────────┘     └─────────────────────┘      │
-│         │                                                            │
-│  ┌──────┼──────────────────────────────────────────────────┐        │
-│  │      │            Application Layer                      │        │
-│  │      ├──► Identity Service     (:8081) ─── REST + gRPC  │        │
-│  │      ├──► Voucher Service      (:8082) ─── REST + gRPC  │        │
-│  │      ├──► Customer Service     (:8084) ─── REST + gRPC  │        │
-│  │      ├──► Loyalty Service      (internal) ── gRPC only  │        │
-│  │      └──► Notification Service (internal) ── Kafka only │        │
-│  └─────────────────────────────────────────────────────────┘        │
-│                                                                      │
-│  ┌────────────┐     ┌────────────┐     ┌─────────────────────┐      │
-│  │ PostgreSQL │     │   Redis    │     │     ELK Stack       │      │
-│  │   :5432    │     │   :6379    │     │ ES:9200 Kibana:5601 │      │
-│  └────────────┘     └────────────┘     └─────────────────────┘      │
-│                                                                      │
-│  ┌─────────────────────────────────────┐                            │
-│  │  Prometheus (:9090) + Grafana (:3002)│                            │
-│  └─────────────────────────────────────┘                            │
-└─────────────────────────────────────────────────────────────────────┘
-```
+### 2.6.1. Nguyên tắc thiết kế
 
----
+Hệ thống áp dụng nguyên tắc Database per Service: mỗi microservice sở hữu database riêng, không service nào truy cập trực tiếp database của service khác. Khi cần dữ liệu từ service khác, phải gọi qua gRPC hoặc Kafka event. Điều này đảm bảo loose coupling và khả năng thay đổi schema độc lập.
 
-## 3.2. Lựa chọn công nghệ và lý do
+### 2.6.2. Tổng quan database
 
-### 3.2.1. Ngôn ngữ lập trình: Java 17
+Bảng 2.14: Phân chia database theo service
 
-**Lý do lựa chọn:**
+| Database | Service | Mô tả |
+|---|---|---|
+| identity_db | Identity Service | Quản lý user, partner, role |
+| voucher_db | Voucher Service | Quản lý voucher request, detail, audit log |
+| loyalty_db | Loyalty Service | Quản lý mission, điểm thưởng |
+| customer_db | Customer Service | Quản lý profile, voucher cá nhân, transaction |
 
-Java là ngôn ngữ lập trình hướng đối tượng được sử dụng rộng rãi nhất trong phát triển ứng dụng doanh nghiệp (enterprise). Phiên bản Java 17 là bản LTS (Long-Term Support) mới nhất tại thời điểm phát triển, đảm bảo được hỗ trợ dài hạn từ Oracle.
+### 2.6.3. Bảng users (identity_db)
 
-- **Hệ sinh thái phong phú:** Java có hàng nghìn thư viện và framework hỗ trợ mọi khía cạnh của phát triển phần mềm, từ xử lý dữ liệu, bảo mật, đến giao tiếp mạng.
-- **Hiệu năng cao:** JVM (Java Virtual Machine) với JIT (Just-In-Time) compilation cho hiệu năng gần bằng ngôn ngữ native, phù hợp cho hệ thống xử lý nhiều giao dịch đồng thời.
-- **Type-safe:** Hệ thống kiểu tĩnh giúp phát hiện lỗi sớm tại compile-time, giảm bug runtime trong hệ thống phức tạp nhiều service.
-- **Đa luồng (Multi-threading):** Java hỗ trợ xử lý đa luồng mạnh mẽ, phù hợp cho việc xử lý batch voucher (100 records/batch) và xử lý nhiều request đồng thời.
-- **Cộng đồng lớn:** Dễ dàng tìm kiếm tài liệu, giải pháp cho các vấn đề kỹ thuật.
+Bảng 2.15: Cấu trúc bảng users
 
-**So sánh với các lựa chọn khác:**
-- So với Node.js: Java mạnh hơn về type safety và xử lý đa luồng, phù hợp hơn cho hệ thống enterprise phức tạp.
-- So với Go: Java có hệ sinh thái framework (Spring) phong phú hơn cho microservices, ORM mạnh hơn.
-- So với Python: Java có hiệu năng runtime cao hơn đáng kể, phù hợp hơn cho hệ thống xử lý giao dịch.
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | UUID | PK | Khóa chính |
+| keycloak_id | VARCHAR(255) | UNIQUE | ID trên Keycloak |
+| username | VARCHAR(100) | UNIQUE, NOT NULL | Tên đăng nhập |
+| email | VARCHAR(255) | UNIQUE | Email |
+| first_name | VARCHAR(100) | | Tên |
+| last_name | VARCHAR(100) | | Họ |
+| role | VARCHAR(50) | NOT NULL | ADMIN, MAKER, CHECKER, PARTNER, CUSTOMER |
+| status | VARCHAR(20) | DEFAULT 'ACTIVE' | ACTIVE, LOCKED |
+| created_at | TIMESTAMP | DEFAULT NOW() | Thời gian tạo |
 
+### 2.6.4. Bảng partner (identity_db)
 
-### 3.2.2. Framework: Spring Boot 3.4.4
+Bảng 2.16: Cấu trúc bảng partner
 
-**Lý do lựa chọn:**
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | BIGSERIAL | PK | Khóa chính |
+| user_id | UUID | FK → users.id | Liên kết user |
+| store_name | VARCHAR(255) | NOT NULL | Tên cửa hàng |
+| phone | VARCHAR(20) | | Số điện thoại |
+| category | VARCHAR(50) | | Danh mục (F&B, RETAIL...) |
 
-Spring Boot là framework phổ biến nhất cho phát triển ứng dụng Java, đặc biệt trong kiến trúc microservices. Spring Boot 3.x yêu cầu Java 17+ và hỗ trợ Jakarta EE 10, đại diện cho thế hệ mới nhất của Spring ecosystem.
+### 2.6.5. Bảng voucher_requests (voucher_db)
 
-- **Auto-configuration:** Spring Boot tự động cấu hình các thành phần dựa trên dependency có trong classpath, giảm đáng kể boilerplate code. Ví dụ: thêm `spring-boot-starter-data-jpa` sẽ tự động cấu hình DataSource, EntityManager, Transaction Manager.
-- **Starter dependencies:** Hệ thống starter giúp quản lý dependency dễ dàng. Trong dự án sử dụng: `spring-boot-starter-web` (REST API), `spring-boot-starter-data-jpa` (ORM), `spring-boot-starter-security` (bảo mật), `spring-boot-starter-data-redis` (cache).
-- **Embedded server:** Mỗi service chạy trên embedded Tomcat, không cần cài đặt application server riêng, phù hợp cho container hóa.
-- **Spring Security:** Tích hợp sẵn framework bảo mật mạnh mẽ, hỗ trợ OAuth2 Resource Server để verify JWT token từ Keycloak.
-- **Spring Data JPA:** Cung cấp repository pattern, Specification API cho dynamic query, giảm code truy vấn database.
-- **Actuator:** Cung cấp health check endpoints, metrics cho Prometheus, hỗ trợ giám sát production.
-- **Profile-based configuration:** Dễ dàng quản lý cấu hình cho các môi trường khác nhau (dev, staging, production).
+Bảng 2.17: Cấu trúc bảng voucher_requests
 
-**So sánh với các framework khác:**
-- So với Quarkus: Spring Boot có cộng đồng lớn hơn, nhiều tài liệu hơn, hệ sinh thái plugin phong phú hơn.
-- So với Micronaut: Spring Boot có learning curve thấp hơn cho người đã quen Spring ecosystem.
-- So với Jakarta EE (Payara/WildFly): Spring Boot nhẹ hơn, khởi động nhanh hơn, phù hợp hơn cho microservices.
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | BIGSERIAL | PK | Khóa chính |
+| request_id | VARCHAR(100) | UNIQUE | Mã yêu cầu (VOUCHER_{timestamp}) |
+| status | VARCHAR(30) | NOT NULL | INIT, PENDING_APPROVE, APPROVED, REJECTED, CANCELLED, FINISH |
+| request_mode | VARCHAR(20) | | SINGLE, EXCEL |
+| creator_type | VARCHAR(20) | | SYSTEM, PARTNER |
+| voucher_purpose | VARCHAR(20) | | HUNT, REWARD |
+| store_name | VARCHAR(255) | | Tên cửa hàng (Partner) |
+| created_by | VARCHAR(255) | | Người tạo |
+| confirmed_by | VARCHAR(255) | | Người duyệt |
+| confirmed_time | TIMESTAMP | | Thời gian duyệt |
+| reason | TEXT | | Lý do từ chối |
+| created_at | TIMESTAMP | DEFAULT NOW() | |
+| updated_at | TIMESTAMP | | |
 
-### 3.2.3. Cơ sở dữ liệu: PostgreSQL 15
+### 2.6.6. Bảng vouchers (voucher_db)
 
-**Lý do lựa chọn:**
+Bảng 2.18: Cấu trúc bảng vouchers (voucher_detail)
 
-PostgreSQL là hệ quản trị cơ sở dữ liệu quan hệ mã nguồn mở mạnh mẽ nhất hiện nay, được sử dụng rộng rãi trong các hệ thống enterprise.
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | BIGSERIAL | PK | Khóa chính |
+| request_id | VARCHAR(100) | FK | Liên kết voucher_requests |
+| voucher_code | VARCHAR(50) | UNIQUE | Mã voucher (VCH-{UUID}) |
+| voucher_name | VARCHAR(255) | NOT NULL | Tên voucher |
+| description | TEXT | | Mô tả |
+| discount_type | VARCHAR(20) | NOT NULL | FIXED, PERCENT |
+| discount_value | VARCHAR(50) | NOT NULL | Giá trị giảm |
+| max_discount | VARCHAR(50) | | Giảm tối đa (cho PERCENT) |
+| min_order_value | VARCHAR(50) | | Đơn hàng tối thiểu |
+| customer_tier | VARCHAR(20) | | ALL, SILVER, GOLD, PLATINUM, DIAMOND |
+| total_stock | INTEGER | | Tổng số lượng |
+| available_stock | INTEGER | | Số lượng còn lại |
+| max_collect | INTEGER | DEFAULT 1 | Số lần thu thập tối đa/customer |
+| start_date | BIGINT | | Epoch milliseconds |
+| end_date | BIGINT | | Epoch milliseconds |
+| request_status | VARCHAR(30) | | INIT, PROCESSING, REJECTED |
+| voucher_status | VARCHAR(20) | | INACTIVE, ACTIVE, EXPIRED |
+| store_name | VARCHAR(255) | | Tên cửa hàng |
 
-- **ACID Compliance:** PostgreSQL đảm bảo tính toàn vẹn dữ liệu với đầy đủ thuộc tính ACID (Atomicity, Consistency, Isolation, Durability). Điều này đặc biệt quan trọng trong hệ thống voucher nơi cần đảm bảo: khi khách hàng thu thập voucher, stock phải được giảm chính xác; khi thanh toán, số dư và điểm phải được cập nhật đồng bộ.
-- **Hiệu năng cao:** PostgreSQL xử lý tốt cả OLTP (Online Transaction Processing) với nhiều giao dịch nhỏ đồng thời, và OLAP (Online Analytical Processing) cho các truy vấn phân tích phức tạp (thống kê voucher, leaderboard).
-- **JSON support:** Hỗ trợ kiểu dữ liệu JSONB cho các trường linh hoạt (metadata, cấu hình).
-- **Full-text search:** Hỗ trợ tìm kiếm toàn văn, hữu ích cho tìm kiếm voucher theo tên/mô tả.
-- **Partitioning:** Hỗ trợ phân vùng bảng, hữu ích khi bảng vouchers hoặc transactions tăng lên hàng triệu records.
-- **Mã nguồn mở:** Không tốn chi phí license, phù hợp cho đồ án và startup.
-- **Docker-friendly:** Image `postgres:15-alpine` nhẹ (~80MB), khởi động nhanh.
+### 2.6.7. Bảng audit_logs (voucher_db)
 
-**So sánh với các lựa chọn khác:**
-- So với MySQL: PostgreSQL có hỗ trợ ACID tốt hơn, JSON support mạnh hơn, và tuân thủ SQL standard chặt chẽ hơn.
-- So với MongoDB: Dữ liệu voucher có cấu trúc rõ ràng (schema cố định), quan hệ giữa các bảng phức tạp (request → detail, customer → voucher), nên RDBMS phù hợp hơn NoSQL.
-- So với Oracle: PostgreSQL miễn phí, hiệu năng tương đương cho quy mô dự án này.
+Bảng 2.19: Cấu trúc bảng audit_logs
 
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | BIGSERIAL | PK | Khóa chính |
+| action | VARCHAR(50) | NOT NULL | CREATE, SUBMIT, APPROVE, REJECT, CANCEL |
+| entity_type | VARCHAR(50) | | VOUCHER, MISSION |
+| entity_id | VARCHAR(100) | | ID đối tượng |
+| performed_by | VARCHAR(255) | | Người thực hiện |
+| details | TEXT | | Chi tiết (JSON) |
+| created_at | TIMESTAMP | DEFAULT NOW() | |
 
-### 3.2.4. Cache: Redis 7
+### 2.6.8. Bảng customer_profiles (customer_db)
 
-**Lý do lựa chọn:**
+Bảng 2.20: Cấu trúc bảng customer_profiles
 
-Redis là hệ thống lưu trữ dữ liệu in-memory nhanh nhất hiện nay, được sử dụng làm cache layer giữa application và database.
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | BIGSERIAL | PK | Khóa chính |
+| user_id | UUID | UNIQUE | Liên kết Identity Service |
+| full_name | VARCHAR(255) | | Họ tên |
+| balance | DECIMAL(15,2) | DEFAULT 0 | Số dư |
+| total_points | INTEGER | DEFAULT 0 | Tổng điểm tích lũy |
+| tier | VARCHAR(20) | DEFAULT 'SILVER' | SILVER, GOLD, PLATINUM, DIAMOND |
+| status | VARCHAR(20) | DEFAULT 'ACTIVE' | ACTIVE, LOCKED |
+| created_at | TIMESTAMP | DEFAULT NOW() | |
 
-- **Tốc độ cực nhanh:** Redis lưu trữ dữ liệu trên RAM, thời gian truy vấn < 1ms, nhanh hơn hàng trăm lần so với truy vấn PostgreSQL. Trong hệ thống này, Redis cache:
-    - Danh sách voucher khả dụng (tránh query phức tạp mỗi lần customer mở app).
-    - Leaderboard (sorted set, O(log N) cho mỗi thao tác).
-    - Thông tin session/token.
-- **Cấu trúc dữ liệu phong phú:** Redis hỗ trợ String, Hash, List, Set, Sorted Set, Stream. Sorted Set đặc biệt phù hợp cho leaderboard (xếp hạng theo điểm).
-- **TTL (Time-To-Live):** Tự động xóa cache hết hạn, phù hợp cho cache voucher có thời hạn.
-- **Pub/Sub:** Hỗ trợ publish/subscribe cho real-time notification (bổ sung cho Kafka).
-- **Eviction policy:** Cấu hình `allkeys-lru` (Least Recently Used) đảm bảo khi memory đầy, dữ liệu ít truy cập nhất sẽ bị xóa tự động.
-- **Nhẹ và ổn định:** Image `redis:7-alpine` chỉ ~30MB, giới hạn 64MB memory trong dự án.
+### 2.6.9. Bảng customer_vouchers (customer_db)
 
-**Ứng dụng cụ thể trong hệ thống:**
-- Cache leaderboard: Sử dụng Sorted Set với score = totalPoints, tránh query ORDER BY trên bảng lớn.
-- Cache voucher available: Lưu danh sách voucher theo tier, invalidate khi có voucher mới được approve.
-- Rate limiting: Giới hạn số lần collect voucher trong khoảng thời gian ngắn.
+Bảng 2.21: Cấu trúc bảng customer_vouchers
 
-### 3.2.5. Message Broker: Apache Kafka
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | BIGSERIAL | PK | Khóa chính |
+| customer_id | BIGINT | FK | Liên kết customer_profiles |
+| voucher_id | BIGINT | | ID voucher (voucher_db) |
+| available_usage | INTEGER | | Số lượt còn dùng được |
+| voucher_code | VARCHAR(50) | | Mã voucher |
+| name_store | VARCHAR(255) | | Tên cửa hàng |
+| creator_type | VARCHAR(20) | | SYSTEM, PARTNER |
+| status | VARCHAR(20) | | AVAILABLE, USED, EXPIRED |
+| obtained_at | TIMESTAMP | | Thời gian thu thập |
+| used_at | TIMESTAMP | | Thời gian sử dụng |
+| expired_at | TIMESTAMP | | Thời gian hết hạn |
 
-**Lý do lựa chọn:**
+### 2.6.10. Bảng transactions (customer_db)
 
-Apache Kafka là nền tảng streaming phân tán được thiết kế cho throughput cao và độ tin cậy tuyệt đối, phù hợp cho giao tiếp bất đồng bộ giữa các microservices.
+Bảng 2.22: Cấu trúc bảng transactions
 
-- **Đảm bảo không mất message (Durability):** Kafka lưu message trên disk với replication, đảm bảo không mất dữ liệu ngay cả khi broker crash. Trong hệ thống voucher, điều này cực kỳ quan trọng: khi customer thanh toán, event tích điểm KHÔNG ĐƯỢC mất.
-- **Throughput cao:** Kafka xử lý hàng triệu message/giây, phù hợp khi hệ thống scale lên nhiều giao dịch đồng thời.
-- **Consumer Group:** Nhiều instance của cùng một service có thể chia nhau xử lý message, hỗ trợ horizontal scaling.
-- **Replay capability:** Consumer có thể đọc lại message từ offset cũ, hữu ích khi cần reprocess (ví dụ: Loyalty Service bị lỗi, sau khi fix có thể replay lại các event chưa xử lý).
-- **Decoupling:** Service producer không cần biết service consumer là ai, giảm coupling giữa các service.
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | BIGSERIAL | PK | Khóa chính |
+| customer_id | BIGINT | FK | Liên kết customer_profiles |
+| invoice_id | BIGINT | | ID hóa đơn |
+| voucher_id | BIGINT | | ID voucher áp dụng (nullable) |
+| original_amount | DECIMAL(15,2) | | Tổng tiền gốc |
+| discount_amount | DECIMAL(15,2) | | Số tiền giảm |
+| final_amount | DECIMAL(15,2) | | Số tiền thực trả |
+| points_earned | INTEGER | | Điểm nhận được |
+| status | VARCHAR(20) | | SUCCESS, FAILED |
+| created_at | TIMESTAMP | DEFAULT NOW() | |
 
-**Các Kafka topic trong hệ thống:**
+### 2.6.11. Bảng tasks/missions (loyalty_db)
+
+Bảng 2.23: Cấu trúc bảng tasks (missions)
+
+| Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
+|-----|---------------|-----------|-------|
+| id | BIGSERIAL | PK | Khóa chính |
+| mission_name | VARCHAR(255) | NOT NULL | Tên nhiệm vụ |
+| mission_description | TEXT | | Mô tả |
+| target_value | DOUBLE | | Mục tiêu cần đạt |
+| target_type | VARCHAR(20) | | AMOUNT, COUNT |
+| reward_type | VARCHAR(20) | | POINT, VOUCHER |
+| reward_value | VARCHAR(50) | | Giá trị thưởng |
+| partner_id | BIGINT | | ID đối tác (0 = system) |
+| start_date | BIGINT | | Epoch milliseconds |
+| end_date | BIGINT | | Epoch milliseconds |
+| task_status | VARCHAR(20) | | ACTIVE, FINISH, EXPIRED |
+| voucher_request_id | VARCHAR(100) | | Liên kết voucher thưởng |
+
+### 2.6.12. Biểu đồ ERD
+
+<!-- Chèn biểu đồ ERD tổng quan tại đây -->
+
+Hình 2.19: Biểu đồ ERD tổng quan hệ thống (Database per Service)
+
+## 2.7. Thiết kế kiến trúc phần mềm
+
+### 2.7.1. Mô hình kiến trúc Microservices
+
+Hệ thống được thiết kế theo kiến trúc Microservices với các nguyên tắc:
+- Mỗi service có database riêng (Database per Service).
+- Giao tiếp đồng bộ qua gRPC cho các truy vấn cần response ngay.
+- Giao tiếp bất đồng bộ qua Apache Kafka cho các event không cần response tức thì.
+- API Gateway (Kong) là điểm vào duy nhất cho client.
+- Xác thực tập trung qua Keycloak, mỗi service verify JWT token độc lập.
+
+### 2.7.2. Tổ chức module backend
+
+Mỗi service tuân theo kiến trúc phân lớp (Layered Architecture):
+- Controller: REST endpoints, request validation.
+- Service: Business logic, orchestration.
+- Repository: Data access (Spring Data JPA).
+- Entity: JPA entities, database mapping.
+- DTO: Request/Response/Event objects.
+- gRPC: Client/Server cho inter-service communication.
+- Configuration: Security, Redis, Kafka config.
+
+### 2.7.3. Tổ chức frontend
+
+Frontend sử dụng mô hình BFF (Backend-For-Frontend) qua Next.js API Routes:
+- app/api/: Proxy routes gọi đến backend services.
+- app/dashboard/: Các trang chính theo chức năng.
+- components/: UI components tái sử dụng.
+- lib/: Service layer, auth store, utilities.
+
+## 2.8. Kết luận chương 2
+
+Chương 2 đã trình bày đầy đủ phân tích và thiết kế hệ thống bao gồm: phân tích yêu cầu chức năng (22 chức năng), phi chức năng (6 yêu cầu), và ràng buộc nghiệp vụ (7 ràng buộc); xác định 5 tác nhân với 27 use case chi tiết; thiết kế 8 biểu đồ hoạt động, 8 biểu đồ trình tự, biểu đồ trạng thái cho 4 đối tượng chính; thiết kế cơ sở dữ liệu với 4 database riêng biệt và 11 bảng dữ liệu; thiết kế kiến trúc phần mềm theo mô hình Microservices. Kết quả thiết kế này là cơ sở để triển khai phát triển hệ thống ở Chương 3.
+# CHƯƠNG 3. PHÁT TRIỂN HỆ THỐNG
+
+## 3.1. Tổng quan sản phẩm sau khi triển khai
+
+Hệ thống "Quản lý Voucher và Chương trình Khách hàng Thân thiết" đã được triển khai hoàn chỉnh với Docker Compose, bao gồm 15+ container hoạt động ổn định. Sản phẩm đáp ứng đầy đủ các yêu cầu chức năng và phi chức năng đã đề ra ở Chương 2, phục vụ 5 nhóm người dùng (Admin, Maker, Checker, Partner, Customer) với giao diện quản trị web và API cho ứng dụng khách hàng.
+
+## 3.2. Kiến trúc tổng thể của hệ thống
+
+### 3.2.1. Mô hình triển khai tổng quát
+
+<!-- Chèn sơ đồ kiến trúc triển khai tại đây -->
+
+Hình 3.1: Sơ đồ kiến trúc triển khai hệ thống
+
+Bảng 3.1: Các thành phần trong hệ thống
+
+| Thành phần | Port | Vai trò |
+|---|---|---|
+| Kong API Gateway | 8000 | Điểm vào duy nhất, routing, CORS, logging |
+| Identity Service | 8081 | Xác thực, phân quyền, quản lý user |
+| Voucher Service | 8082 | Quản lý voucher, mission, audit log |
+| Customer Service | 8084 | Phục vụ khách hàng (voucher, payment, leaderboard) |
+| Loyalty Service | 9093 (gRPC) | Tích điểm, nâng hạng, quản lý mission entity |
+| Notification Service | internal | Xử lý thông báo (Kafka consumer) |
+| PostgreSQL | 5432 | Cơ sở dữ liệu quan hệ |
+| Redis | 6379 | Cache, leaderboard |
+| Apache Kafka | 9092 | Message broker bất đồng bộ |
+| Keycloak | 8180 | Máy chủ xác thực OAuth2/OIDC |
+| Elasticsearch | 9200 | Lưu trữ và index log |
+| Kibana | 5601 | Giao diện visualize log |
+| Prometheus | 9090 | Thu thập metrics |
+| Grafana | 3002 | Dashboard monitoring |
+
+### 3.2.2. Luồng xử lý yêu cầu từ người dùng
+
+1. Client gửi request đến Kong Gateway (:8000).
+2. Kong route request đến service đích dựa trên path prefix.
+3. Service verify JWT token bằng Keycloak public key.
+4. Spring Security kiểm tra role qua @PreAuthorize.
+5. Business logic xử lý, truy vấn database/cache.
+6. Nếu cần dữ liệu từ service khác: gọi gRPC.
+7. Nếu cần xử lý bất đồng bộ: publish Kafka event.
+8. Trả response cho client qua Kong.
+
+### 3.2.3. Giao tiếp giữa các service
+
+<!-- Chèn sơ đồ giao tiếp tại đây -->
+
+Hình 3.2: Sơ đồ giao tiếp giữa các Microservice
+
+Bảng 3.2: Giao tiếp đồng bộ (gRPC)
+
+| Caller | Callee | Method | Mục đích |
+|---|---|---|---|
+| Voucher Service | Identity Service | getNameStore() | Lấy tên cửa hàng Partner |
+| Voucher Service | Loyalty Service | createMission() | Tạo mission entity |
+| Voucher Service | Loyalty Service | updateMissionStatus() | Đồng bộ trạng thái |
+| Customer Service | Voucher Service | searchVouchersByTier() | Lấy voucher theo hạng |
+| Customer Service | Loyalty Service | getMissions() | Lấy danh sách mission |
+
+Bảng 3.3: Giao tiếp bất đồng bộ (Kafka)
 
 | Topic | Producer | Consumer | Mục đích |
 |---|---|---|---|
@@ -742,462 +978,550 @@ Apache Kafka là nền tảng streaming phân tán được thiết kế cho thr
 | tier-upgrade-topic | Loyalty Service | Customer Service | Thông báo nâng hạng |
 | voucher-used-topic | Customer Service | Voucher Service | Cập nhật stock voucher |
 
-**So sánh với các lựa chọn khác:**
-- So với RabbitMQ: Kafka có throughput cao hơn, hỗ trợ replay message, phù hợp hơn cho event-driven architecture. RabbitMQ phù hợp hơn cho task queue đơn giản.
-- So với ActiveMQ: Kafka hiện đại hơn, cộng đồng lớn hơn, hiệu năng tốt hơn.
-- So với Redis Pub/Sub: Kafka đảm bảo durability (message không mất), Redis Pub/Sub là fire-and-forget.
+### 3.2.4. Sơ đồ triển khai (Docker Compose)
 
-### 3.2.6. Giao tiếp inter-service: gRPC + Protocol Buffers
+Bảng 3.4: Cấu hình resource Docker
 
-**Lý do lựa chọn:**
-
-gRPC là framework RPC (Remote Procedure Call) hiệu năng cao do Google phát triển, sử dụng Protocol Buffers làm ngôn ngữ định nghĩa interface và format serialization.
-
-- **Hiệu năng vượt trội so với REST:**
-    - Protocol Buffers serialize dữ liệu dạng binary, nhỏ hơn 3-10 lần so với JSON.
-    - Sử dụng HTTP/2 với multiplexing, header compression, giảm latency đáng kể.
-    - Trong hệ thống: Voucher Service gọi Identity Service lấy storeName hàng nghìn lần/ngày, gRPC giúp giảm latency từ ~5ms (REST) xuống ~1ms.
-- **Contract-first (Schema-first):** File `.proto` định nghĩa rõ ràng interface giữa các service, đóng vai trò như "hợp đồng" giữa team phát triển. Khi thay đổi API, compiler sẽ báo lỗi nếu client chưa cập nhật.
-- **Code generation:** Từ file `.proto`, tự động generate code Java cho cả client và server, giảm lỗi do viết tay.
-- **Streaming:** gRPC hỗ trợ bidirectional streaming, hữu ích cho các tác vụ như stream danh sách mission.
-- **Phù hợp cho internal communication:** gRPC không cần human-readable (khác REST/JSON), tối ưu cho giao tiếp máy-máy giữa các service nội bộ.
-
-**Ứng dụng trong hệ thống:**
-```
-Voucher Service ──gRPC──► Identity Service  (getNameStore, getPartner)
-Voucher Service ──gRPC──► Loyalty Service   (createMission, updateStatus)
-Customer Service ──gRPC──► Voucher Service  (searchVouchersByTier)
-Customer Service ──gRPC──► Loyalty Service  (getMissions, addPoints)
-```
-
-**So sánh với REST cho internal communication:**
-- REST + JSON: Human-readable nhưng chậm hơn (text serialization), không có contract enforcement.
-- gRPC + Protobuf: Nhanh hơn, type-safe, nhưng khó debug bằng mắt (binary format).
-- Kết luận: Dùng REST cho client-facing API (dễ tích hợp frontend), gRPC cho internal (hiệu năng).
-
-
-### 3.2.7. API Gateway: Kong 3.6
-
-**Lý do lựa chọn:**
-
-Kong là API Gateway mã nguồn mở phổ biến nhất, đóng vai trò là điểm vào duy nhất (single entry point) cho tất cả request từ client.
-
-- **Routing tập trung:** Thay vì client phải biết địa chỉ từng service, client chỉ cần gọi đến Kong (:8000), Kong tự động route đến service đích dựa trên path:
-    - `/api/identity/*` → Identity Service (:8081)
-    - `/api/vouchers/*` → Voucher Service (:8082)
-    - `/api/customers/*` → Customer Service (:8084)
-- **Plugin ecosystem:** Kong cung cấp hàng trăm plugin cho các cross-cutting concerns:
-    - `cors`: Xử lý Cross-Origin Resource Sharing cho frontend.
-    - `tcp-log`: Gửi access log đến Logstash để phân tích.
-    - `prometheus`: Export metrics cho monitoring.
-- **Declarative configuration:** Cấu hình Kong bằng file YAML (`kong.yml`), dễ version control và tái tạo.
-- **Database-less mode:** Chạy không cần database riêng (mode `off`), giảm complexity.
-- **Hiệu năng cao:** Kong được xây dựng trên Nginx + LuaJIT, xử lý hàng chục nghìn request/giây.
-
-**So sánh với các lựa chọn khác:**
-- So với Spring Cloud Gateway: Kong có plugin ecosystem phong phú hơn, không phụ thuộc Java, hiệu năng cao hơn.
-- So với Nginx (thuần): Kong cung cấp sẵn các tính năng API management (rate limiting, auth, logging) mà Nginx cần cấu hình thủ công.
-- So với AWS API Gateway: Kong là self-hosted, không phụ thuộc cloud provider, phù hợp cho đồ án.
-
-### 3.2.8. Xác thực: Keycloak 23.0
-
-**Lý do lựa chọn:**
-
-Keycloak là máy chủ quản lý danh tính và truy cập (Identity and Access Management - IAM) mã nguồn mở do Red Hat phát triển, hỗ trợ đầy đủ các chuẩn OAuth2, OpenID Connect, SAML.
-
-- **Chuẩn OAuth2/OIDC:** Keycloak implement đầy đủ OAuth2 Authorization Framework và OpenID Connect, đảm bảo bảo mật theo chuẩn công nghiệp. Hệ thống sử dụng flow:
-    - Resource Owner Password Credentials (cho login).
-    - Refresh Token (cho duy trì session).
-- **Quản lý user tập trung:** Keycloak quản lý toàn bộ user, role, permission tại một nơi. Identity Service tương tác với Keycloak qua Admin REST API để CRUD user.
-- **JWT Token:** Keycloak phát hành JWT access token chứa thông tin user (userId, username, roles). Các service khác chỉ cần verify signature bằng public key, không cần gọi lại Keycloak.
-- **Role-Based Access Control (RBAC):** Hỗ trợ phân quyền theo role (ADMIN, MAKER, CHECKER, PARTNER, CUSTOMER) được nhúng trong JWT token.
-- **Single Sign-On (SSO):** Nếu mở rộng thêm frontend hoặc mobile app, Keycloak hỗ trợ SSO sẵn.
-- **Realm isolation:** Mỗi realm là một không gian cô lập, có thể tạo realm riêng cho từng môi trường (dev, staging, prod).
-
-**So sánh với các lựa chọn khác:**
-- So với tự implement JWT: Keycloak cung cấp sẵn token management, refresh flow, revocation, giảm rủi ro bảo mật khi tự viết.
-- So với Auth0: Keycloak là self-hosted và miễn phí, Auth0 là SaaS có phí.
-- So với Firebase Auth: Keycloak linh hoạt hơn, hỗ trợ custom role/permission phức tạp hơn.
-
-### 3.2.9. Monitoring: Prometheus + Grafana
-
-**Lý do lựa chọn:**
-
-Prometheus và Grafana là bộ đôi monitoring tiêu chuẩn trong hệ sinh thái cloud-native và microservices.
-
-**Prometheus:**
-- **Pull-based model:** Prometheus chủ động pull metrics từ các service endpoint (`/actuator/prometheus`), không cần service push metrics.
-- **Time-series database:** Lưu trữ metrics theo thời gian, hỗ trợ query mạnh mẽ với PromQL.
-- **Service discovery:** Tự động phát hiện service mới trong Docker network.
-- **Alerting:** Hỗ trợ cấu hình alert khi metrics vượt ngưỡng (CPU > 80%, response time > 2s).
-
-**Grafana:**
-- **Dashboard trực quan:** Tạo dashboard đẹp với nhiều loại biểu đồ (line, bar, gauge, heatmap).
-- **Multi-datasource:** Kết nối được cả Prometheus (metrics) và Elasticsearch (logs).
-- **Template variables:** Dashboard có thể filter theo service, time range.
-
-**Metrics được thu thập:**
-- JVM metrics: heap memory, GC time, thread count.
-- HTTP metrics: request count, response time, error rate per endpoint.
-- Kong metrics: upstream latency, request per second, status code distribution.
-- Custom metrics: voucher created/approved count, payment success rate.
-
-### 3.2.10. Logging: ELK Stack (Elasticsearch + Logstash + Kibana)
-
-**Lý do lựa chọn:**
-
-Trong kiến trúc microservices với 5+ service, việc đọc log từng container riêng lẻ là không khả thi. ELK Stack cung cấp giải pháp logging tập trung.
-
-- **Elasticsearch:** Lưu trữ và index log, hỗ trợ full-text search. Khi cần debug lỗi, có thể search theo requestId, userId, error message across tất cả service.
-- **Logstash:** Thu thập log từ Kong (tcp-log plugin) và các service, transform và forward đến Elasticsearch.
-- **Kibana:** Giao diện web để tìm kiếm, filter, và visualize log. Hỗ trợ tạo dashboard theo error rate, slow queries.
-
-**Luồng log:**
-```
-Kong (tcp-log) ──► Logstash (:5044) ──► Elasticsearch (:9200) ──► Kibana (:5601)
-```
-
-### 3.2.11. Container hóa: Docker + Docker Compose
-
-**Lý do lựa chọn:**
-
-Docker là công nghệ container hóa tiêu chuẩn, Docker Compose là công cụ orchestration cho môi trường development và testing.
-
-- **Môi trường nhất quán:** Mỗi service được đóng gói trong Docker image với đầy đủ dependency, đảm bảo chạy giống nhau trên mọi máy (dev, CI/CD, production).
-- **Isolation:** Mỗi service chạy trong container riêng, không xung đột dependency.
-- **Reproducible:** Chỉ cần `docker-compose up` là toàn bộ hệ thống (15+ container) khởi động đầy đủ.
-- **Resource management:** Giới hạn memory cho từng container (128M-800M), tránh một service chiếm hết tài nguyên.
-- **Health check:** Docker Compose hỗ trợ health check, đảm bảo PostgreSQL/Redis/Kafka sẵn sàng trước khi application service khởi động.
-- **Volume persistence:** Mount volume cho database và monitoring data, giữ dữ liệu khi restart container.
-
-**Cấu hình resource trong dự án:**
-
-| Container | Memory Limit | Lý do |
+| Container | Memory | Lý do |
 |---|---|---|
-| PostgreSQL | 256M | Database chính, cần đủ memory cho buffer pool |
-| Redis | 128M | In-memory cache, giới hạn 64MB data |
-| Kafka | 768M | Message broker, cần memory cho page cache |
-| Keycloak | 384M | Auth server, JVM-based |
-| Elasticsearch | 512M | Full-text search engine, memory-intensive |
-| Kibana | 800M | Web UI, Node.js-based |
-| Application services | 256M mỗi service | Spring Boot JVM (Xms128m-Xmx192m) |
+| PostgreSQL | 256M | Buffer pool cho database |
+| Redis | 128M | In-memory cache (64MB data) |
+| Kafka + Zookeeper | 768M | Page cache cho message broker |
+| Keycloak | 384M | JVM-based auth server |
+| Elasticsearch | 512M | Full-text search engine |
+| Application services | 256M/service | Spring Boot JVM (Xms128m-Xmx192m) |
 | Kong | 128M | Nginx-based, rất nhẹ |
 
+## 3.3. Phát triển frontend
 
----
+### 3.3.1. Công nghệ sử dụng ở frontend
 
-## 3.3. Backend – Xử lý logic và API
+Bảng 3.5: Công nghệ Frontend
 
-### 3.3.1. Cấu trúc project (Multi-module Maven)
+| Công nghệ | Phiên bản | Vai trò |
+|---|---|---|
+| Next.js | 16.x | Framework React fullstack (App Router, API Routes) |
+| React | 19.x | Thư viện xây dựng UI (component-based) |
+| TypeScript | 5.x | Type-safe, phát hiện lỗi compile-time |
+| Tailwind CSS | 4.x | Utility-first CSS, responsive design |
+| shadcn/ui (Radix UI) | Latest | Accessible UI components |
+| Zustand | 5.x | State management (auth store) |
+| Axios | 1.x | HTTP client với interceptor auto-refresh |
 
-Dự án sử dụng Maven multi-module để quản lý 7 module trong một repository duy nhất (monorepo). Parent POM quản lý version chung cho tất cả dependency, đảm bảo tính nhất quán.
-
-```
-backend-parent/                     (Parent POM)
-├── pom.xml                         (Quản lý version, dependency chung)
-├── common/                         (Module chia sẻ: BaseResponse, BaseException, BaseErrorCode)
-├── proto/                          (Module gRPC: .proto files → generated Java code)
-├── identity-service/               (Service xác thực - Port 8081)
-├── voucher-service/                (Service voucher + mission - Port 8082)
-├── loyalty-service/                (Service loyalty - gRPC internal)
-├── customer-service/               (Service khách hàng - Port 8084)
-├── notification-service/           (Service thông báo - Kafka consumer)
-├── api-gateway/                    (Kong YAML configuration)
-├── docker-compose.yml              (Orchestration toàn bộ hệ thống)
-├── scripts/                        (SQL init, seed data)
-└── infra/                          (Cấu hình Prometheus, Logstash)
-```
-
-**Ưu điểm của multi-module:**
-- Module `common` chứa code dùng chung (BaseResponse, BaseException), tránh duplicate.
-- Module `proto` chứa file `.proto` và generated code, tất cả service reference cùng một version.
-- Mỗi service có `pom.xml` riêng, chỉ khai báo dependency cần thiết.
-- Build toàn bộ project bằng một lệnh: `mvn clean package -DskipTests`.
-
-### 3.3.2. Kiến trúc bên trong mỗi service (Layered Architecture)
-
-Mỗi service tuân theo kiến trúc phân lớp rõ ràng, tách biệt trách nhiệm:
+### 3.3.2. Cấu trúc mã nguồn frontend
 
 ```
-┌─────────────────────────────────────────────┐
-│              Controller Layer                 │
-│  (REST endpoints, request validation)        │
-├─────────────────────────────────────────────┤
-│              Service Layer                    │
-│  (Business logic, orchestration)             │
-│  ├── impl/      (Implementations)           │
-│  ├── helper/    (Utility methods)            │
-│  └── strategy/  (Strategy pattern)           │
-├─────────────────────────────────────────────┤
-│              Repository Layer                 │
-│  (Data access, JPA repositories)             │
-│  └── specification/ (Dynamic queries)        │
-├─────────────────────────────────────────────┤
-│              Entity Layer                     │
-│  (JPA entities, database mapping)            │
-├─────────────────────────────────────────────┤
-│              DTO Layer                        │
-│  ├── request/   (Input DTOs)                │
-│  ├── response/  (Output DTOs)               │
-│  └── event/     (Kafka event DTOs)          │
-├─────────────────────────────────────────────┤
-│              Cross-cutting                    │
-│  ├── configuration/ (Security, Redis, Kafka)│
-│  ├── constant/      (Enums)                 │
-│  ├── exception/     (Error handling)        │
-│  ├── grpc/          (gRPC client/server)    │
-│  └── mapper/        (Entity ↔ DTO)         │
-└─────────────────────────────────────────────┘
+app/
+  api/              → API proxy routes (BFF pattern)
+  dashboard/        → Các trang chính (vouchers, missions, partners...)
+  login/            → Trang đăng nhập
+components/
+  ui/               → shadcn/ui components (Button, Dialog, Table...)
+  dashboard/        → Navigation sidebar
+lib/
+  api/
+    axios.ts        → Axios instance + auto refresh interceptor
+    services/       → Service layer (voucherService, missionService...)
+  auth.ts           → Zustand auth store (persist localStorage)
+  types.ts          → TypeScript interfaces
 ```
 
-### 3.3.3. Design Patterns sử dụng
+### 3.3.3. Kiến trúc BFF (Backend-For-Frontend)
 
-**a) Strategy Pattern (Voucher Service)**
+<!-- Chèn sơ đồ kiến trúc Frontend tại đây -->
 
-Hệ thống hỗ trợ hai loại giảm giá (FIXED và PERCENT) với logic xử lý khác nhau. Thay vì dùng if-else, áp dụng Strategy Pattern:
+Hình 3.3: Sơ đồ kiến trúc Frontend (BFF Pattern)
 
-- `VoucherRequestStrategy` (interface): Định nghĩa các method chung.
-- `FixedVoucherStrategy`: Xử lý voucher giảm giá cố định.
-- `PercentVoucherStrategy`: Xử lý voucher giảm giá phần trăm.
-- `VoucherRequestStrategyFactory`: Chọn strategy phù hợp dựa trên discountType.
+Frontend không gọi trực tiếp đến microservices mà thông qua Next.js API Routes, giúp ẩn URL backend, tập trung xử lý authentication header, và dễ dàng chuyển đổi backend service mà không ảnh hưởng client code.
 
-Ưu điểm: Dễ mở rộng thêm loại giảm giá mới (ví dụ: CASHBACK) mà không sửa code cũ (Open/Closed Principle).
+### 3.3.4. Quản lý phiên và xác thực
 
-**b) Specification Pattern (Dynamic Query)**
+Luồng xác thực:
+1. User đăng nhập → Next.js API route gọi Identity Service → trả accessToken + refreshToken.
+2. Zustand store lưu token vào localStorage (persist).
+3. Axios interceptor tự động gắn Bearer token vào mọi request.
+4. Khi token hết hạn (401) → interceptor gọi refresh endpoint → cập nhật token mới → retry request.
+5. Nếu refresh thất bại → force logout → redirect trang login.
 
-Các API danh sách voucher/mission có nhiều filter tùy chọn (status, date range, creatorType, storeName...). Sử dụng JPA Specification để build query động:
+### 3.3.5. Điều hướng theo vai trò
 
-```java
-Specification<VoucherRequestEntity> spec = VoucherRequestSpecification.withFilters(
-    listStatus, fromDate, toDate, createdBy, requestMode, creatorType, voucherPurpose, storeName);
-Page<VoucherRequestEntity> result = repository.findAll(spec, pageable);
+Sau khi login, frontend gọi API allowed-pages với roles của user. Sidebar navigation chỉ hiển thị các trang user được phép truy cập. Mỗi trang wrap trong AuthGuard kiểm tra quyền trước khi render.
+
+## 3.4. Phát triển backend
+
+### 3.4.1. Công nghệ sử dụng ở backend
+
+Bảng 3.6: Công nghệ Backend
+
+| Công nghệ | Phiên bản | Vai trò |
+|---|---|---|
+| Java | 17 (LTS) | Ngôn ngữ lập trình chính |
+| Spring Boot | 3.4.4 | Framework microservices |
+| Spring Security | 6.x | OAuth2 Resource Server, RBAC |
+| Spring Data JPA | 3.x | ORM, Repository pattern |
+| PostgreSQL | 15 | Cơ sở dữ liệu quan hệ (ACID) |
+| Redis | 7 | Cache layer (leaderboard, voucher list) |
+| Apache Kafka | 3.x | Message broker bất đồng bộ |
+| gRPC + Protobuf | 1.6x | Inter-service communication |
+| Kong | 3.6 | API Gateway |
+| Keycloak | 23.0 | IAM (OAuth2/OIDC) |
+| Prometheus + Grafana | Latest | Monitoring |
+| ELK Stack | 8.x | Logging tập trung |
+| Docker Compose | 3.8 | Container orchestration |
+
+### 3.4.2. Tổ chức mã nguồn backend (Multi-module Maven)
+
+```
+backend-parent/
+├── pom.xml                  (Parent POM, quản lý version chung)
+├── common/                  (BaseResponse, BaseException, BaseErrorCode)
+├── proto/                   (gRPC .proto files → generated Java code)
+├── identity-service/        (Port 8081, gRPC 9091)
+├── voucher-service/         (Port 8082, gRPC 9099)
+├── customer-service/        (Port 8084, gRPC 9094)
+├── loyalty-service/         (gRPC 9093, internal only)
+├── notification-service/    (Kafka consumer only)
+├── api-gateway/             (Kong YAML config)
+├── docker-compose.yml
+├── scripts/                 (SQL init, seed data)
+└── infra/                   (Prometheus, Logstash config)
 ```
 
-Ưu điểm: Tránh viết nhiều method query trong repository, dễ thêm filter mới.
+### 3.4.3. Module Identity Service
 
-**c) Builder Pattern (Response DTO)**
+Chức năng: Xác thực, phân quyền, quản lý user/partner.
 
-Sử dụng Lombok `@Builder` cho tất cả response DTO, giúp code tạo response rõ ràng và dễ đọc.
+Bảng 3.7: API Endpoints – Identity Service
 
-**d) Template Method Pattern (Batch Processing)**
-
-Khi approve voucher, hệ thống xử lý VoucherDetail theo batch 100 records. Logic batch processing được tái sử dụng cho cả approve và reject.
-
-### 3.3.4. Chi tiết Identity Service
-
-**Vai trò:** Quản lý xác thực, phân quyền, và thông tin người dùng.
-
-**API Endpoints:**
-
-| Method | Endpoint | Chức năng | Quyền truy cập |
+| Method | Endpoint | Chức năng | Quyền |
 |---|---|---|---|
-| POST | /api/v1/auth/login | Đăng nhập, nhận JWT token | Public |
-| POST | /api/v1/auth/register | Đăng ký tài khoản customer | Public |
-| POST | /api/v1/auth/refresh | Làm mới access token | Public |
-| POST | /api/v1/auth/allowed-pages | Lấy danh sách trang được phép | Authenticated |
-| GET | /api/v1/profile | Xem profile cá nhân | Authenticated |
+| POST | /api/v1/auth/login | Đăng nhập | Public |
+| POST | /api/v1/auth/register | Đăng ký customer | Public |
+| POST | /api/v1/auth/refresh | Refresh token | Public |
+| GET | /api/v1/profile | Xem profile | Authenticated |
 | PUT | /api/v1/profile | Cập nhật profile | Authenticated |
 | PUT | /api/v1/profile/password | Đổi mật khẩu | Authenticated |
-| GET | /api/v1/system-users | Danh sách tất cả users | ADMIN |
-| POST | /api/v1/system-users | Tạo user mới | ADMIN |
-| PUT | /api/v1/system-users/{id} | Cập nhật user | ADMIN |
-| DELETE | /api/v1/system-users/{id} | Xóa user | ADMIN |
+| GET | /api/v1/system-users | Danh sách users | ADMIN |
+| POST | /api/v1/system-users | Tạo user | ADMIN |
 | GET | /api/v1/roles | Danh sách roles | ADMIN |
-| POST | /api/v1/roles | Tạo role | ADMIN |
 
-**Đặc điểm triển khai:**
-- Tích hợp Keycloak Admin REST API: Khi tạo user, đồng thời tạo trên Keycloak realm và lưu vào database nội bộ.
-- gRPC Server: Cung cấp service cho Voucher Service và Customer Service truy vấn thông tin partner (storeName, partnerId).
-- Đồng bộ dữ liệu: User được lưu cả trên Keycloak (xác thực) và database nội bộ (thông tin bổ sung như storeName, category, balance).
+Đặc điểm: Tích hợp Keycloak Admin REST API, cung cấp gRPC Server (getNameStore, getPartner).
 
-### 3.3.5. Chi tiết Voucher Service
+### 3.4.4. Module Voucher Service
 
-**Vai trò:** Quản lý toàn bộ vòng đời voucher và nhiệm vụ (mission).
+Chức năng: Quản lý vòng đời voucher và mission.
 
-**API Endpoints:**
+Bảng 3.8: API Endpoints – Voucher Service
 
 | Method | Endpoint | Chức năng | Quyền |
 |---|---|---|---|
 | POST | /api/v1/vouchers | Tạo voucher đơn lẻ | MAKER, PARTNER |
-| POST | /api/v1/vouchers/excel | Tạo voucher từ Excel | MAKER, PARTNER |
-| GET | /api/v1/vouchers | Danh sách voucher requests | MAKER, CHECKER, PARTNER |
-| GET | /api/v1/vouchers/details | Danh sách voucher chi tiết | MAKER, CHECKER, PARTNER |
-| GET | /api/v1/vouchers/{id} | Chi tiết một request | MAKER, CHECKER, PARTNER |
+| POST | /api/v1/vouchers/excel | Tạo voucher Excel | MAKER, PARTNER |
+| GET | /api/v1/vouchers | Danh sách requests | MAKER, CHECKER, PARTNER |
 | PUT | /api/v1/vouchers/{id}/submit | Gửi phê duyệt | MAKER, PARTNER |
-| PUT | /api/v1/vouchers/{id}/confirm | Phê duyệt/từ chối | CHECKER |
+| PUT | /api/v1/vouchers/{id}/confirm | Approve/Reject | CHECKER |
 | PUT | /api/v1/vouchers/{id}/cancel | Hủy yêu cầu | MAKER, PARTNER |
 | POST | /api/v1/missions/missions | Tạo mission | MAKER, PARTNER |
-| GET | /api/v1/missions/missions/{id} | Chi tiết mission | MAKER, CHECKER, PARTNER |
-| GET | /api/v1/missions/search | Tìm kiếm missions | MAKER, CHECKER, PARTNER |
-| PUT | /api/v1/missions/{id}/submit | Submit mission | MAKER, PARTNER |
-| PUT | /api/v1/missions/{id}/confirm | Confirm mission | CHECKER |
-| PUT | /api/v1/missions/{id}/cancel | Cancel mission | MAKER, PARTNER |
+| GET | /api/v1/missions/search | Tìm kiếm missions | ALL |
 | GET | /api/v1/audit-logs | Xem audit log | ADMIN, CHECKER |
 
-**Đặc điểm triển khai:**
-- **Batch processing:** Khi Checker approve, hệ thống xử lý VoucherDetail theo batch 100 records, tránh timeout khi có hàng nghìn voucher trong một request.
-- **Excel import:** Sử dụng Apache POI đọc file .xlsx, validate từng dòng, lưu theo batch.
-- **Audit logging:** Mọi thao tác (create, submit, confirm, cancel) đều được ghi vào audit_logs bằng `@Async` để không ảnh hưởng response time.
-- **Data isolation:** Partner chỉ thấy voucher/mission do mình tạo (filter theo createdBy + storeName).
-- **Mission-Voucher coupling:** Khi tạo mission với rewardType=VOUCHER, hệ thống tự động tạo VoucherRequest + VoucherDetail kèm theo (purpose=REWARD).
+Đặc điểm: Batch processing 100 records, Excel import (Apache POI), audit logging (@Async), data isolation (Partner), Strategy Pattern (FIXED/PERCENT).
 
-### 3.3.6. Chi tiết Customer Service
+### 3.4.5. Module Customer Service
 
-**Vai trò:** Phục vụ khách hàng cuối - thu thập voucher, thanh toán, tham gia nhiệm vụ.
+Chức năng: Phục vụ khách hàng cuối.
 
-**API Endpoints:**
+Bảng 3.9: API Endpoints – Customer Service
 
-| Method | Endpoint | Chức năng |
-|---|---|---|
-| GET | /api/customers/profile/{id} | Xem profile khách hàng |
-| GET | /api/customers/vouchers/available/with-status | Voucher khả dụng (theo tier) |
-| POST | /api/customers/vouchers/collect/{id} | Thu thập voucher |
-| GET | /api/customers/vouchers/list | Kho voucher cá nhân |
-| GET | /api/customers/vouchers/applicable | Voucher áp dụng được cho đơn hàng |
-| GET | /api/customers/missions | Danh sách mission + tiến độ |
-| POST | /api/customers/missions/claim-reward | Nhận thưởng mission |
-| POST | /api/v1/payments/process | Xử lý thanh toán |
-| GET | /api/customers/leaderboard | Bảng xếp hạng |
-| GET | /api/customers/invoices | Danh sách hóa đơn mẫu |
-
-**Đặc điểm triển khai:**
-- **Voucher filtering by tier:** Khi customer xem voucher khả dụng, hệ thống gọi gRPC đến Voucher Service lấy danh sách voucher phù hợp với hạng (tier) của customer. Ví dụ: customer hạng GOLD thấy voucher tier ALL + SILVER + GOLD.
-- **Payment flow:** Khi thanh toán:
-    1. Validate voucher (còn hạn, đủ minOrderValue, còn lượt dùng).
-    2. Tính discount amount.
-    3. Lưu Transaction.
-    4. Cập nhật CustomerVoucher (giảm availableUsage).
-    5. Publish `LoyaltyPointEvent` qua Kafka (tích điểm bất đồng bộ).
-- **Kafka Producer:** Sau mỗi giao dịch thành công, publish event để Loyalty Service tích điểm và cập nhật mission progress.
-- **Kafka Consumer:** Lắng nghe `TierUpgradeEvent` để cập nhật hạng trong CustomerProfile khi Loyalty Service nâng hạng.
-- **Leaderboard:** Sử dụng Redis Sorted Set, query top N customers theo totalPoints.
-
-### 3.3.7. Chi tiết Loyalty Service
-
-**Vai trò:** Quản lý điểm thưởng, hạng thành viên, và thực thi nhiệm vụ.
-
-**gRPC Methods:**
-
-| Method | Input | Output | Mô tả |
+| Method | Endpoint | Chức năng | Quyền |
 |---|---|---|---|
-| CreateMission | CreateMissionRequest | MissionResponse | Tạo mission entity |
-| UpdateMissionStatus | id, newStatus | UpdateStatusResponse | Cập nhật trạng thái |
-| GetMissionById | missionId | MissionDetailResponse | Lấy chi tiết |
-| SearchMissions | filters, pageable | SearchMissionResponse | Tìm kiếm |
+| GET | /api/customers/profile/{id} | Xem profile | CUSTOMER |
+| GET | /api/customers/vouchers/available/with-status | Voucher khả dụng | CUSTOMER |
+| POST | /api/customers/vouchers/collect/{id} | Thu thập voucher | CUSTOMER |
+| GET | /api/customers/vouchers/list | Kho voucher | CUSTOMER |
+| GET | /api/customers/vouchers/applicable | Voucher áp dụng được | CUSTOMER |
+| GET | /api/customers/missions | Danh sách mission | CUSTOMER |
+| POST | /api/customers/missions/claim-reward | Nhận thưởng | CUSTOMER |
+| POST | /api/v1/payments/process | Thanh toán | CUSTOMER |
+| GET | /api/customers/leaderboard | Bảng xếp hạng | CUSTOMER |
 
-**Kafka Consumer:**
-- Lắng nghe `LoyaltyPointEvent`: Tính điểm (1 point / 1.000 VND), cộng vào CustomerEntity.totalPoints.
-- Kiểm tra ngưỡng nâng hạng: Nếu totalPoints đạt ngưỡng → nâng tier → publish `TierUpgradeEvent`.
-- Cập nhật mission progress: Nếu customer đang tham gia mission, cập nhật currentProgress.
+Đặc điểm: gRPC client (Voucher, Loyalty), Kafka producer/consumer, Redis Sorted Set (leaderboard).
 
-**Quy tắc nâng hạng:**
+### 3.4.6. Module Loyalty Service
 
-| Hạng | Điểm tối thiểu |
-|---|---|
-| SILVER | 0 (mặc định) |
-| GOLD | 1.000 |
-| PLATINUM | 5.000 |
-| DIAMOND | 10.000 |
+Chức năng: Quản lý điểm thưởng, hạng thành viên, mission entity.
 
-### 3.3.8. Luồng giao tiếp giữa các service
+Giao tiếp: Chỉ qua gRPC (server) và Kafka (consumer/producer), không expose REST API.
 
-**A. Giao tiếp đồng bộ (gRPC):**
+gRPC methods: CreateMission, UpdateMissionStatus, GetMissionById, SearchMissions.
 
-```
-┌──────────────┐  getNameStore()  ┌──────────────────┐
-│Voucher Service├────────────────►│ Identity Service  │
-└──────┬───────┘                  └──────────────────┘
-       │ createMission()
-       │ updateMissionStatus()
-       ▼
-┌──────────────┐
-│Loyalty Service│
-└──────────────┘
-       ▲
-       │ getMissions()
-       │ searchVouchersByTier()
-┌──────┴───────┐
-│Customer Service│
-└──────────────┘
-```
+Kafka consumer: Lắng nghe loyalty-point-topic → tính điểm → kiểm tra nâng hạng → publish tier-upgrade-topic nếu cần.
 
-**B. Giao tiếp bất đồng bộ (Kafka):**
+### 3.4.7. Design Patterns
 
-```
-Customer Service ──► [loyalty-point-topic] ──► Loyalty Service
-                                                    │
-                                                    ▼ (nếu nâng hạng)
-Loyalty Service  ──► [tier-upgrade-topic]  ──► Customer Service
-Customer Service ──► [voucher-used-topic]  ──► Voucher Service
-All topics       ──────────────────────────► Notification Service
-```
+Bảng 3.10: Design Patterns sử dụng
 
-### 3.3.9. Bảo mật và phân quyền
-
-**Luồng xác thực chi tiết:**
-
-```
-1. Client ──POST /auth/login──► Identity Service
-2. Identity Service ──verify──► Keycloak
-3. Keycloak ──JWT token──► Identity Service ──► Client
-4. Client ──request + Bearer token──► Kong Gateway
-5. Kong ──forward──► Target Service
-6. Service ──verify JWT signature──► Keycloak Public Key
-7. Spring Security ──extract roles──► @PreAuthorize check
-```
-
-**Cơ chế phân quyền:**
-
-Mỗi endpoint được bảo vệ bằng annotation Spring Security:
-
-```java
-@PreAuthorize("hasRole('CHECKER')")          // Chỉ Checker
-@PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")  // Maker hoặc Partner
-```
-
-Ngoài ra, logic trong service layer kiểm tra thêm:
-- Partner chỉ xem dữ liệu của mình: `if (isPartner()) filter by createdBy`.
-- Checker chỉ thấy trạng thái phù hợp: PENDING_APPROVE, APPROVED, REJECTED, FINISH.
-
-### 3.3.10. Cơ sở dữ liệu
-
-**Phân chia database theo service:**
-
-| Database | Service | Bảng chính |
+| Pattern | Vị trí | Mục đích |
 |---|---|---|
-| identity_db | Identity Service | users, partner |
-| voucher_db | Voucher Service | voucher_requests, vouchers, audit_logs, mock_invoices |
-| loyalty_db | Loyalty Service | tasks (missions), customer_points |
-| customer_db | Customer Service | customer_profiles, customer_vouchers, customer_missions, transactions |
+| Strategy | Voucher Service | Xử lý 2 loại giảm giá (FIXED, PERCENT) |
+| Specification | Voucher/Customer Service | Dynamic query với nhiều filter |
+| Builder | Tất cả service | Tạo response DTO (Lombok @Builder) |
+| Template Method | Voucher Service | Batch processing (approve/reject) |
 
-**Nguyên tắc Database per Service:**
-- Mỗi service sở hữu database riêng, không service nào truy cập trực tiếp database của service khác.
-- Khi cần dữ liệu từ service khác, phải gọi qua gRPC hoặc Kafka event.
-- Đảm bảo loose coupling: có thể thay đổi schema của một service mà không ảnh hưởng service khác.
+### 3.4.8. Bảo mật và phân quyền
 
-### 3.3.11. Xử lý lỗi và Exception Handling
+Luồng xác thực: Client → Kong → Target Service → verify JWT (Keycloak public key) → @PreAuthorize check role.
 
-Hệ thống sử dụng cơ chế xử lý lỗi thống nhất qua module `common`:
+Phân quyền chi tiết: Ngoài role-based, service layer kiểm tra thêm data-level access (Partner chỉ xem dữ liệu của mình, Checker chỉ thấy trạng thái phù hợp).
 
-- `BaseException`: Custom exception chứa httpStatus, errorCode, description.
-- `BaseResponse<T>`: Response wrapper thống nhất với status, code, message, data.
-- `GlobalExceptionHandler`: Bắt tất cả exception và trả về format chuẩn.
+### 3.4.9. Xử lý lỗi thống nhất
 
-**Response format thống nhất:**
+Cơ chế: BaseException → GlobalExceptionHandler → BaseResponse format chuẩn.
 
 ```json
-// Thành công
 { "status": 0, "code": "success", "message": "Success", "data": {...} }
-
-// Lỗi
-{ "status": 1, "code": "VOUCHER_NOT_FOUND", "message": "Voucher not found", "data": null }
+{ "status": 1003, "code": "NOT_FOUND", "message": "Resource not found", "data": null }
 ```
 
-Điều này giúp frontend xử lý response một cách nhất quán, không cần xử lý riêng cho từng API.
+### 3.4.9. Đánh chỉ mục (Index) cơ sở dữ liệu
 
+Hệ thống quản lý voucher và chương trình khách hàng thân thiết có nhiều truy vấn lọc phức tạp: danh sách voucher theo trạng thái, audit log theo thời gian, voucher của khách hàng theo nhiều điều kiện. Nếu không có index phù hợp, các truy vấn này sẽ thực hiện full table scan, gây chậm nghiêm trọng khi dữ liệu tăng. Việc đánh index đúng cột giúp giảm thời gian truy vấn từ O(n) xuống O(log n), đảm bảo response time dưới 500ms theo yêu cầu phi chức năng.
 
-3.4. Kết luận chương
+Bảng 3.12: Danh sách các index quan trọng trong hệ thống
 
-Chương 3 đã trình bày chi tiết quá trình xây dựng và phát triển ứng dụng, bao gồm: tổng quan kiến trúc hệ thống microservices với 5 service chính, lý do lựa chọn từng công nghệ (Java 17, Spring Boot 3.4, PostgreSQL, Redis, Kafka, gRPC, Kong, Keycloak, Prometheus/Grafana, ELK Stack, Docker), và chi tiết triển khai backend với các API endpoints, design patterns, luồng giao tiếp giữa các service, cơ chế bảo mật, và xử lý lỗi.
+| Bảng | Cột | Loại Index | Mục đích |
+|---|---|---|---|
+| voucher_requests | status | B-Tree | Lọc danh sách theo trạng thái (PENDING_APPROVE, APPROVED...) |
+| voucher_requests | created_by | B-Tree | Maker/Partner xem voucher do mình tạo |
+| voucher_requests | store_name | B-Tree | Lọc voucher theo cửa hàng Partner |
+| voucher_requests | created_at | B-Tree | Sắp xếp theo thời gian tạo |
+| voucher_detail | request_id | B-Tree | Join với voucher_requests, lấy chi tiết theo request |
+| voucher_detail | voucher_code | Unique | Tìm kiếm nhanh theo mã voucher, đảm bảo không trùng |
+| voucher_detail | customer_tier | B-Tree | Lọc voucher theo hạng khách hàng (gRPC searchByTier) |
+| voucher_detail | voucher_status | B-Tree | Lọc voucher đang ACTIVE cho khách hàng |
+| voucher_detail | start_date, end_date | B-Tree | Kiểm tra voucher còn hiệu lực |
+| customer_vouchers | customer_id | B-Tree | Lấy kho voucher của một khách hàng |
+| customer_vouchers | voucher_id | B-Tree | Kiểm tra khách hàng đã collect voucher chưa |
+| customer_vouchers | status | B-Tree | Lọc voucher AVAILABLE/USED/EXPIRED |
+| customer_profiles | user_id | Unique | Lookup profile theo userId từ JWT token |
+| transactions | customer_id | B-Tree | Lịch sử giao dịch của khách hàng |
+| transactions | created_at | B-Tree | Sắp xếp giao dịch theo thời gian |
+| audit_logs | entity_type | B-Tree | Lọc log theo loại entity (VOUCHER, MISSION) |
+| audit_logs | performed_by | B-Tree | Xem log theo người thực hiện |
+| audit_logs | created_at | B-Tree | Sắp xếp log theo thời gian |
+| tasks (missions) | task_status | B-Tree | Lọc mission theo trạng thái (ACTIVE, FINISH) |
+| tasks (missions) | partner_id | B-Tree | Partner xem mission do mình tạo |
 
-Hệ thống đã được triển khai thành công với Docker Compose, tất cả 15+ container hoạt động ổn định, đáp ứng đầy đủ các yêu cầu chức năng và phi chức năng đã đề ra ở Chương 1.
+Ngoài các index đơn cột, hệ thống sử dụng composite index cho các truy vấn kết hợp nhiều điều kiện thường gặp:
+
+Bảng 3.13: Composite Index cho các truy vấn phổ biến
+
+| Bảng | Các cột | Mục đích |
+|---|---|---|
+| voucher_requests | (status, created_by) | Maker lọc voucher của mình theo trạng thái |
+| voucher_detail | (voucher_status, customer_tier) | Customer xem voucher ACTIVE theo hạng |
+| voucher_detail | (request_id, request_status) | Batch processing khi approve/reject |
+| customer_vouchers | (customer_id, status) | Lấy voucher khả dụng của khách hàng |
+| customer_vouchers | (customer_id, voucher_id) | Kiểm tra trùng khi collect voucher |
+| transactions | (customer_id, created_at) | Lịch sử giao dịch sắp xếp theo thời gian |
+| audit_logs | (entity_type, created_at) | Xem audit log theo loại entity và thời gian |
+
+Trong Spring Data JPA, các index được khai báo trực tiếp trên entity class thông qua annotation `@Table(indexes = {...})` với `@Index`. Ví dụ:
+
+```java
+@Table(name = "voucher_requests", indexes = {
+    @Index(name = "idx_vr_status", columnList = "status"),
+    @Index(name = "idx_vr_created_by", columnList = "created_by"),
+    @Index(name = "idx_vr_status_created_by", columnList = "status, created_by")
+})
+public class VoucherRequestEntity { ... }
+```
+
+Cách tiếp cận này cho phép JPA/Hibernate tự động tạo index khi khởi tạo schema (ddl-auto = update), đồng thời giữ định nghĩa index gần với entity code, dễ review và bảo trì.
+
+## 3.5. Tích hợp các luồng nghiệp vụ chính
+
+### 3.5.1. Luồng phân phối Voucher (end-to-end)
+
+Maker tạo voucher (REST) → Submit → Checker approve → System batch activate (VoucherDetail ACTIVE) → Customer xem (gRPC searchByTier) → Collect (lưu CustomerVoucher) → Thanh toán (apply discount, publish Kafka) → Loyalty tích điểm.
+
+### 3.5.2. Luồng Mission (end-to-end)
+
+Maker tạo mission (REST) → Voucher Service tạo voucher REWARD → gRPC createMission (Loyalty) → Submit → Checker approve → Mission ACTIVE → Customer thanh toán → Kafka event → Loyalty cập nhật progress → Khi đạt target: COMPLETED → Customer claim reward → Nhận điểm hoặc voucher.
+
+### 3.5.3. Luồng nâng hạng (event-driven)
+
+Customer thanh toán → Kafka LoyaltyPointEvent → Loyalty Service tính điểm (1 point/1.000 VND) → Cộng totalPoints → Kiểm tra ngưỡng (GOLD≥1000, PLATINUM≥5000, DIAMOND≥10000) → Nếu đạt: Kafka TierUpgradeEvent → Customer Service cập nhật tier.
+
+## 3.6. Đánh giá kết quả phát triển hệ thống
+
+Bảng 3.11: Đánh giá đáp ứng yêu cầu
+
+| Yêu cầu | Kết quả | Ghi chú |
+|---|---|---|
+| 22 chức năng (Bảng 2.1) | Đáp ứng đầy đủ | Tất cả API hoạt động đúng |
+| Response time < 500ms | Đạt | Cache Redis, gRPC binary |
+| Không mất message | Đạt | Kafka durability |
+| Phân quyền RBAC | Đạt | Keycloak + Spring Security |
+| Monitoring real-time | Đạt | Prometheus + Grafana |
+| Logging tập trung | Đạt | ELK Stack |
+| Container hóa | Đạt | Docker Compose 15+ containers |
+
+## 3.7. Kết luận chương 3
+
+Chương 3 đã trình bày chi tiết quá trình phát triển hệ thống bao gồm: kiến trúc triển khai với 14 thành phần, phát triển frontend với kiến trúc BFF (Next.js + React + TypeScript), phát triển backend với 5 microservices (Java 17 + Spring Boot 3.4), tích hợp 3 luồng nghiệp vụ chính (voucher, mission, nâng hạng), và đánh giá kết quả đáp ứng đầy đủ yêu cầu đã đề ra.
+# CHƯƠNG 4. BẢO MẬT HỆ THỐNG
+
+## 4.1. Tổng quan bảo mật
+
+### 4.1.1. Mục tiêu bảo mật
+
+Hệ thống quản lý Voucher và Chương trình Khách hàng Thân thiết xử lý dữ liệu nhạy cảm bao gồm thông tin tài khoản người dùng, giao dịch thanh toán, và quy trình phê duyệt voucher có giá trị kinh tế. Việc đảm bảo bảo mật là yêu cầu bắt buộc để bảo vệ lợi ích của doanh nghiệp và khách hàng.
+
+Các mục tiêu bảo mật chính:
+
+- Xác thực (Authentication): Đảm bảo chỉ người dùng hợp lệ mới truy cập được hệ thống.
+- Phân quyền (Authorization): Mỗi vai trò chỉ thực hiện được các thao tác được phép.
+- Toàn vẹn dữ liệu (Integrity): Ngăn chặn thay đổi trái phép dữ liệu voucher, điểm thưởng, giao dịch.
+- Bảo mật truyền tải (Confidentiality): Dữ liệu không bị đọc trộm khi truyền giữa client và server.
+- Khả năng kiểm toán (Auditability): Mọi thao tác quan trọng đều được ghi log để truy vết.
+
+### 4.1.2. Xác thực bằng JWT (OAuth2/OIDC)
+
+Hệ thống sử dụng Keycloak làm máy chủ xác thực (Authorization Server) theo chuẩn OAuth2/OpenID Connect [14]. Đây là giải pháp IAM mã nguồn mở do Red Hat phát triển, được sử dụng rộng rãi trong các hệ thống enterprise.
+
+Lý do chọn JWT Bearer Token thay vì Cookie-based Session:
+
+- Hệ thống là REST API thuần (stateless), không render HTML phía server.
+- Microservices architecture: Mỗi service cần verify token độc lập mà không cần shared session store.
+- Hỗ trợ đa client: Web admin (Next.js), mobile app, và API integration đều sử dụng cùng cơ chế Bearer token.
+- Horizontal scaling: Không cần sticky session, bất kỳ instance nào cũng verify được token bằng public key.
+
+Cấu trúc JWT Token:
+
+```json
+{
+  "header": { "alg": "RS256", "typ": "JWT" },
+  "payload": {
+    "sub": "user-uuid",
+    "preferred_username": "maker01",
+    "realm_access": { "roles": ["MAKER"] },
+    "exp": 1700000000,
+    "iat": 1699996400
+  }
+}
+```
+
+Token được ký bằng RSA private key của Keycloak. Các microservice verify bằng public key (lấy từ Keycloak JWKS endpoint), không cần gọi lại Keycloak mỗi request.
+
+### 4.1.3. Luồng xác thực chi tiết
+
+Luồng đăng nhập (Resource Owner Password Credentials):
+
+1. Client gửi POST /api/v1/auth/login với username + password.
+2. Identity Service gọi Keycloak Token Endpoint (grant_type=password).
+3. Keycloak verify credentials, trả về accessToken (TTL 5 phút) + refreshToken (TTL 30 phút).
+4. Identity Service trả token cho client.
+5. Client lưu token và gắn vào header: `Authorization: Bearer <accessToken>`.
+
+Luồng refresh token:
+
+1. Khi accessToken hết hạn, client nhận HTTP 401.
+2. Client gửi POST /api/v1/auth/refresh với refreshToken.
+3. Identity Service gọi Keycloak refresh endpoint.
+4. Keycloak trả accessToken mới + refreshToken mới (rotation).
+5. Nếu refreshToken cũng hết hạn → force logout.
+
+Luồng verify token tại mỗi service:
+
+1. Request đến Kong Gateway → route đến target service.
+2. Spring Security OAuth2 Resource Server filter intercept request.
+3. Lấy token từ Authorization header.
+4. Verify signature bằng Keycloak public key (cached).
+5. Parse claims: userId, username, roles.
+6. Tạo SecurityContext với Authentication object.
+7. Tiếp tục vào Controller → @PreAuthorize kiểm tra role.
+
+### 4.1.4. Phân quyền theo vai trò (RBAC)
+
+Hệ thống triển khai Role-Based Access Control với 5 vai trò được quản lý trong Keycloak và nhúng vào JWT token. Spring Security sử dụng annotation `@PreAuthorize` để kiểm tra quyền tại method level.
+
+Bảng 4.1: Ma trận phân quyền theo vai trò
+
+| Chức năng | ADMIN | MAKER | CHECKER | PARTNER | CUSTOMER |
+|---|---|---|---|---|---|
+| Quản lý tài khoản hệ thống | ✓ | | | | |
+| Quản lý vai trò | ✓ | | | | |
+| Xem audit log | ✓ | | ✓ | | |
+| Tạo voucher | | ✓ | | ✓ | |
+| Tạo mission | | ✓ | | ✓ | |
+| Gửi phê duyệt (Submit) | | ✓ | | ✓ | |
+| Hủy yêu cầu (Cancel) | | ✓ | | ✓ | |
+| Phê duyệt/Từ chối | | | ✓ | | |
+| Xem voucher khả dụng | | | | | ✓ |
+| Thu thập voucher | | | | | ✓ |
+| Thanh toán | | | | | ✓ |
+| Tham gia mission | | | | | ✓ |
+| Xem leaderboard | | | | | ✓ |
+| Xem/Sửa profile cá nhân | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+Ví dụ cấu hình Spring Security:
+
+```java
+@PreAuthorize("hasRole('CHECKER')")
+@PutMapping("/{id}/confirm")
+public BaseResponse<VoucherResponse> confirmVoucher(...) { ... }
+
+@PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
+@PostMapping
+public BaseResponse<VoucherResponse> createVoucher(...) { ... }
+```
+
+### 4.1.5. Phân quyền theo phạm vi dữ liệu
+
+Ngoài RBAC, hệ thống triển khai data-level access control tại service layer để đảm bảo người dùng chỉ truy cập dữ liệu thuộc phạm vi của mình:
+
+Partner chỉ xem dữ liệu của mình: Khi Partner gọi API danh sách voucher, service layer tự động thêm điều kiện `createdBy = currentUserId` vào query. Partner không thể xem voucher do Maker hoặc Partner khác tạo.
+
+Checker chỉ thấy trạng thái phù hợp: Checker chỉ xem được các voucher request ở trạng thái PENDING_APPROVE, APPROVED, REJECTED, FINISH. Các request ở trạng thái INIT (chưa submit) không hiển thị cho Checker.
+
+Customer chỉ xem voucher theo hạng: Customer hạng GOLD chỉ thấy voucher có customerTier = ALL hoặc customerTier = GOLD. Không thấy voucher dành riêng cho PLATINUM hoặc DIAMOND.
+
+```java
+// Ví dụ data-level filtering cho Partner
+if (currentUser.getRole() == Role.PARTNER) {
+    spec = spec.and((root, query, cb) -> 
+        cb.equal(root.get("createdBy"), currentUser.getId()));
+}
+```
+
+### 4.1.6. Chính sách mật khẩu
+
+Chính sách mật khẩu được cấu hình tập trung trên Keycloak, áp dụng cho tất cả người dùng trong realm:
+
+- Độ dài tối thiểu: 6 ký tự.
+- Keycloak lưu mật khẩu dưới dạng hash (PBKDF2 với SHA256).
+- Hỗ trợ đổi mật khẩu qua API PUT /api/v1/profile/password (yêu cầu nhập mật khẩu cũ).
+- Identity Service gọi Keycloak Admin API để thực hiện đổi mật khẩu.
+
+### 4.1.7. Bảo mật API Gateway (Kong)
+
+Kong API Gateway đóng vai trò điểm vào duy nhất (single entry point) cho tất cả request từ client, cung cấp các lớp bảo mật:
+
+CORS (Cross-Origin Resource Sharing): Cấu hình plugin cors trên Kong để chỉ cho phép frontend domain truy cập API. Ngăn chặn request từ domain không được phép.
+
+```yaml
+plugins:
+  - name: cors
+    config:
+      origins: ["http://localhost:3000"]
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+      headers: ["Authorization", "Content-Type"]
+      credentials: true
+```
+
+Rate Limiting: Sử dụng Redis làm backend cho rate limiting, giới hạn số request mỗi client trong khoảng thời gian nhất định. Bảo vệ hệ thống khỏi brute-force attack và DDoS cơ bản.
+
+Logging: Plugin tcp-log ghi lại toàn bộ access log (IP, method, path, status code, response time) gửi đến Logstash để phân tích và phát hiện bất thường.
+
+Routing tập trung: Client không biết địa chỉ thực của các microservice. Chỉ Kong biết internal routing, giảm attack surface.
+
+### 4.1.8. Bảo mật giao tiếp inter-service
+
+Giao tiếp giữa các microservice trong hệ thống sử dụng hai cơ chế:
+
+gRPC (đồng bộ): Các service giao tiếp qua gRPC trên mạng Docker internal network. Chỉ các container trong cùng Docker network mới truy cập được port gRPC (9091, 9093, 9094, 9099). Không expose port gRPC ra bên ngoài.
+
+Apache Kafka (bất đồng bộ): Kafka broker chạy trong Docker internal network, không expose port 9092 ra public. Consumer xác thực bằng group.id, đảm bảo mỗi message chỉ được xử lý một lần bởi đúng service.
+
+Cả hai cơ chế đều được bảo vệ bởi Docker network isolation: các service chỉ giao tiếp được với nhau thông qua Docker internal network, không thể truy cập từ bên ngoài host machine.
+
+### 4.1.9. Toàn vẹn dữ liệu nghiệp vụ
+
+Hệ thống đảm bảo toàn vẹn dữ liệu thông qua nhiều cơ chế:
+
+Quy trình Maker/Checker: Voucher và mission phải qua bước phê duyệt trước khi kích hoạt. Maker không thể tự approve voucher của mình. Điều này ngăn chặn việc phát hành voucher trái phép hoặc sai giá trị.
+
+Audit Log: Mọi thao tác quan trọng (tạo, submit, approve, reject, cancel voucher/mission) đều được ghi vào bảng audit_logs với thông tin: ai thực hiện (performedBy), thời gian (timestamp), hành động (action), đối tượng (entityType, entityId), chi tiết thay đổi (details). Audit log được ghi bất đồng bộ (@Async) để không ảnh hưởng hiệu năng.
+
+PostgreSQL ACID: Các thao tác quan trọng (thu thập voucher, thanh toán) sử dụng transaction để đảm bảo tính nguyên tử. Ví dụ khi thanh toán: giảm stock voucher, tạo transaction record, và publish Kafka event phải thành công cùng nhau hoặc rollback toàn bộ.
+
+Kafka Durability: Message tích điểm và nâng hạng được lưu trên disk với replication, đảm bảo không mất dữ liệu khi broker crash.
+
+### 4.1.10. Hỗ trợ bảo mật ở frontend
+
+Frontend (Next.js) triển khai các cơ chế bảo mật phía client:
+
+Zustand Auth Store: Lưu trữ token trong localStorage thông qua Zustand persist middleware. Store quản lý trạng thái đăng nhập, thông tin user, và token.
+
+```typescript
+// lib/auth.ts - Zustand auth store
+const useAuthStore = create(persist((set) => ({
+  accessToken: null,
+  refreshToken: null,
+  user: null,
+  setAuth: (data) => set({ ...data }),
+  logout: () => set({ accessToken: null, refreshToken: null, user: null }),
+}), { name: 'auth-storage' }));
+```
+
+Axios Interceptor Auto-Refresh: Axios instance được cấu hình interceptor tự động xử lý token hết hạn. Khi nhận HTTP 401, interceptor gọi refresh endpoint, cập nhật token mới, và retry request ban đầu. Nếu refresh thất bại → force logout.
+
+```typescript
+// lib/api/axios.ts - Auto refresh interceptor
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401 && !error.config._retry) {
+      error.config._retry = true;
+      const newToken = await refreshToken();
+      if (newToken) {
+        error.config.headers.Authorization = `Bearer ${newToken}`;
+        return axiosInstance(error.config);
+      }
+      logout(); // Force logout nếu refresh thất bại
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+AuthGuard Component: Mỗi trang được wrap trong AuthGuard kiểm tra quyền trước khi render. Nếu user không có quyền truy cập trang → redirect về dashboard hoặc login.
+
+BFF Pattern (Backend-For-Frontend): Frontend không gọi trực tiếp đến microservices. Mọi request đi qua Next.js API Routes, giúp ẩn URL backend thực và tập trung xử lý authentication header.
+
+### 4.1.11. Đánh giá giải pháp bảo mật
+
+Bảng 4.2: Tổng hợp các biện pháp bảo mật trong hệ thống
+
+| STT | Lớp bảo mật | Giải pháp | Công nghệ | Mục đích |
+|---|---|---|---|---|
+| 1 | Xác thực | OAuth2/OIDC + JWT | Keycloak 23.0 | Xác minh danh tính người dùng |
+| 2 | Phân quyền API | RBAC với @PreAuthorize | Spring Security 6.x | Kiểm soát truy cập theo vai trò |
+| 3 | Phân quyền dữ liệu | Data-level filtering | Service layer (Specification) | Partner/Customer chỉ xem dữ liệu của mình |
+| 4 | Bảo mật gateway | CORS, Rate Limiting, Logging | Kong + Redis | Bảo vệ entry point, chống brute-force |
+| 5 | Bảo mật mạng | Docker network isolation | Docker Compose | Cô lập giao tiếp inter-service |
+| 6 | Mật khẩu | Hash PBKDF2-SHA256, min 6 ký tự | Keycloak | Bảo vệ credentials |
+| 7 | Token management | Access (5p) + Refresh (30p) rotation | Keycloak + Axios interceptor | Giảm thiểu rủi ro token bị đánh cắp |
+| 8 | Kiểm toán | Audit log mọi thao tác | PostgreSQL + @Async | Truy vết và phát hiện bất thường |
+| 9 | Toàn vẹn dữ liệu | Maker/Checker workflow | Business logic | Ngăn phát hành voucher trái phép |
+| 10 | Frontend | AuthGuard + BFF pattern | Next.js + Zustand | Bảo vệ phía client |
+
+Đánh giá ưu điểm:
+
+- Sử dụng chuẩn công nghiệp (OAuth2/OIDC) thay vì tự xây dựng cơ chế xác thực, giảm rủi ro lỗ hổng bảo mật.
+- Phân tách rõ ràng giữa xác thực (Keycloak) và phân quyền (Spring Security), dễ bảo trì và mở rộng.
+- Multi-layer security: Bảo mật được triển khai ở nhiều lớp (gateway, service, database), không phụ thuộc vào một điểm duy nhất.
+- Stateless architecture: JWT cho phép horizontal scaling mà không cần shared session.
+
+Đánh giá hạn chế và hướng cải thiện:
+
+- Chưa triển khai HTTPS (TLS) trong môi trường development (Docker Compose). Khi deploy production cần cấu hình TLS certificate cho Kong.
+- Rate limiting hiện tại ở mức cơ bản. Có thể nâng cấp với thuật toán token bucket hoặc sliding window cho từng endpoint cụ thể.
+- Chưa có cơ chế phát hiện xâm nhập (IDS) hoặc Web Application Firewall (WAF). Có thể bổ sung khi triển khai production.
+
+## 4.2. Kết luận chương 4
+
+Chương 4 đã trình bày chi tiết giải pháp bảo mật cho hệ thống quản lý Voucher và Chương trình Khách hàng Thân thiết, bao gồm: xác thực bằng JWT theo chuẩn OAuth2/OIDC với Keycloak, phân quyền RBAC kết hợp data-level access control, bảo mật API Gateway với Kong (CORS, rate limiting), bảo mật giao tiếp inter-service qua Docker network isolation, đảm bảo toàn vẹn dữ liệu qua quy trình Maker/Checker và audit log, cùng các cơ chế bảo mật phía frontend (Zustand auth store, Axios interceptor, AuthGuard).
+
+Hệ thống áp dụng nguyên tắc defense-in-depth với nhiều lớp bảo mật bổ trợ lẫn nhau, sử dụng các công nghệ chuẩn công nghiệp (Keycloak, Spring Security, Kong) thay vì tự xây dựng, giảm thiểu rủi ro lỗ hổng bảo mật và đảm bảo khả năng mở rộng trong tương lai.

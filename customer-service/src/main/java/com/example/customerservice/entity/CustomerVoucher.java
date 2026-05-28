@@ -29,7 +29,7 @@ public class CustomerVoucher {
     @Column(name = "available_usage", nullable = false)
     private Integer availableUsage;
 
-    @Column(name = "voucher_code", nullable = false, unique = true)
+    @Column(name = "voucher_code", nullable = false)
     private String voucherCode;
 
     @Column(name = "name_store")

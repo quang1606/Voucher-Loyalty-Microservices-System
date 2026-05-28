@@ -32,7 +32,7 @@ public interface VoucherRequestRepository extends JpaRepository<VoucherRequestEn
            "AND v.storeName = :storeName " +
            "GROUP BY MONTH(v.confirmedTime) " +
            "HAVING COUNT(v) > 0")
-    List<VoucherMonthlyStatsProjection> getApprovedVouchersByMonthAndStore(Integer year, String storeName);
+    List<VoucherMonthlyStatsProjection>     getApprovedVouchersByMonthAndStore(Integer year, String storeName);
 
     long countByStatus(RequestStatus status);
 

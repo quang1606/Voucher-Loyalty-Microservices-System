@@ -8,6 +8,7 @@ import com.example.customerservice.repository.CustomerProfileRepository;
 import com.example.customerservice.service.CustomerProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,10 @@ import java.util.UUID;
 @Slf4j
 public class CustomerProfileServiceImpl implements CustomerProfileService {
 
+    private static final String LEADERBOARD_KEY = "customer:leaderboard";
+
     private final CustomerProfileRepository customerProfileRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public CustomerProfileResponse getProfile(UUID UerId) {
@@ -50,6 +54,14 @@ public class CustomerProfileServiceImpl implements CustomerProfileService {
         profile.setUserId(userId);
         profile.setFullName(fullName);
         customerProfileRepository.save(profile);
-        log.info("Created CustomerProfile for userId: {}", userId);
+        log.info("Created CustomerProfile for userId: {}, customerId: {}", userId, profile.getId());
+
+        // Add to Redis leaderboard with 0 points (member = customerId, score = 0)
+        try {
+            redisTemplate.opsForZSet().add(LEADERBOARD_KEY, profile.getId().toString(), 0);
+            log.info("Added customer to leaderboard - customerId: {}", profile.getId());
+        } catch (Exception ex) {
+            log.warn("Failed to add customer to Redis leaderboard - customerId: {}: {}", profile.getId(), ex.getMessage());
+        }
     }
 }

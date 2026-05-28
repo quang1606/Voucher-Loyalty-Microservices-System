@@ -30,10 +30,8 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     @Override
     public void updateCustomerPoints(Long customerId, Integer points) {
         try {
-            // Add/update customer points in Redis ZSET
             redisTemplate.opsForZSet().incrementScore(LEADERBOARD_KEY, customerId.toString(), points);
-            
-            log.debug("Updated customer points in leaderboard - customerId: {}, points: {}", customerId, points);
+            log.info("Updated leaderboard - customerId: {}, addedPoints: {}", customerId, points);
         } catch (Exception ex) {
             log.error("Failed to update customer points in leaderboard - customerId: {}, points: {}: {}", 
                     customerId, points, ex.getMessage());
@@ -54,23 +52,31 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         Set<ZSetOperations.TypedTuple<Object>> topCustomersSet = redisTemplate.opsForZSet()
                 .reverseRangeWithScores(LEADERBOARD_KEY, 0, 4);
 
+        log.info("Leaderboard ZSET size: {}", topCustomersSet != null ? topCustomersSet.size() : 0);
+
         List<LeaderboardResponse.CustomerRank> topCustomers = new ArrayList<>();
         
         if (topCustomersSet != null) {
             int rank = 1;
             for (ZSetOperations.TypedTuple<Object> tuple : topCustomersSet) {
-                Long customerId = Long.parseLong(tuple.getValue().toString());
-                Integer points = tuple.getScore() != null ? tuple.getScore().intValue() : 0;
-                
-                Optional<CustomerProfile> profileOpt = customerProfileRepository.findById(customerId);
-                if (profileOpt.isPresent()) {
-                    CustomerProfile profile = profileOpt.get();
-                    topCustomers.add(LeaderboardResponse.CustomerRank.builder()
-                            .customerId(customerId)
-                            .customerName(profile.getFullName())
-                            .totalPoints(points)
-                            .rank(rank++)
-                            .build());
+                try {
+                    String memberValue = tuple.getValue().toString().replaceAll("^\"|\"$", "");
+                    log.info("Leaderboard member raw: {}, parsed: {}", tuple.getValue(), memberValue);
+                    Long customerId = Long.parseLong(memberValue);
+                    Integer points = tuple.getScore() != null ? tuple.getScore().intValue() : 0;
+                    
+                    Optional<CustomerProfile> profileOpt = customerProfileRepository.findById(customerId);
+                    if (profileOpt.isPresent()) {
+                        CustomerProfile profile = profileOpt.get();
+                        topCustomers.add(LeaderboardResponse.CustomerRank.builder()
+                                .customerId(customerId)
+                                .customerName(profile.getFullName())
+                                .totalPoints(points)
+                                .rank(rank++)
+                                .build());
+                    }
+                } catch (NumberFormatException e) {
+                    log.warn("Invalid member in leaderboard ZSET: {}", tuple.getValue());
                 }
             }
         }
@@ -119,13 +125,14 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     
     public void syncAllCustomersToRedis() {
         try {
+            // Clear old data
+            redisTemplate.delete(LEADERBOARD_KEY);
+            
             List<CustomerProfile> allCustomers = customerProfileRepository.findAll();
             
             for (CustomerProfile customer : allCustomers) {
-                if (customer.getTotalPoints() > 0) {
-                    redisTemplate.opsForZSet().add(LEADERBOARD_KEY, 
-                            customer.getId().toString(), customer.getTotalPoints());
-                }
+                redisTemplate.opsForZSet().add(LEADERBOARD_KEY, 
+                        customer.getId().toString(), customer.getTotalPoints());
             }
             
             log.info("Synced {} customers to Redis leaderboard", allCustomers.size());

@@ -170,7 +170,7 @@ public class VoucherServiceImpl implements VoucherService {
     List<String> listStatus;
     if (authorizationService.isCheckerRole()) {
       listStatus = List.of(RequestStatus.PENDING_APPROVE.name(), RequestStatus.APPROVED.name(),
-          RequestStatus.REJECTED.name(), RequestStatus.FINISH.name());
+          RequestStatus.REJECTED.name(), RequestStatus.FINISH.name(),RequestStatus.FAILED.name());
       if (statusValue != null && !listStatus.contains(statusValue)) {
         return VoucherRequestResponsePage.builder()
             .data(Collections.emptyList())
