@@ -35,6 +35,9 @@ public class Transaction {
     @Column(name = "voucher_code")
     private String voucherCode;
 
+    @Column(name = "request_id", length = 64)
+    private String requestId;
+
     @Column(name = "original_amount", precision = 19, scale = 2, nullable = false)
     private BigDecimal originalAmount;
 

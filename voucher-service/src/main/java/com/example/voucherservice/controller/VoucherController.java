@@ -75,7 +75,7 @@ public class VoucherController {
       @RequestParam(name = "storeName", required = false) String storeName,
       @RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
       @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
-      @PageableDefault(size = 15) Pageable pageable) {
+      @PageableDefault(size = 10) Pageable pageable) {
     VoucherRequestResponsePage data = voucherService.getVouchers(
         status, requestMode, creatorType, voucherPurpose, storeName,
         fromDate, toDate, pageable);
@@ -97,7 +97,7 @@ public class VoucherController {
       @RequestParam(name = "storeName", required = false) String storeName,
       @RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
       @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
-      @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
     VoucherDetailResponsePage data = voucherService.getAllVoucherDetails(
         creatorType, customerTier, discountType, voucherPurpose, voucherStatus,
         storeName, fromDate, toDate, pageable);
@@ -114,7 +114,7 @@ public class VoucherController {
       @PathVariable Long id,
       @RequestParam(name = "voucherName", required = false) String voucherName,
       @RequestParam(name = "status", required = false) RequestStatus status,
-      @PageableDefault(size = 15) Pageable pageable) {
+      @PageableDefault(size = 10) Pageable pageable) {
     VoucherRequestResponse data = voucherService.getVoucherById(id, voucherName, status, pageable);
     return ResponseEntity.ok(BaseResponse.<VoucherRequestResponse>builder()
         .status(BaseErrorCode.SUCCESS.getErrorNumCode())

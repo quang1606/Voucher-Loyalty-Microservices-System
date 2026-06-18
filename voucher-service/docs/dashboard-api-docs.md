@@ -1,458 +1,276 @@
 # Dashboard API Documentation
 
-## Base URL
-```
-/api/dashboard
-```
-
-## Authentication
-All endpoints require authentication with appropriate roles.
+> Base URL: `http://localhost:8082/api/dashboard`  
+> Authentication: Bearer Token (JWT)
 
 ---
 
-## 1. Get Voucher Monthly Statistics
+## 1. Voucher Monthly Stats
 
-### Endpoint
-```http
-GET /api/dashboard/voucher-monthly-stats
+Thống kê số voucher được approve theo từng tháng trong năm.
+
+**Endpoint:**
+```
+GET /api/dashboard/voucher-monthly-stats?year={year}
 ```
 
-### Description
-Lấy thống kê voucher theo tháng trong năm
+**Parameters:**
 
-### Parameters
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| year | Integer | Yes | Năm cần thống kê (ví dụ: 2024) |
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| year | Integer | ✅ | Năm cần thống kê |
 
-### Request Example
-```http
-GET /api/dashboard/voucher-monthly-stats?year=2024
-```
-
-### Response
+**Response:**
 ```json
 {
-  "status": 200,
-  "code": "SUCCESS",
+  "status": 0,
+  "code": "success",
   "message": "Success",
   "data": [
-    {
-      "month": 1,
-      "total": 150
-    },
-    {
-      "month": 2,
-      "total": 200
-    },
-    {
-      "month": 3,
-      "total": 180
-    }
+    { "month": 1, "total": 12 },
+    { "month": 2, "total": 8 },
+    { "month": 3, "total": 25 },
+    { "month": 5, "total": 15 }
   ]
 }
 ```
 
-### Response Fields
-| Field | Type | Description |
-|-------|------|-------------|
-| month | Integer | Tháng (1-12) |
-| total | Long | Tổng số voucher được approve trong tháng |
+**Ghi chú:** Chỉ trả về các tháng có data (total > 0). Nếu tháng nào không có voucher approve thì không xuất hiện trong mảng.
 
 ---
 
-## 2. Get Voucher Request Statistics
+## 2. Voucher Request Stats
 
-### Endpoint
-```http
+Thống kê tổng quan voucher request: tổng số, hoàn thành, chưa hoàn thành.
+
+**Endpoint:**
+```
 GET /api/dashboard/voucher-request-stats
 ```
 
-### Description
-Lấy thống kê tổng quan về voucher request
-
-### Parameters
-None
-
-### Request Example
-```http
-GET /api/dashboard/voucher-request-stats
-```
-
-### Response
+**Response:**
 ```json
 {
-  "status": 200,
-  "code": "SUCCESS",
+  "status": 0,
+  "code": "success",
   "message": "Success",
   "data": {
-    "totalRequests": 1000,
-    "completedRequests": 750,
-    "incompleteRequests": 250
+    "totalRequests": 150,
+    "completedRequests": 100,
+    "incompleteRequests": 50
   }
 }
 ```
 
-### Response Fields
-| Field | Type | Description |
-|-------|------|-------------|
-| totalRequests | Long | Tổng số voucher request |
-| completedRequests | Long | Số voucher request đã hoàn thành |
-| incompleteRequests | Long | Số voucher request chưa hoàn thành |
+| Field | Description |
+|-------|-------------|
+| totalRequests | Tổng số voucher request |
+| completedRequests | Đã hoàn thành (APPROVED, REJECTED, FAILED, FINISH) |
+| incompleteRequests | Chưa hoàn thành (các trạng thái còn lại) |
 
 ---
 
-## 3. Get Mission Statistics
+## 3. Mission Stats
 
-### Endpoint
-```http
+Thống kê tổng quan mission: tổng số, hoàn thành, chưa hoàn thành.
+
+**Endpoint:**
+```
 GET /api/dashboard/mission-stats
 ```
 
-### Description
-Lấy thống kê tổng quan về mission
-
-### Parameters
-None
-
-### Request Example
-```http
-GET /api/dashboard/mission-stats
-```
-
-### Response
+**Response:**
 ```json
 {
-  "status": 200,
-  "code": "SUCCESS",
+  "status": 0,
+  "code": "success",
   "message": "Success",
   "data": {
-    "totalMissions": 500,
-    "completedMissions": 300,
-    "incompleteMissions": 200
+    "totalMissions": 80,
+    "completedMissions": 50,
+    "incompleteMissions": 30
   }
 }
 ```
 
-### Response Fields
-| Field | Type | Description |
-|-------|------|-------------|
-| totalMissions | Long | Tổng số mission |
-| completedMissions | Long | Số mission đã hoàn thành (APPROVED, REJECTED, FAILED, FINISH, CANCELLED) |
-| incompleteMissions | Long | Số mission chưa hoàn thành (totalMissions - completedMissions) |
+| Field | Description |
+|-------|-------------|
+| totalMissions | Tổng số mission |
+| completedMissions | Đã hoàn thành (APPROVED, REJECTED, FAILED, FINISH, CANCELLED) |
+| incompleteMissions | Chưa hoàn thành (total - completed) |
 
 ---
 
-## Error Responses
+## 4. Mission Monthly Stats
 
-### Common Error Format
+Thống kê số mission được tạo theo từng tháng trong năm.
+
+**Endpoint:**
+```
+GET /api/dashboard/mission-monthly-stats?year={year}
+```
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| year | Integer | ✅ | Năm cần thống kê |
+
+**Response:**
 ```json
 {
-  "status": 400,
-  "code": "ERROR_CODE",
+  "status": 0,
+  "code": "success",
+  "message": "Success",
+  "data": [
+    { "month": 1, "total": 5 },
+    { "month": 3, "total": 10 },
+    { "month": 5, "total": 8 }
+  ]
+}
+```
+
+**Ghi chú:** Giống voucher-monthly-stats, chỉ trả về tháng có data.
+
+---
+
+## 5. Voucher Request Status Stats
+
+Thống kê số lượng voucher request theo từng trạng thái cụ thể.
+
+**Endpoint:**
+```
+GET /api/dashboard/voucher-request-status-stats
+```
+
+**Response:**
+```json
+{
+  "status": 0,
+  "code": "success",
+  "message": "Success",
+  "data": {
+    "draft": 10,
+    "cancelled": 5,
+    "pendingApprove": 20,
+    "approved": 80,
+    "rejected": 12
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| draft | Số request ở trạng thái nháp |
+| cancelled | Số request đã hủy |
+| pendingApprove | Số request đang chờ duyệt |
+| approved | Số request đã duyệt |
+| rejected | Số request bị từ chối |
+
+---
+
+## Ghi chú chung
+
+### Phân quyền
+- **MAKER / CHECKER**: Xem tất cả data
+- **PARTNER**: Chỉ xem data thuộc store của mình (API tự filter theo token)
+
+### Error Response
+```json
+{
+  "status": 1006,
+  "code": "INTERNAL_ERROR",
   "message": "Error description",
   "data": null
 }
 ```
 
-### Common Error Codes
-| Status Code | Error Code | Description |
-|-------------|------------|-------------|
-| 400 | BAD_REQUEST | Invalid request parameters |
-| 401 | UNAUTHORIZED | Authentication required |
-| 403 | FORBIDDEN | Insufficient permissions |
-| 500 | INTERNAL_SERVER_ERROR | Server error |
+### Gợi ý UI
 
----
+| API | Loại chart phù hợp |
+|-----|-------------------|
+| voucher-monthly-stats | Line chart / Bar chart (theo tháng) |
+| mission-monthly-stats | Line chart / Bar chart (theo tháng) |
+| voucher-request-stats | Donut chart / Stat cards |
+| mission-stats | Donut chart / Stat cards |
+| voucher-request-status-stats | Pie chart / Stacked bar |
 
-## Frontend Integration Examples
+### Ví dụ gọi API (Axios)
 
-### JavaScript/Axios Examples
-
-#### 1. Get Voucher Monthly Stats
 ```javascript
-const getVoucherMonthlyStats = async (year) => {
-  try {
-    const response = await axios.get(`/api/dashboard/voucher-monthly-stats?year=${year}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    return response.data.data;
-  } catch (error) {
-    console.error('Error fetching voucher monthly stats:', error);
-    throw error;
-  }
-};
-
-// Usage
-getVoucherMonthlyStats(2024).then(data => {
-  console.log('Monthly stats:', data);
-  // Process data for charts
-  const months = data.map(item => item.month);
-  const totals = data.map(item => item.total);
-});
-```
-
-#### 2. Get Voucher Request Stats
-```javascript
-const getVoucherRequestStats = async () => {
-  try {
-    const response = await axios.get('/api/dashboard/voucher-request-stats', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    return response.data.data;
-  } catch (error) {
-    console.error('Error fetching voucher request stats:', error);
-    throw error;
-  }
-};
-
-// Usage
-getVoucherRequestStats().then(data => {
-  console.log('Request stats:', data);
-  // Update dashboard widgets
-  document.getElementById('total-requests').textContent = data.totalRequests;
-  document.getElementById('completed-requests').textContent = data.completedRequests;
-  document.getElementById('incomplete-requests').textContent = data.incompleteRequests;
-});
-```
-
-#### 3. Get Mission Stats
-```javascript
-const getMissionStats = async () => {
-  try {
-    const response = await axios.get('/api/dashboard/mission-stats', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    return response.data.data;
-  } catch (error) {
-    console.error('Error fetching mission stats:', error);
-    throw error;
-  }
-};
-
-// Usage
-getMissionStats().then(data => {
-  console.log('Mission stats:', data);
-  // Create pie chart or progress bars
-  const completionRate = (data.completedMissions / data.totalMissions * 100).toFixed(1);
-  console.log(`Mission completion rate: ${completionRate}%`);
-});
-```
-
-### React Hook Example
-```javascript
-import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const useDashboardStats = () => {
+const api = axios.create({
+  baseURL: 'http://localhost:8082',
+  headers: { Authorization: `Bearer ${token}` }
+});
+
+// Voucher monthly stats
+const getVoucherMonthlyStats = (year) =>
+  api.get(`/api/dashboard/voucher-monthly-stats?year=${year}`);
+
+// Mission monthly stats
+const getMissionMonthlyStats = (year) =>
+  api.get(`/api/dashboard/mission-monthly-stats?year=${year}`);
+
+// Voucher request stats (total/completed/incomplete)
+const getVoucherRequestStats = () =>
+  api.get('/api/dashboard/voucher-request-stats');
+
+// Mission stats (total/completed/incomplete)
+const getMissionStats = () =>
+  api.get('/api/dashboard/mission-stats');
+
+// Voucher request status stats (draft/cancelled/pending/approved/rejected)
+const getVoucherRequestStatusStats = () =>
+  api.get('/api/dashboard/voucher-request-status-stats');
+```
+
+### Ví dụ React Component
+
+```jsx
+import { useEffect, useState } from 'react';
+
+const Dashboard = () => {
   const [voucherStats, setVoucherStats] = useState(null);
   const [missionStats, setMissionStats] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [statusStats, setStatusStats] = useState(null);
+  const [monthlyVoucher, setMonthlyVoucher] = useState([]);
+  const [monthlyMission, setMonthlyMission] = useState([]);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-        const [voucherResponse, missionResponse] = await Promise.all([
-          axios.get('/api/dashboard/voucher-request-stats'),
-          axios.get('/api/dashboard/mission-stats')
-        ]);
-        
-        setVoucherStats(voucherResponse.data.data);
-        setMissionStats(missionResponse.data.data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const year = new Date().getFullYear();
 
-    fetchStats();
+    Promise.all([
+      getVoucherRequestStats(),
+      getMissionStats(),
+      getVoucherRequestStatusStats(),
+      getVoucherMonthlyStats(year),
+      getMissionMonthlyStats(year),
+    ]).then(([vRes, mRes, sRes, vmRes, mmRes]) => {
+      setVoucherStats(vRes.data.data);
+      setMissionStats(mRes.data.data);
+      setStatusStats(sRes.data.data);
+      setMonthlyVoucher(vmRes.data.data);
+      setMonthlyMission(mmRes.data.data);
+    });
   }, []);
-
-  return { voucherStats, missionStats, loading, error };
-};
-
-// Usage in component
-const DashboardComponent = () => {
-  const { voucherStats, missionStats, loading, error } = useDashboardStats();
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
-      <div>Total Voucher Requests: {voucherStats?.totalRequests}</div>
-      <div>Total Missions: {missionStats?.totalMissions}</div>
+      {/* Stat Cards */}
+      <div className="stats-grid">
+        <StatCard title="Total Voucher Requests" value={voucherStats?.totalRequests} />
+        <StatCard title="Completed" value={voucherStats?.completedRequests} />
+        <StatCard title="Total Missions" value={missionStats?.totalMissions} />
+        <StatCard title="Completed Missions" value={missionStats?.completedMissions} />
+      </div>
+
+      {/* Charts */}
+      <LineChart title="Voucher Monthly" data={monthlyVoucher} />
+      <LineChart title="Mission Monthly" data={monthlyMission} />
+      <PieChart title="Request Status" data={statusStats} />
     </div>
   );
 };
-```
-
----
-
-## Chart Integration Examples
-
-### Chart.js Example for Monthly Stats
-```javascript
-const createMonthlyChart = async (year) => {
-  const data = await getVoucherMonthlyStats(year);
-  
-  const ctx = document.getElementById('monthlyChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.map(item => `Tháng ${item.month}`),
-      datasets: [{
-        label: 'Voucher được approve',
-        data: data.map(item => item.total),
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        tension: 0.1
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: `Thống kê Voucher năm ${year}`
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-};
-```
-
-### Pie Chart for Mission Stats
-```javascript
-const createMissionPieChart = async () => {
-  const data = await getMissionStats();
-  
-  const ctx = document.getElementById('missionPieChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: ['Đã hoàn thành', 'Chưa hoàn thành'],
-      datasets: [{
-        data: [data.completedMissions, data.incompleteMissions],
-        backgroundColor: [
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 99, 132, 0.8)'
-        ],
-        borderColor: [
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 99, 132, 1)'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Thống kê Mission'
-        },
-        legend: {
-          position: 'bottom'
-        }
-      }
-    }
-  });
-};
-```
-
----
-
-## Notes for Frontend Developers
-
-1. **Authentication**: Tất cả API đều yêu cầu authentication token trong header
-2. **Error Handling**: Luôn handle error cases và hiển thị thông báo phù hợp cho user
-3. **Loading States**: Hiển thị loading indicator khi đang fetch data
-4. **Caching**: Có thể cache data trong một khoảng thời gian ngắn để tránh gọi API liên tục
-5. **Responsive**: Đảm bảo charts và widgets responsive trên các thiết bị khác nhau
-6. **Real-time Updates**: Có thể implement auto-refresh hoặc WebSocket để cập nhật real-time
-
-## API Testing
-
-### Postman Collection
-```json
-{
-  "info": {
-    "name": "Dashboard API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Get Voucher Monthly Stats",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/api/dashboard/voucher-monthly-stats?year=2024",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "dashboard", "voucher-monthly-stats"],
-          "query": [
-            {
-              "key": "year",
-              "value": "2024"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Get Voucher Request Stats",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/api/dashboard/voucher-request-stats",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "dashboard", "voucher-request-stats"]
-        }
-      }
-    },
-    {
-      "name": "Get Mission Stats",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{token}}"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/api/dashboard/mission-stats",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "dashboard", "mission-stats"]
-        }
-      }
-    }
-  ]
-}
 ```

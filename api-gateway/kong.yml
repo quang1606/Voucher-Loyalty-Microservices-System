@@ -43,21 +43,20 @@ plugins:
 # ==================== SERVICES (only main API-facing) ====================
 services:
   - name: identity-service
-    url: http://identity-service:8081
+    url: http://host.docker.internal:8081
     routes:
       - name: identity-route
         paths:
           - /api/identity
-
   - name: voucher-service
-    url: http://voucher-service:8082
+    url: http://host.docker.internal:8082
     routes:
       - name: voucher-route
         paths:
           - /api/vouchers
 
   - name: customer-service
-    url: http://customer-service:8084
+    url: http://host.docker.internal:8084
     routes:
       - name: customer-route
         paths:

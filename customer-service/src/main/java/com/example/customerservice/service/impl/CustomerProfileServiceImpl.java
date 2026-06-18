@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -53,6 +54,7 @@ public class CustomerProfileServiceImpl implements CustomerProfileService {
         CustomerProfile profile = new CustomerProfile();
         profile.setUserId(userId);
         profile.setFullName(fullName);
+        profile.setBalance(BigDecimal.valueOf(100000000));
         customerProfileRepository.save(profile);
         log.info("Created CustomerProfile for userId: {}, customerId: {}", userId, profile.getId());
 

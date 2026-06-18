@@ -9,4 +9,5 @@ option java_multiple_files = true;
 
 service CustomerService {
   rpc CreateCustomerProfile(CreateCustomerProfileRequest) returns (CreateCustomerProfileResponse);
+  rpc GetVoucherUsageStats(GetVoucherUsageStatsRequest) returns (GetVoucherUsageStatsResponse);
 }

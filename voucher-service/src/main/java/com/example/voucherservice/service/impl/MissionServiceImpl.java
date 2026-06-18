@@ -56,8 +56,8 @@ public class MissionServiceImpl implements MissionService {
       log.info("Request: {}", requestId);
       if (request.getRewardType() != RewardType.POINT) {
         request.setVoucherPurpose(VoucherPurpose.REWARD);
+        voucherService.createVoucher(request);
       }
-      voucherService.createVoucher(request);
 
       missionGrpcClient.createMission(request);
 
@@ -89,11 +89,14 @@ public class MissionServiceImpl implements MissionService {
     try {
 
       UpdateMissionStatusResponse response= missionGrpcClient.updateMissionStatus(id, RequestStatus.PENDING_APPROVE);
-      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(response.getMissions().getRequestId(),
-              RequestStatus.INIT);
-      entity.setStatus(RequestStatus.PENDING_APPROVE);
-      entity.setUpdatedBy(authorizationService.getName());
-      voucherRequestRepository.save(entity);
+      String requestId = response.getMissions().getRequestId();
+      voucherRequestRepository.findByRequestId(requestId).ifPresent(entity -> {
+        if (entity.getStatus() == RequestStatus.INIT) {
+          entity.setStatus(RequestStatus.PENDING_APPROVE);
+          entity.setUpdatedBy(authorizationService.getName());
+          voucherRequestRepository.save(entity);
+        }
+      });
 
       log.info("Mission submitted - id: {}", id);
     } catch (BaseException e) {
@@ -119,11 +122,14 @@ public class MissionServiceImpl implements MissionService {
     try {
 
       UpdateMissionStatusResponse response= missionGrpcClient.updateMissionStatus(id, RequestStatus.CANCELLED);
-      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(response.getMissions().getRequestId(),
-              RequestStatus.INIT);
-      entity.setStatus(RequestStatus.CANCELLED);
-      entity.setUpdatedBy(authorizationService.getName());
-      voucherRequestRepository.save(entity);
+      String requestId = response.getMissions().getRequestId();
+      voucherRequestRepository.findByRequestId(requestId).ifPresent(entity -> {
+        if (entity.getStatus() == RequestStatus.INIT) {
+          entity.setStatus(RequestStatus.CANCELLED);
+          entity.setUpdatedBy(authorizationService.getName());
+          voucherRequestRepository.save(entity);
+        }
+      });
 
       log.info("Mission cancelled - id: {}", id);
     } catch (BaseException e) {
@@ -166,13 +172,16 @@ public class MissionServiceImpl implements MissionService {
       }
 
       UpdateMissionStatusResponse response= missionGrpcClient.updateMissionStatus(id, newStatus);
-      VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(response.getMissions().getRequestId(),
-              RequestStatus.PENDING_APPROVE);
-      if (request.getAction() == ConfirmAction.REJECTED) {
-        voucherService.handleRejected(entity, request.getReason());
-      } else {
-        voucherService.handleApproved(entity);
-      }
+      String requestId = response.getMissions().getRequestId();
+      voucherRequestRepository.findByRequestId(requestId).ifPresent(entity -> {
+        if (entity.getStatus() == RequestStatus.PENDING_APPROVE) {
+          if (request.getAction() == ConfirmAction.REJECTED) {
+            voucherService.handleRejected(entity, request.getReason());
+          } else {
+            voucherService.handleApproved(entity);
+          }
+        }
+      });
 
       log.info("Mission confirmed - id: {}, action: {}", id, request.getAction());
     } catch (BaseException e) {

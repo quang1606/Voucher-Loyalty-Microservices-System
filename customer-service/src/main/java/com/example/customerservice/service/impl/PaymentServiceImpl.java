@@ -74,9 +74,19 @@ public class PaymentServiceImpl implements PaymentService {
         VoucherApplyResult voucherResult = validateAndApplyVoucher(request, profile, originalAmount);
 
         BigDecimal finalAmount = originalAmount.subtract(voucherResult.getDiscountAmount());
-        
-        // Calculate loyalty points (1 point per 1000 VND)
-        Integer pointsEarned = finalAmount.divide(new BigDecimal("1000"), RoundingMode.DOWN).intValue();
+
+        // Validate and deduct balance
+        if (profile.getBalance().compareTo(finalAmount) < 0) {
+            throw BaseException.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .errorCode("INSUFFICIENT_BALANCE")
+                    .description("Insufficient balance. Required: " + finalAmount + ", Available: " + profile.getBalance())
+                    .build();
+        }
+        profile.setBalance(profile.getBalance().subtract(finalAmount));
+
+        // Calculate loyalty points based on original amount (before discount): 1 point per 1000 VND
+        Integer pointsEarned = originalAmount.divide(new BigDecimal("1000"), RoundingMode.DOWN).intValue();
 
         // Create transaction record
         Transaction transaction = new Transaction();
@@ -85,6 +95,7 @@ public class PaymentServiceImpl implements PaymentService {
         transaction.setInvoiceId(request.getInvoiceId());
         transaction.setVoucherId(request.getVoucherId());
         transaction.setVoucherCode(voucherResult.getVoucherCode());
+        transaction.setRequestId(voucherResult.getRequestId());
         transaction.setOriginalAmount(originalAmount);
         transaction.setDiscountAmount(voucherResult.getDiscountAmount());
         transaction.setFinalAmount(finalAmount);
@@ -310,6 +321,7 @@ public class PaymentServiceImpl implements PaymentService {
             return VoucherApplyResult.builder()
                     .discountAmount(BigDecimal.ZERO)
                     .voucherCode(null)
+                    .requestId(null)
                     .build();
         }
 
@@ -357,6 +369,7 @@ public class PaymentServiceImpl implements PaymentService {
         return VoucherApplyResult.builder()
                 .discountAmount(discountAmount)
                 .voucherCode(voucherDetail.getVoucherCode())
+                .requestId(voucherDetail.getRequestId().isEmpty() ? null : voucherDetail.getRequestId())
                 .build();
     }
 }

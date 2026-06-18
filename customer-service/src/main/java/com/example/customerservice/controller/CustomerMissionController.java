@@ -22,7 +22,7 @@ public class CustomerMissionController {
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<BaseResponse<MissionResponse>> getCustomerMissions(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "10") int size) {
         
         MissionResponse result = customerMissionService.getCustomerMissions(page, size);
         

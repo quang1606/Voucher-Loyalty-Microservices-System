@@ -22,7 +22,7 @@ public class VoucherScheduler {
     private static final int BATCH_SIZE = 200;
     private final VoucherRepository voucherRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 15 0 * * *")
     public void executeVoucherStatusJob() {
         log.info("=== Voucher Status Scheduler START ===");
         activateVouchers();

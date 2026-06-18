@@ -268,6 +268,10 @@ public class VoucherServiceImpl implements VoucherService {
     if (!isPartner) {
       validateSystemFields(request);
     }
+
+    // Validate common fields
+    validateCreateVoucherRequest(request);
+
     if(request.getVoucherPurpose()!= null && request.getVoucherPurpose().equals(VoucherPurpose.REWARD)) {
       VoucherRequestStrategy strategy = strategyFactory.getStrategy(request.getDiscountType());
       strategy.validateRequest(request);
@@ -279,8 +283,69 @@ public class VoucherServiceImpl implements VoucherService {
     voucherServiceHelper.saveVoucher(request, username, isPartner, storeName);
   }
 
+  private void validateCreateVoucherRequest(CreateVoucherRequest request) {
+    // Validate discount type exists
+    if (request.getDiscountType() == null) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_DISCOUNT_TYPE")
+          .description("Discount type is required and must be a valid value (FIXED, PERCENT)").build();
+    }
+
+
+    // Validate customer tier
+    if (request.getCustomerTier() == null && request.getVoucherPurpose() != VoucherPurpose.REWARD) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_CUSTOMER_TIER")
+          .description("Customer tier is required and must be a valid value (ALL, SILVER, GOLD, PLATINUM, DIAMOND)").build();
+    }
+
+    // Validate non-negative numeric fields
+    if (request.getDiscountValue() == null || request.getDiscountValue().compareTo(BigDecimal.ZERO) <= 0) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_DISCOUNT_VALUE")
+          .description("Discount value must be positive").build();
+    }
+
+    if (request.getTotalStock() == null || request.getTotalStock() <= 0) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_TOTAL_STOCK")
+          .description("Total stock must be positive").build();
+    }
+
+    if (request.getMaxCollect() != null && request.getMaxCollect() <= 0) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_MAX_COLLECT")
+          .description("Max collect must be positive").build();
+    }
+
+    if (request.getMaxDiscount() != null && request.getMaxDiscount().compareTo(BigDecimal.ZERO) <= 0) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_MAX_DISCOUNT")
+          .description("Max discount must be positive").build();
+    }
+
+    if (request.getMinOrderValue() != null && request.getMinOrderValue().compareTo(BigDecimal.ZERO) < 0) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_MIN_ORDER_VALUE")
+          .description("Min order value must not be negative").build();
+    }
+
+    // Validate dates
+    if (request.getStartDate() == null || request.getEndDate() == null) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_DATE")
+          .description("Start date and end date are required").build();
+    }
+
+    if (request.getStartDate().isAfter(request.getEndDate())) {
+      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+          .errorCode("INVALID_DATE_RANGE")
+          .description("Start date must be before end date").build();
+    }
+  }
+
   @Override
-  public void submitVoucher(Long id) {
+  public void  submitVoucher(Long id) {
     VoucherRequestEntity entity = voucherServiceHelper.findRequestByIdAndStatus(id,
         RequestStatus.INIT);
     validateNotRewardPurpose(entity);
@@ -459,6 +524,10 @@ public class VoucherServiceImpl implements VoucherService {
         .countStatusByRequestIds(List.of(requestId));
 
     VoucherRequestResponse response = VoucherMapper.toRequestResponse(entity);
+    response.setTotalElements(detailPage.getTotalElements());
+    response.setTotalPages(detailPage.getTotalPages());
+    response.setPage(pageable.getPageSize());
+    response.setSize(pageable.getPageSize());
     response.setTotalVoucher(totals.isEmpty() ? 0L : totals.get(0).getTotalVoucher());
     response.setStatusCounts(statuses.stream()
         .map(s -> VoucherRequestResponse.StatusCount.builder()

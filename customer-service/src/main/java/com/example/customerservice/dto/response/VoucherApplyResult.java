@@ -11,5 +11,5 @@ public class VoucherApplyResult {
     
     private BigDecimal discountAmount;
     private String voucherCode;
-    
+    private String requestId;
 }

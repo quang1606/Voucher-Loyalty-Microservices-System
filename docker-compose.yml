@@ -48,7 +48,7 @@ services:
       - app-network
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.3.0
+    image: confluentinc/cp-zookeeper:7.6.1
     container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -62,7 +62,7 @@ services:
       - app-network
 
   kafka:
-    image: confluentinc/cp-kafka:7.3.0
+    image: confluentinc/cp-kafka:7.6.1
     container_name: kafka
     depends_on:
       - zookeeper
@@ -189,7 +189,7 @@ services:
     image: grafana/grafana:10.2.0
     container_name: grafana
     ports:
-      - "3002:3003"
+      - "3002:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
@@ -253,6 +253,22 @@ services:
       - identity-service
       - voucher-service
       - logstash
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    networks:
+      - app-network
+
+  konga:
+    image: pantsel/konga:latest
+    container_name: konga
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "1337:1337"
+    depends_on:
+      - kong
     deploy:
       resources:
         limits:
@@ -361,35 +377,6 @@ services:
     container_name: customer-service
     ports:
       - "8084:8084"
-    environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      SPRING_PROFILES_ACTIVE: prod
-      LOGSTASH_HOST: logstash
-      LOGSTASH_PORT: 5044
-      JAVA_OPTS: "-Xms128m -Xmx192m"
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    networks:
-      - app-network
-
-  notification-service:
-    build: ./notification-service
-    container_name: notification-service
     environment:
       DB_HOST: postgres
       DB_PORT: 5432

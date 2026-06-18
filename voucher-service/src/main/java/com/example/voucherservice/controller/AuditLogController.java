@@ -31,7 +31,7 @@ public class AuditLogController {
         @RequestParam(name = "userId", required = false) String userId,
         @RequestParam(name = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
         @RequestParam(name = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
-        @PageableDefault(size = 15) Pageable pageable) {
+        @PageableDefault(size = 10) Pageable pageable) {
         Page<AuditLogResponse> data = auditLogService.getAuditLogs(userRole, userId, fromDate, toDate, pageable);
         return ResponseEntity.ok(BaseResponse.<Page<AuditLogResponse>>builder()
             .status(BaseErrorCode.SUCCESS.getErrorNumCode())

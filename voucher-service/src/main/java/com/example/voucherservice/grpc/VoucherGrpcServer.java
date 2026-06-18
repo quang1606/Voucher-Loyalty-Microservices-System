@@ -187,6 +187,7 @@ public class VoucherGrpcServer extends VoucherGrpcServiceGrpc.VoucherGrpcService
                 .setNameStore(nameStore)
                 .setCreatorType(!creatorType.isEmpty() ? vn.com.grpc.voucher.entity.CreatorType.valueOf(creatorType) : vn.com.grpc.voucher.entity.CreatorType.PARTNER)
                 .setCreatedAt(entity.getCreatedAt() != null ? entity.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
+                .setRequestId(entity.getRequestId() != null ? entity.getRequestId() : "")
                 .build();
     }
     @Override

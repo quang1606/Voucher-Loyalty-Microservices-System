@@ -126,3 +126,19 @@ message UpdateMissionStatusResponse {
   base.ResponseInfo responseInfo = 1;
   MissionInfo missions = 2;
 }
+
+message GetMissionMonthlyStatsRequest {
+  base.RequestInfo requestInfo = 1;
+  int32 year = 2;
+  int64 partner_id = 3;
+}
+
+message GetMissionMonthlyStatsResponse {
+  base.ResponseInfo responseInfo = 1;
+  repeated MissionMonthlyStats stats = 2;
+}
+
+message MissionMonthlyStats {
+  int32 month = 1;
+  int64 total = 2;
+}

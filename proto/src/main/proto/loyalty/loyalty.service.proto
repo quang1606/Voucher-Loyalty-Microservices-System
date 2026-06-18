@@ -12,4 +12,5 @@ service LoyaltyService {
   rpc GetMissionById(GetMissionByIdRequest) returns (GetMissionByIdResponse);
   rpc SearchMission(SearchMissionRequest) returns (SearchMissionResponse);
   rpc UpdateMissionStatus(UpdateMissionStatusRequest) returns (UpdateMissionStatusResponse);
+  rpc GetMissionMonthlyStats(GetMissionMonthlyStatsRequest) returns (GetMissionMonthlyStatsResponse);
 }

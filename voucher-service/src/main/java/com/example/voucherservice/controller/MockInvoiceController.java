@@ -16,14 +16,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/invoices")
+@RequestMapping("/public/api/invoices")
 @RequiredArgsConstructor
 public class MockInvoiceController {
 
     private final MockInvoiceService mockInvoiceService;
 
     @PostMapping
-    @PreAuthorize(" hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<MockInvoiceResponse>> createInvoice(
             @Valid @RequestBody CreateMockInvoiceRequest request) {
         MockInvoiceResponse response = mockInvoiceService.createInvoice(request);
@@ -36,7 +35,6 @@ public class MockInvoiceController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<MockInvoiceListResponse>> getInvoices(
             @RequestParam(required = false) String nameStore,
             @RequestParam(required = false) String title,

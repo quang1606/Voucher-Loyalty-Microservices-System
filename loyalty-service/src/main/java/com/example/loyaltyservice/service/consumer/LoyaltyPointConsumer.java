@@ -81,6 +81,8 @@ public class LoyaltyPointConsumer {
     private CustomerTier calculateTier(long totalPoints) {
         if (totalPoints >= 10000) {
             return CustomerTier.DIAMOND;
+        } else if (totalPoints >= 7000) {
+            return CustomerTier.PLATINUM;
         } else if (totalPoints >= 5000) {
             return CustomerTier.GOLD;
         } else {

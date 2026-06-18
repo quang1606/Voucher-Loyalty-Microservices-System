@@ -20,7 +20,7 @@ public class  MockInvoiceController {
             @RequestParam(required = false) String nameStore,
             @RequestParam(required = false) String title,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "10") int size) {
 
         return ResponseEntity.ok(BaseResponse.<MockInvoiceListResponse>builder()
                 .status(BaseErrorCode.SUCCESS.getErrorNumCode())

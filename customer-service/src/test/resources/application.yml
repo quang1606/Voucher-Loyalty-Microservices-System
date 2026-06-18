@@ -1,0 +1,25 @@
+server:
+  port: 0
+
+grpc:
+  server:
+    port: 0
+
+spring:
+  config:
+    import:
+      - classpath:datasource.yml
+  jpa:
+    hibernate:
+      ddl-auto: none
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/voucher-loyalty
+  kafka:
+    bootstrap-servers: localhost:9092
+  data:
+    redis:
+      host: localhost
+      port: 6379

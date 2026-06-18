@@ -8,6 +8,8 @@ import com.example.customerservice.service.AuthorizationService;
 import com.example.customerservice.service.LeaderboardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,11 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     private final CustomerProfileRepository customerProfileRepository;
     private final AuthorizationService authorizationService;
 
+    @EventListener(ApplicationReadyEvent.class)
+    public void onStartup() {
+        syncAllCustomersToRedis();
+    }
+
     @Override
     public void updateCustomerPoints(Long customerId, Integer points) {
         try {
@@ -41,6 +48,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     @Override
     public LeaderboardResponse getLeaderboard() {
         String userId = authorizationService.getUserId();
+        log.info("Fetching leaderboard for userId: {}", userId);
         CustomerProfile currentProfile = customerProfileRepository.findByUserId(UUID.fromString(userId))
                 .orElseThrow(() -> BaseException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
@@ -48,7 +56,6 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                         .description("Customer profile not found")
                         .build());
 
-        // Get top 5 customers from Redis ZSET (highest scores first)
         Set<ZSetOperations.TypedTuple<Object>> topCustomersSet = redisTemplate.opsForZSet()
                 .reverseRangeWithScores(LEADERBOARD_KEY, 0, 4);
 

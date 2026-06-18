@@ -10,6 +10,7 @@ import com.example.voucherservice.entity.VoucherDetailEntity;
 import com.example.voucherservice.entity.VoucherRequestEntity;
 import com.example.voucherservice.repository.VoucherRepository;
 import io.micrometer.common.util.StringUtils;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,6 @@ public class VoucherFixedStrategy extends VoucherRequestStrategy {
   }
 
   @Override
-  @Async
   public void processExcelRequest(VoucherRequestEntity requestEntity,
       List<CreateVoucherExcel> dataList) {
     String requestId = requestEntity.getRequestId();
@@ -84,25 +84,55 @@ public class VoucherFixedStrategy extends VoucherRequestStrategy {
                 .errorCode("INVALID_VOUCHER_NAME")
                 .description("Voucher name is required").build();
           }
+          if (detail.getDiscountType() == null) {
+            throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                .errorCode("INVALID_DISCOUNT_TYPE")
+                .description("Discount type is required and must be a valid value (FIXED, PERCENT)").build();
+          }
+          if (detail.getCustomerTier() == null) {
+            throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                .errorCode("INVALID_CUSTOMER_TIER")
+                .description("Customer tier is required and must be a valid value (ALL, SILVER, GOLD, PLATINUM, DIAMOND)").build();
+          }
           if (detail.getDiscountValue() == null) {
             throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
                 .errorCode("INVALID_DISCOUNT_VALUE")
                 .description("Discount value is required").build();
+          }
+          if (detail.getDiscountValue().compareTo(BigDecimal.ZERO) <= 0) {
+            throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                .errorCode("INVALID_DISCOUNT_VALUE")
+                .description("Discount value must be positive").build();
           }
           if (detail.getMinOrderValue() == null) {
             throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
                 .errorCode("INVALID_MIN_ORDER_VALUE")
                 .description("Min order value is required for FIXED discount").build();
           }
+          if (detail.getMinOrderValue().compareTo(BigDecimal.ZERO) <= 0) {
+            throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                .errorCode("INVALID_MIN_ORDER_VALUE")
+                .description("Min order value must be positive").build();
+          }
           if (detail.getDiscountValue().compareTo(detail.getMinOrderValue()) > 0) {
             throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
                 .errorCode("INVALID_FIXED_VOUCHER")
                 .description("Discount value must not exceed min order value").build();
           }
+          if (detail.getMaxDiscount() != null && detail.getMaxDiscount().compareTo(BigDecimal.ZERO) < 0) {
+            throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                .errorCode("INVALID_MAX_DISCOUNT")
+                .description("Max discount must not be negative").build();
+          }
           if (detail.getTotalStock() == null || detail.getTotalStock() <= 0) {
             throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
                 .errorCode("INVALID_TOTAL_STOCK")
                 .description("Total stock must be positive").build();
+          }
+          if (detail.getMaxCollect() != null && detail.getMaxCollect() <= 0) {
+            throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                .errorCode("INVALID_MAX_COLLECT")
+                .description("Max collect must be positive").build();
           }
           if (detail.getStartDate() == null || detail.getEndDate() == null) {
             throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)

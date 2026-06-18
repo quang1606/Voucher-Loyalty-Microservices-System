@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import vn.com.grpc.loyalty.entity.CreateMissionResponseGrpc;
 import vn.com.grpc.loyalty.entity.GetMissionByIdRequest;
 import vn.com.grpc.loyalty.entity.GetMissionByIdResponse;
+import vn.com.grpc.loyalty.entity.GetMissionMonthlyStatsRequest;
+import vn.com.grpc.loyalty.entity.GetMissionMonthlyStatsResponse;
 import vn.com.grpc.loyalty.entity.RewardType;
 import vn.com.grpc.loyalty.entity.SearchMissionRequest;
 import vn.com.grpc.loyalty.entity.SearchMissionResponse;
@@ -53,7 +55,7 @@ public class MissionGrpcClient {
             .setStartDate(request.getMissionStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
             .setEndDate(request.getMissionEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
             .setTaskStatus(TaskStatus.valueOf(request.getTaskStatus().name()))
-                .setRequestId(request.getRequestId())
+            .setRequestId(request.getRequestId())
             .build();
 
     log.info("gRPC createMission request: {}", grpcRequest);
@@ -71,13 +73,7 @@ public class MissionGrpcClient {
       }
       log.info("gRPC createMission response: {}", response);
     } catch (BaseException e) {
-      log.error("gRPC createMission BaseException - missionName: {}, error: {}",
-          request.getMissionName(), e.getDescription());
-      throw BaseException.builder()
-          .httpStatus(e.getHttpStatus())
-          .errorCode(e.getErrorCode())
-          .description(e.getDescription())
-          .build();
+      throw e;
     } catch (Exception e) {
       log.error("gRPC createMission Exception - missionName: {}, error: {}",
           request.getMissionName(), e.getMessage(), e);
@@ -111,13 +107,7 @@ public class MissionGrpcClient {
       log.info("gRPC getMissionById response: {}", response);
       return response;
     } catch (BaseException e) {
-      log.error("gRPC getMissionById BaseException - missionId: {}, error: {}",
-          missionId, e.getDescription());
-      throw BaseException.builder()
-          .httpStatus(e.getHttpStatus())
-          .errorCode(e.getErrorCode())
-          .description(e.getDescription())
-          .build();
+      throw e;
     } catch (Exception e) {
       log.error("gRPC getMissionById Exception - missionId: {}, error: {}",
           missionId, e.getMessage(), e);
@@ -171,11 +161,7 @@ public class MissionGrpcClient {
       log.info("gRPC searchMissions response: {}", response);
       return response;
     } catch (BaseException e) {
-      throw BaseException.builder()
-          .httpStatus(e.getHttpStatus())
-          .errorCode(e.getErrorCode())
-          .description(e.getDescription())
-          .build();
+      throw e;
     } catch (Exception e) {
       log.error("gRPC searchMissions Exception - error: {}", e.getMessage(), e);
       throw BaseException.builder()
@@ -199,7 +185,6 @@ public class MissionGrpcClient {
     }
 
     SearchMissionRequest request = builder.build();
-
     log.info("gRPC getMissionStats request: {}", request);
 
     try {
@@ -215,11 +200,7 @@ public class MissionGrpcClient {
       log.info("gRPC getMissionStats response: {}", response);
       return response;
     } catch (BaseException e) {
-      throw BaseException.builder()
-          .httpStatus(e.getHttpStatus())
-          .errorCode(e.getErrorCode())
-          .description(e.getDescription())
-          .build();
+      throw e;
     } catch (Exception e) {
       log.error("gRPC getMissionStats Exception - error: {}", e.getMessage(), e);
       throw BaseException.builder()
@@ -252,11 +233,7 @@ public class MissionGrpcClient {
       log.info("gRPC updateMissionStatus response: {}", response);
       return response;
     } catch (BaseException e) {
-      throw BaseException.builder()
-          .httpStatus(e.getHttpStatus())
-          .errorCode(e.getErrorCode())
-          .description(e.getDescription())
-          .build();
+      throw e;
     } catch (Exception e) {
       log.error("gRPC updateMissionStatus Exception - missionId: {}, error: {}",
           missionId, e.getMessage(), e);
@@ -264,6 +241,41 @@ public class MissionGrpcClient {
           .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .errorCode("GRPC_ERROR")
           .description("Failed to update mission status: " + missionId)
+          .build();
+    }
+  }
+
+  public GetMissionMonthlyStatsResponse getMissionMonthlyStats(int year, Long partnerId) {
+    GetMissionMonthlyStatsRequest.Builder builder = GetMissionMonthlyStatsRequest.newBuilder()
+        .setRequestInfo(grpcUtils.builderRequestInfo())
+        .setYear(year);
+
+    if (partnerId != null && partnerId > 0) {
+      builder.setPartnerId(partnerId);
+    }
+
+    GetMissionMonthlyStatsRequest request = builder.build();
+    log.info("gRPC getMissionMonthlyStats request: {}", request);
+
+    try {
+      GetMissionMonthlyStatsResponse response = stub.withDeadlineAfter(30, TimeUnit.SECONDS)
+          .getMissionMonthlyStats(request);
+      if (!"success".equalsIgnoreCase(response.getResponseInfo().getErrorCode())) {
+        throw BaseException.builder()
+            .httpStatus(HttpStatus.BAD_REQUEST)
+            .errorCode(response.getResponseInfo().getErrorCode())
+            .description(response.getResponseInfo().getMessage())
+            .build();
+      }
+      return response;
+    } catch (BaseException e) {
+      throw e;
+    } catch (Exception e) {
+      log.error("gRPC getMissionMonthlyStats Exception - error: {}", e.getMessage(), e);
+      throw BaseException.builder()
+          .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .errorCode("GRPC_ERROR")
+          .description("Failed to get mission monthly stats")
           .build();
     }
   }

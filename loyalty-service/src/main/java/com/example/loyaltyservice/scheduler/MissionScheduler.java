@@ -23,8 +23,7 @@ public class MissionScheduler {
     private static final int BATCH_SIZE = 200;
     private final MissionRepository missionRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
-    public void executeMissionStatusJob() {
+    @Scheduled(cron = "0 27 2 * * *")    public void executeMissionStatusJob() {
         log.info("=== Mission Status Scheduler START ===");
         activateMissions();
         expireMissions();
@@ -65,7 +64,7 @@ public class MissionScheduler {
     @Transactional
     public void expireMissions() {
         log.info("--- Expiring missions ---");
-        LocalDateTime today = LocalDate.now().atStartOfDay();
+        LocalDateTime today = LocalDateTime.now();
         Long nextId = 0L;
         int batchNumber = 0;
         int totalProcessed = 0;

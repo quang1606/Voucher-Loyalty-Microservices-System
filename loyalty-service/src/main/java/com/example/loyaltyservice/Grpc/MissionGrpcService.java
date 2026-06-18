@@ -13,6 +13,7 @@ import vn.com.grpc.loyalty.entity.*;
 import vn.com.grpc.loyalty.service.LoyaltyServiceGrpc;
 
 import java.time.ZoneId;
+import java.util.List;
 
 @GrpcService
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ import java.time.ZoneId;
 public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBase {
 
     private final MissionService missionService;
+    private final com.example.loyaltyservice.repository.MissionRepository missionRepository;
 
     private MissionStatus toGrpcMissionStatus(com.example.loyaltyservice.constant.MissionStatus status) {
         String name = status.name();
@@ -178,6 +180,38 @@ public class MissionGrpcService extends LoyaltyServiceGrpc.LoyaltyServiceImplBas
             responseObserver.onCompleted();
         }
     }
+    @Override
+    public void getMissionMonthlyStats(GetMissionMonthlyStatsRequest request,
+        StreamObserver<GetMissionMonthlyStatsResponse> responseObserver) {
+        GetMissionMonthlyStatsResponse.Builder responseBuilder = GetMissionMonthlyStatsResponse.newBuilder();
+        try {
+            log.info("gRPC getMissionMonthlyStats request: {}", request);
 
+            List<Object[]> stats;
+            if (request.getPartnerId() > 0) {
+                stats = missionRepository.getMissionMonthlyStatsByPartner(request.getYear(), request.getPartnerId());
+            } else {
+                stats = missionRepository.getMissionMonthlyStats(request.getYear());
+            }
 
+            for (Object[] row : stats) {
+                responseBuilder.addStats(MissionMonthlyStats.newBuilder()
+                        .setMonth(((Number) row[0]).intValue())
+                        .setTotal(((Number) row[1]).longValue())
+                        .build());
+            }
+
+            responseBuilder.setResponseInfo(GrpcUtils.buildResponseInfoSuccess(request.getRequestInfo()));
+            log.info("gRPC getMissionMonthlyStats response: {}", responseBuilder.build());
+        } catch (BaseException e) {
+            log.error("gRPC getMissionMonthlyStats BaseException: {}", e.getDescription());
+            responseBuilder.setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e));
+        } catch (Exception e) {
+            log.error("gRPC getMissionMonthlyStats Exception: {}", e.getMessage(), e);
+            responseBuilder.setResponseInfo(GrpcUtils.buildResponseFail(request.getRequestInfo(), e));
+        } finally {
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+        }
+    }
 }

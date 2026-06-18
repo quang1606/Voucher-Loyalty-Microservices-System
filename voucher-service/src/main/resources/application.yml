@@ -13,6 +13,10 @@ grpc:
       address: static://${LOYALTY_GRPC_HOST:localhost}:${LOYALTY_GRPC_PORT:9093}
       negotiation-type: plaintext
 
+    customer-service:
+      address: static://${CUSTOMER_GRPC_HOST:localhost}:${CUSTOMER_GRPC_PORT:9094}
+      negotiation-type: plaintext
+
 
 spring:
   application:

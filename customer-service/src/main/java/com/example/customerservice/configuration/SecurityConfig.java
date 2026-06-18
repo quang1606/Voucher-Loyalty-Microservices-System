@@ -29,6 +29,7 @@ public class SecurityConfig {
         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/public/**").permitAll()
+            .requestMatchers("/actuator/**").permitAll()
             .anyRequest().hasRole("CUSTOMER")
         )
         .oauth2ResourceServer(oauth2 -> oauth2

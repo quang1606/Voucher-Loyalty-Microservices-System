@@ -96,6 +96,7 @@ message VoucherDetail {
   string name_store = 16;
   int64 created_at = 17;
   CreatorType creator_type = 18;
+  string request_id = 19;
 }
 
 message GetMockInvoicesRequest {

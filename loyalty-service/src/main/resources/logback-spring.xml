@@ -2,6 +2,8 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="unknown-service"/>
+
     <appender name="CONSOLE_COLOR" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} --- [%15.15t] %clr(%-40.40logger{39}){cyan} : %clr([%X{traceId}]){yellow} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
@@ -10,10 +12,10 @@
     </appender>
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>${LOGSTASH_HOST:-logstash}:${LOGSTASH_PORT:-5044}</destination>
+        <destination>${LOGSTASH_HOST:-localhost}:${LOGSTASH_PORT:-5044}</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <includeMdc>true</includeMdc>
-            <customFields>{"app_name":"${spring.application.name:-unknown-service}"}</customFields>
+            <customFields>{"app_name":"${APP_NAME}"}</customFields>
 
             <fieldNames>
                 <timestamp>@timestamp</timestamp>
@@ -28,8 +30,9 @@
     <springProfile name="dev | default">
         <root level="INFO">
             <appender-ref ref="CONSOLE_COLOR" />
+            <appender-ref ref="LOGSTASH" />
         </root>
-        <logger name="org.hibernate.SQL" level="DEBUG" />
+        <logger name="org.hibernate.SQL" level="OFF" />
     </springProfile>
 
     <springProfile name="prod | json">

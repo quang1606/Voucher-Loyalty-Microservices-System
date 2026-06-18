@@ -89,13 +89,15 @@ Xuất phát từ những nhu cầu thực tiễn trên, nhóm quyết định c
 
 ## 4. Cấu trúc đồ án
 
-Đồ án được tổ chức thành 3 chương chính:
+Đồ án được tổ chức thành 4 chương chính:
 
-Chương 1: Khảo sát nghiệp vụ bài toán — Trình bày kết quả khảo sát các hệ thống quản lý voucher và chương trình khách hàng thân thiết tại Việt Nam và quốc tế. Từ đó xác định các nghiệp vụ cốt lõi, ưu nhược điểm của từng hệ thống, và đề xuất hướng phát triển cho đồ án.
+Chương 1: Khảo sát nghiệp vụ bài toán — Trình bày kết quả khảo sát các hệ thống quản lý voucher và chương trình khách hàng thân thiết tại Việt Nam (Shopee Rewards, MoMo, The Coffee House) và quốc tế (Starbucks Rewards, Smile.io, Voucherify). Phân tích ưu nhược điểm, xác định khoảng trống thị trường, khảo sát nhu cầu 5 nhóm người dùng, và xác định yêu cầu chức năng/phi chức năng cho hệ thống.
 
-Chương 2: Phân tích thiết kế hệ thống — Xác định các đối tượng người dùng, phân tích yêu cầu chức năng và phi chức năng. Thiết kế kiến trúc tổng quan hệ thống Microservices, thiết kế cơ sở dữ liệu, thiết kế API, và mô hình hóa bằng các sơ đồ UML.
+Chương 2: Phân tích và thiết kế hệ thống — Phân tích yêu cầu chi tiết, xác định 5 tác nhân và 27 use case. Thiết kế hệ thống bằng các sơ đồ UML: biểu đồ Use Case (tổng quát và chi tiết theo 5 nhóm chức năng), 10 biểu đồ hoạt động, 10 biểu đồ trình tự, biểu đồ trạng thái. Thiết kế cơ sở dữ liệu (4 database, 11 bảng) và kiến trúc phần mềm Microservices.
 
-Chương 3: Xây dựng và phát triển ứng dụng — Trình bày chi tiết quá trình cài đặt và triển khai hệ thống: công nghệ sử dụng, cấu trúc mã nguồn từng service, cách thức giao tiếp giữa các service, cơ chế bảo mật, caching, logging, monitoring, containerization, và giao diện người dùng.
+Chương 3: Phát triển hệ thống — Trình bày chi tiết quá trình triển khai: kiến trúc tổng thể (14 thành phần), phát triển frontend (Next.js, React, TypeScript với kiến trúc BFF), phát triển backend (5 microservices Java/Spring Boot, gRPC, Kafka), đánh chỉ mục cơ sở dữ liệu, tích hợp 3 luồng nghiệp vụ chính (voucher, mission, nâng hạng), và đánh giá kết quả.
+
+Chương 4: Bảo mật hệ thống — Trình bày giải pháp bảo mật toàn diện: xác thực JWT theo chuẩn OAuth2/OIDC (Keycloak), phân quyền RBAC kết hợp data-level access control, bảo mật API Gateway (Kong), bảo mật giao tiếp inter-service, đảm bảo toàn vẹn dữ liệu (Maker/Checker, audit log), và bảo mật phía frontend.
 
 
 ---

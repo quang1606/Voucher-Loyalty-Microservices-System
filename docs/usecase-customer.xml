@@ -1,0 +1,111 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Use Case - Customer" id="uc-customer">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- System Boundary -->
+        <mxCell id="2" value="Dịch vụ Khách hàng (Customer)" style="shape=umlFrame;whiteSpace=wrap;html=1;width=260;height=25;boundedLbl=1;verticalAlign=top;align=left;spacingLeft=5;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="800" height="640" as="geometry" />
+        </mxCell>
+        <!-- Actor -->
+        <mxCell id="A1" value="Customer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="300" width="30" height="55" as="geometry" />
+        </mxCell>
+        <!-- Identity Use Cases -->
+        <mxCell id="UC1" value="Đăng ký tài khoản&#xa;(Register)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="280" y="50" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="UC2" value="Đăng nhập&#xa;(Login)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="520" y="50" width="180" height="55" as="geometry" />
+        </mxCell>
+        <!-- Voucher Use Cases -->
+        <mxCell id="UC3" value="Xem voucher khả dụng&#xa;(theo hạng thành viên)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="280" y="140" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UC4" value="Thu thập voucher&#xa;(Collect)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="280" y="230" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UC5" value="Xem kho voucher&#xa;cá nhân" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="280" y="320" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UC6" value="Xem voucher áp dụng&#xa;được cho đơn hàng" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="280" y="410" width="210" height="60" as="geometry" />
+        </mxCell>
+        <!-- Payment -->
+        <mxCell id="UC7" value="Thanh toán&#xa;(áp dụng voucher)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="280" y="500" width="210" height="60" as="geometry" />
+        </mxCell>
+        <!-- Mission Use Cases -->
+        <mxCell id="UC8" value="Xem nhiệm vụ&#xa;và tiến độ" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="560" y="230" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UC9" value="Nhận thưởng nhiệm vụ&#xa;(Claim Reward)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="560" y="320" width="210" height="60" as="geometry" />
+        </mxCell>
+        <!-- Leaderboard -->
+        <mxCell id="UC10" value="Xem bảng xếp hạng&#xa;(Leaderboard)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="560" y="410" width="210" height="60" as="geometry" />
+        </mxCell>
+        <!-- Profile -->
+        <mxCell id="UC11" value="Xem hồ sơ cá nhân&#xa;(Profile, Tier, Points)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="560" y="140" width="210" height="60" as="geometry" />
+        </mxCell>
+        <!-- Sub use cases -->
+        <mxCell id="UC7a" value="Tích điểm tự động&#xa;(Kafka event)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="560" y="510" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="UC7b" value="Nâng hạng tự động&#xa;(event-driven)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="560" y="565" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="UC7c" value="Cập nhật tiến độ&#xa;mission" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="560" y="620" width="170" height="40" as="geometry" />
+        </mxCell>
+        <!-- Connections -->
+        <mxCell id="E1" style="endArrow=none;" edge="1" source="A1" target="UC1" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E2" style="endArrow=none;" edge="1" source="A1" target="UC2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E3" style="endArrow=none;" edge="1" source="A1" target="UC3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E4" style="endArrow=none;" edge="1" source="A1" target="UC4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E5" style="endArrow=none;" edge="1" source="A1" target="UC5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E6" style="endArrow=none;" edge="1" source="A1" target="UC6" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E7" style="endArrow=none;" edge="1" source="A1" target="UC7" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E8" style="endArrow=none;" edge="1" source="A1" target="UC8" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E9" style="endArrow=none;" edge="1" source="A1" target="UC9" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E10" style="endArrow=none;" edge="1" source="A1" target="UC10" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="E11" style="endArrow=none;" edge="1" source="A1" target="UC11" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Include from Payment -->
+        <mxCell id="I1" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;endSize=12;dashed=1;html=1;" edge="1" source="UC7" target="UC7a" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="I2" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;endSize=12;dashed=1;html=1;" edge="1" source="UC7a" target="UC7b" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="I3" value="&lt;&lt;include&gt;&gt;" style="endArrow=open;endSize=12;dashed=1;html=1;" edge="1" source="UC7a" target="UC7c" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

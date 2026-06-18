@@ -17,3 +17,24 @@ message CreateCustomerProfileRequest {
 message CreateCustomerProfileResponse {
   base.ResponseInfo responseInfo = 1;
 }
+
+message GetVoucherUsageStatsRequest {
+  base.RequestInfo requestInfo = 1;
+  repeated string request_ids = 2;
+  int32 month = 3;
+  int32 year = 4;
+  string request_id_filter = 5;
+}
+
+message VoucherUsageStatsItem {
+  string request_id = 1;
+  int64 used_count = 2;
+  string total_discount_amount = 3;
+  string voucher_code = 4;
+  string voucher_name = 5;
+}
+
+message GetVoucherUsageStatsResponse {
+  base.ResponseInfo responseInfo = 1;
+  repeated VoucherUsageStatsItem stats = 2;
+}
