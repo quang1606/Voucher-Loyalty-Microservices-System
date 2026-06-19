@@ -109,10 +109,18 @@ public class MissionAspect {
             log.info("Audit: action={}, userId={}, success=true", action, userId);
             return result;
         } catch (Exception ex) {
-            auditLogService.saveAuditLog(userId, userRole, action, resource, false, ex.getMessage());
-            log.error("Audit: action={}, userId={}, success=false, error={}", action, userId, ex.getMessage());
+            String errorDetail = extractErrorDetail(ex);
+            auditLogService.saveAuditLog(userId, userRole, action, resource, false, errorDetail);
+            log.error("Audit: action={}, userId={}, success=false, error={}", action, userId, errorDetail);
             throw ex;
         }
+    }
+
+    private String extractErrorDetail(Exception ex) {
+        if (ex instanceof com.example.common.BaseException baseEx) {
+            return String.format("[%s] %s", baseEx.getErrorCode(), baseEx.getDescription());
+        }
+        return ex.getMessage() != null ? ex.getMessage() : ex.getClass().getSimpleName();
     }
 
     private String[] extractAuthInfo() {

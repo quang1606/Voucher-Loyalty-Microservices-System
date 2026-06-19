@@ -34,3 +34,13 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true
