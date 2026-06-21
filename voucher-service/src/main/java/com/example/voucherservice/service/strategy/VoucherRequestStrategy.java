@@ -9,7 +9,10 @@ import com.example.voucherservice.entity.VoucherDetailEntity;
 import com.example.voucherservice.entity.VoucherRequestEntity;
 import com.example.voucherservice.repository.VoucherRepository;
 import com.example.voucherservice.repository.VoucherRequestRepository;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -127,8 +130,13 @@ public abstract class VoucherRequestStrategy {
   private void saveVoucherToRedis(VoucherDetailEntity detail) {
     try {
       String key = String.format("voucher:%s:stock", detail.getVoucherCode());
-      redisTemplate.opsForValue().set(key, detail.getAvailableStock());
-      log.debug("Saved voucher to Redis: {} = {}", key, detail.getAvailableStock());
+      long ttlSeconds = Duration.between(LocalDateTime.now(), detail.getEndDate()).getSeconds();
+      if (ttlSeconds <= 0) {
+        log.warn("Voucher {} already expired, skipping Redis save", detail.getVoucherCode());
+        return;
+      }
+      redisTemplate.opsForValue().set(key, detail.getAvailableStock(), ttlSeconds, TimeUnit.SECONDS);
+      log.info("Saved voucher to Redis: {} = {}, TTL={}s", key, detail.getAvailableStock(), ttlSeconds);
     } catch (Exception ex) {
       log.error("Failed to save voucher to Redis for code {}: {}", detail.getVoucherCode(), ex.getMessage());
     }

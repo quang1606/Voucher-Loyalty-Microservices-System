@@ -292,12 +292,6 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
 
-    // Validate customer tier
-    if (request.getCustomerTier() == null && request.getVoucherPurpose() != VoucherPurpose.REWARD) {
-      throw BaseException.builder().httpStatus(HttpStatus.BAD_REQUEST)
-          .errorCode("INVALID_CUSTOMER_TIER")
-          .description("Customer tier is required and must be a valid value (ALL, SILVER, GOLD, PLATINUM, DIAMOND)").build();
-    }
 
     // Validate non-negative numeric fields
     if (request.getDiscountValue() == null || request.getDiscountValue().compareTo(BigDecimal.ZERO) <= 0) {

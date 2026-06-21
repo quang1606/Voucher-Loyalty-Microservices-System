@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MissionController {
   private final MissionService missionService;
 
-  @PostMapping("/missions")
+  @PostMapping
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
   public ResponseEntity<BaseResponse<Void>> createMission(@Valid @RequestBody CreateMissionRequest request) {
     missionService.createMission(request);
@@ -41,7 +41,7 @@ public class MissionController {
         .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
   }
 
-  @PutMapping("/missions/{id}/submit")
+  @PutMapping("/{id}/submit")
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
   public ResponseEntity<BaseResponse<Void>> submitMission(@PathVariable Long id) {
     missionService.submitMission(id);
@@ -51,7 +51,7 @@ public class MissionController {
         .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
   }
 
-  @PutMapping("/missions/{id}/cancel")
+  @PutMapping("/{id}/cancel")
   @PreAuthorize("hasAnyRole('MAKER', 'PARTNER')")
   public ResponseEntity<BaseResponse<Void>> cancelMission(@PathVariable Long id) {
     missionService.cancelMission(id);
@@ -61,7 +61,7 @@ public class MissionController {
         .message(BaseErrorCode.SUCCESS.getErrorDescription()).build());
   }
 
-  @PutMapping("/missions/{id}/confirm")
+  @PutMapping("/{id}/confirm")
   @PreAuthorize("hasRole('CHECKER')")
   public ResponseEntity<BaseResponse<Void>> confirmMission(@PathVariable Long id,
       @Valid @RequestBody ConfirmVoucherRequest request) {
@@ -91,7 +91,7 @@ public class MissionController {
         .build());
   }
 
-  @GetMapping("/missions/{id}")
+  @GetMapping("/{id}")
   @PreAuthorize("hasAnyRole('MAKER', 'CHECKER', 'PARTNER')")
   public ResponseEntity<BaseResponse<MissionDetailResponse>> getMissionDetail(@PathVariable Long id) {
     MissionDetailResponse result = missionService.getMissionDetail(id);

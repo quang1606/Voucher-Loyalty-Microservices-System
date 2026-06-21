@@ -5,6 +5,7 @@ import com.example.common.BaseException;
 import com.example.common.BaseResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -45,6 +46,17 @@ public class GlobalExceptionHandler {
                 BaseResponse.<Void>builder()
                         .code(BaseErrorCode.BAD_REQUEST.getErrorCode())
                         .status(BaseErrorCode.BAD_REQUEST.getErrorNumCode())
+                        .message(ex.getMessage())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<BaseResponse<Void>> handleAccessDenied(AccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                BaseResponse.<Void>builder()
+                        .code("ACCESS_DENIED")
+                        .status(HttpStatus.FORBIDDEN.value())
                         .message(ex.getMessage())
                         .build()
         );
